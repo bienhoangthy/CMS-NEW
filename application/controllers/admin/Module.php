@@ -21,11 +21,8 @@ class Module extends MY_Controller {
     public function add()
     {
         $this->mpermission->checkPermission("module","add",$this->_data['user_active']['active_user_group']);
-    	$this->_data['title'] = lang('addmodule');
     	$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
     	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
-    	$this->_data['token_name'] = $this->security->get_csrf_token_name();
-        $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['formData'] = array( 
         	'module_parent' => 0, 
         	'module_component' => '', 
@@ -88,6 +85,9 @@ class Module extends MY_Controller {
                 }
             }  
         }
+        $this->_data['title'] = lang('addmodule');
+        $this->_data['token_name'] = $this->security->get_csrf_token_name();
+        $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['module_component']);
         $this->_data['module_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
         //$this->_data['listParent'] = $this->mmodule->getModule($this->_data['langPost']['lang_code']);

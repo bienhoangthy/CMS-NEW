@@ -110,4 +110,9 @@ class Index extends CI_Controller {
 		$this->session->unset_userdata("userActive");
         redirect(my_library::admin_site());
 	}
+
+	public function forgot()
+	{
+		echo "This is Forgot";
+	}
 }

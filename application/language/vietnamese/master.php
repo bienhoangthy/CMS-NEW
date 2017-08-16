@@ -42,4 +42,6 @@ $lang['language'] = 'Ngôn ngữ';
 $lang['editinglang'] = 'Bạn đang chỉnh sửa ';
 $lang['dashboard'] = 'Bảng điều khiển';
 $lang['please'] = 'Vui lòng ';
+$lang['image'] = 'Cập nhật hình ảnh';
+$lang['chooseimg'] = 'Chọn ảnh';
 ?>

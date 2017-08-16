@@ -42,4 +42,6 @@ $lang['language'] = 'Language';
 $lang['editinglang'] = 'You are editing ';
 $lang['dashboard'] = 'Dashboard';
 $lang['please'] = 'Please ';
+$lang['image'] = 'Update image';
+$lang['chooseimg'] = 'Choose image';
 ?>

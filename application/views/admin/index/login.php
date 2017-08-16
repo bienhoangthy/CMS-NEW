@@ -87,11 +87,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="login-page">
 	  <div class="form">
 	    <form class="login-form" method="post">
-	    <!-- <img src="./uploads/Logo_MissPhoto.png" style="max-width: 200px;"> -->
+	    <img src="<?= base_url()?>media/logo/logo.png" style="max-width: 200px;padding-bottom: 10px;">
 	      <input type="text" name="username" value="<?= $formData['username']?>" required="required" placeholder="username"/>
 	      <input type="password" name="password" value="<?= $formData['password']?>" required="required" placeholder="password"/>
 	      <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
 	      <button type="submit" name="flogin">login</button>
+	      <p class="message"><a href="<?= my_library::admin_site()?>index/forgot">Quên mật khẩu?</a></p>
 	      <p class="message">Đơn vị thực hiện <a target="_blank" href="http://itsgroup.vn/">ITSGroup</a></p>
 	      <?php if (isset($error) && $error != ''): ?>
 	      	<p class="message" style="color: #c0392b;"><?= $error?></p>
