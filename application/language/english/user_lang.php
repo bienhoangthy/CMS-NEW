@@ -38,4 +38,5 @@ $lang['lastlogin'] = 'Last Login';
 $lang['currentpass'] = 'Current Password';
 $lang['newpass'] = 'New Password';
 $lang['retype'] = 'Retype';
+$lang['changeavatar'] = 'Change Avatar';
 ?>

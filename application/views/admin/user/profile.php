@@ -1,3 +1,46 @@
+<style>
+	.hover-avatar {
+	    position:relative;
+	    /*width:300px;*/
+	    height:162px;
+	    overflow:hidden;
+	    float:left;
+	    margin-right:20px;
+	    background-color:rgba(26,76,110,0.5)
+	}
+	.hover-avatar h2 {
+	    color:#fff;
+	    padding:10px;
+	    left:-20px;
+	    top:20px;
+	    position:relative
+	}
+	.hover-avatar h2 {
+	    font-size:20px;
+	    line-height:24px;
+	    margin:0;
+	    font-family:'Lato'
+	}
+	.effect img {
+	    position:absolute;
+	    left:0;
+	    bottom:0;
+	    cursor:pointer;
+	    margin:-12px 0;
+	    -webkit-transition:bottom .3s ease-in-out;
+	    -moz-transition:bottom .3s ease-in-out;
+	    -o-transition:bottom .3s ease-in-out;
+	    transition:bottom .3s ease-in-out
+	}
+	.effect img.top:hover {
+	    bottom:-96px;
+	    padding-top:100px
+	}
+	h2.zero {
+	    margin:0;
+	    padding:0
+	}
+</style>
 <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
@@ -29,7 +72,11 @@
             <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
               <div class="profile_img">
                 <div id="crop-avatar">
-                  <img class="img-responsive avatar-view" src="<?= $myUser['user_avatar'] != '' ? base_url().'/media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" title="<?= $myUser['user_fullname']?>" style="width: 220px;height: auto;">
+                  <ul class="hover-avatar effect" style="list-style: none;">
+                  	<li><h2 class="zero"><?= lang('changeavatar')?></h2></li>
+                  	<li><img class="img-responsive avatar-view top" src="<?= $myUser['user_avatar'] != '' ? base_url().'/media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" title="<?= $myUser['user_fullname']?>" style="width: 100%;height: auto;">
+                  	</li>
+                  </ul>
                 </div>
               </div>
               <h3><?= $myUser['user_fullname']?></h3>

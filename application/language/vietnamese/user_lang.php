@@ -38,4 +38,5 @@ $lang['lastlogin'] = 'Lần đăng nhập gần nhất';
 $lang['currentpass'] = 'Mật khẩu hiện tại';
 $lang['newpass'] = 'Mật khẩu mới';
 $lang['retype'] = 'Nhập lại';
+$lang['changeavatar'] = 'Đổi ảnh đại diện';
 ?>
