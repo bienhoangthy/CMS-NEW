@@ -1,46 +1,3 @@
-<style>
-	.hover-avatar {
-	    position:relative;
-	    /*width:300px;*/
-	    height:162px;
-	    overflow:hidden;
-	    float:left;
-	    margin-right:20px;
-	    background-color:rgba(26,76,110,0.5)
-	}
-	.hover-avatar h2 {
-	    color:#fff;
-	    padding:10px;
-	    left:-20px;
-	    top:20px;
-	    position:relative
-	}
-	.hover-avatar h2 {
-	    font-size:20px;
-	    line-height:24px;
-	    margin:0;
-	    font-family:'Lato'
-	}
-	.effect img {
-	    position:absolute;
-	    left:0;
-	    bottom:0;
-	    cursor:pointer;
-	    margin:-12px 0;
-	    -webkit-transition:bottom .3s ease-in-out;
-	    -moz-transition:bottom .3s ease-in-out;
-	    -o-transition:bottom .3s ease-in-out;
-	    transition:bottom .3s ease-in-out
-	}
-	.effect img.top:hover {
-	    bottom:-96px;
-	    padding-top:100px
-	}
-	h2.zero {
-	    margin:0;
-	    padding:0
-	}
-</style>
 <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
@@ -72,11 +29,66 @@
             <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
               <div class="profile_img">
                 <div id="crop-avatar">
-                  <ul class="hover-avatar effect" style="list-style: none;">
-                  	<li><h2 class="zero"><?= lang('changeavatar')?></h2></li>
-                  	<li><img class="img-responsive avatar-view top" src="<?= $myUser['user_avatar'] != '' ? base_url().'/media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" title="<?= $myUser['user_fullname']?>" style="width: 100%;height: auto;">
-                  	</li>
-                  </ul>
+                  <img class="img-responsive avatar-view top" src="<?= $myUser['user_avatar'] != '' ? base_url().'/media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" title="<?= $myUser['user_fullname']?>" style="width: 100%;height: auto;">
+                  <button type="button" id="change-avatar" data-target="#modal" data-toggle="modal" class="btn btn-primary btn-xs" style="margin-top: 5px;"><?= lang('changeavatar')?></button>
+                  <!-- Avatar Modal -->
+                  <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header" style="background-color: #27ae60;">
+                          <h5 class="modal-title" style="color: #fff;"><i class="fa fa-picture-o fa-lg"></i> <?= lang('image')?></h5>
+                        </div>
+                        <div class="modal-body">
+                          <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>"><?= lang('chooseimg')?>
+                            <input type="file" class="sr-only" id="inputImage" name="file">
+                            <span class="fa fa-upload"></span>
+                          </label>
+                          <div class="clearfix"></div>
+                          <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div class="image-wrapper" style="width: 100%;height: 431px;box-shadow: inset 0px 0px 1px 1px #888888;">
+                                <div class="img-container">
+                                  <img id="image" src="#" style="max-width: 100%;">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                              <div class="docs-preview clearfix">
+                                <div class="img-preview preview-lg" style="width: 200px;height: 200px;overflow: hidden;background-color: #DDDDDD;margin-bottom: 5px;"></div>
+                              </div>
+                              <div class="docs-data" style="margin-top: 23px;">
+                                <div class="input-group input-group-sm">
+                                  <label class="input-group-addon" for="dataX">X</label>
+                                  <input type="text" class="form-control" id="dataX" placeholder="x">
+                                  <span class="input-group-addon">px</span>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                  <label class="input-group-addon" for="dataY">Y</label>
+                                  <input type="text" class="form-control" id="dataY" placeholder="y">
+                                  <span class="input-group-addon">px</span>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                  <label class="input-group-addon" for="dataWidth">Width</label>
+                                  <input type="text" class="form-control" id="dataWidth" placeholder="width">
+                                  <span class="input-group-addon">px</span>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                  <label class="input-group-addon" for="dataHeight">Height</label>
+                                  <input type="text" class="form-control" id="dataHeight" placeholder="height">
+                                  <span class="input-group-addon">px</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" id="send-server" class="btn btn-primary"><?= lang('save')?></button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal"><?= lang('close')?></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Avatar Modal -->
                 </div>
               </div>
               <h3><?= $myUser['user_fullname']?></h3>
@@ -146,7 +158,8 @@
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="pass" aria-labelledby="profile-tab">
                     <form class="form-horizontal form-label-left" novalidate method="post">
-                      <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+                      <input type="hidden" id="token" name="<?= $token_name?>" value="<?= $token_value?>">
+                      <input type="hidden" id="id-user" value="<?= $myUser['id']?>">
                       <div class="form-group">
                         <label for="old_password" class="control-label col-md-3"><?= lang('currentpass')?></label>
                         <div class="col-md-6 col-sm-6 col-xs-12 item">

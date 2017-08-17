@@ -44,4 +44,5 @@ $lang['dashboard'] = 'Bảng điều khiển';
 $lang['please'] = 'Vui lòng ';
 $lang['image'] = 'Cập nhật hình ảnh';
 $lang['chooseimg'] = 'Chọn ảnh';
+$lang['close'] = 'Đóng';
 ?>
