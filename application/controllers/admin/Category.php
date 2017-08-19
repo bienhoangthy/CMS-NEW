@@ -36,6 +36,21 @@ class Category extends MY_Controller {
 
 
 		//POST
+		if (isset($_POST['category_component'])) {
+			$file = $this->input->post('file');
+			if ($file != null) {
+				$file = str_replace('data:image/png;base64,', '', $file);
+	            $file = str_replace(' ', '+', $file);
+	            $fileData = base64_decode($file);
+	            //var_dump($fileData);die();
+	            //$fileName = realpath(APPPATH . "../media/user/".time()."png");
+	            $fileName = realpath(APPPATH . "../media/user/")."/".time().".png";
+	            file_put_contents($fileName, $fileData);
+	            echo "haha";die();
+			}
+		}
+		$this->_data['token_name'] = $this->security->get_csrf_token_name();
+        $this->_data['token_value'] = $this->security->get_csrf_hash();
 		$this->_data['title'] = lang('categoryadd');
 		$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component']);
         $this->_data['category_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);

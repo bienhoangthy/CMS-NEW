@@ -32,6 +32,7 @@ $lang['wrongid'] = 'Incorrect ID!';
 $lang['requiredfields'] = 'Required fields';
 $lang['save'] = 'Save';
 $lang['reset'] = 'Reset';
+$lang['cancel'] = 'Cancel';
 $lang['choose'] = 'Choose';
 $lang['active'] = 'Active';
 $lang['inactive'] = 'Inactive';

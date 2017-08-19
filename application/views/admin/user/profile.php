@@ -29,17 +29,28 @@
             <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
               <div class="profile_img">
                 <div id="crop-avatar">
-                  <img class="img-responsive avatar-view top" src="<?= $myUser['user_avatar'] != '' ? base_url().'/media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" title="<?= $myUser['user_fullname']?>" style="width: 100%;height: auto;">
-                  <button type="button" id="change-avatar" data-target="#modal" data-toggle="modal" class="btn btn-primary btn-xs" style="margin-top: 5px;"><?= lang('changeavatar')?></button>
-                  <!-- Avatar Modal -->
+                  <div class="thumbnail">
+                    <div class="view view-first">
+                      <img style="width: 100%; height: auto; display: block;" src="<?= $myUser['user_avatar'] != '' ? base_url().'media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" alt="<?= $myUser['user_username']?>" />
+                      <div class="mask" style="height: 250px;">
+                        <p><?= lang('changeavatar')?></p>
+                        <div class="tools tools-bottom">
+                          <button data-target="#modal" data-toggle="modal" class="btn btn-success" style="vertical-align: middle;"><i class="fa fa-pencil"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <h4 class="text-center"><?= lang('avatar')?></h4>
+                    </div>
+                  </div>
                   <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
                     <div class="modal-dialog modal-lg" role="document">
-                      <div class="modal-content">
+                      <div class="modal-content" style="width: 1000px;">
                         <div class="modal-header" style="background-color: #27ae60;">
                           <h5 class="modal-title" style="color: #fff;"><i class="fa fa-picture-o fa-lg"></i> <?= lang('image')?></h5>
                         </div>
                         <div class="modal-body">
-                          <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>"><?= lang('chooseimg')?>
+                          <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>">
                             <input type="file" class="sr-only" id="inputImage" name="file">
                             <span class="fa fa-upload"></span>
                           </label>
@@ -83,7 +94,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" id="send-server" class="btn btn-primary"><?= lang('save')?></button>
-                          <button type="button" class="btn btn-default" data-dismiss="modal"><?= lang('close')?></button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal"><?= lang('cancel')?></button>
                         </div>
                       </div>
                     </div>

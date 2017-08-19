@@ -78,7 +78,7 @@
                   <?php if (!empty($list)): ?>
                     <?php foreach ($list as $key => $value): ?>
                       <?php 
-                      $avatar = $value['user_avatar'] != "" ? my_library::base_file().'user/'.$value['user_folder'].'/'.$value['user_avatar'] : my_library::base_public().'admin/images/user.png';
+                      $avatar = $value['user_avatar'] != "" ? my_library::base_file().'user/'.$value['user_folder'].'/thumb_'.$value['user_avatar'] : my_library::base_public().'admin/images/user.png';
                       $group = $this->mgroup->getData("group_name","id = ".$value['user_group']);
                       $status = $this->muser->listStatusName($value['user_status']);
                       $linkEdit = my_library::admin_site().'user/edit/'.$value['id'];

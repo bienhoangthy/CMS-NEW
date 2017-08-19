@@ -63,7 +63,7 @@ class Index extends CI_Controller {
 									'history_platform' => $this->agent->platform()
 								);
 								$this->mhistory->add($dataAddHistory);
-								$avatar = $myUser['user_avatar'] != '' ? base_url().'media/user/'.$myUser['user_folder'].'/'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png';
+								$avatar = $myUser['user_avatar'] != '' ? base_url().'media/user/'.$myUser['user_folder'].'/thumb_'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png';
 								$dataUserActive = array(
 									'active_user_id' => $myUser['id'],
 									'active_user_username' => $myUser['user_username'],

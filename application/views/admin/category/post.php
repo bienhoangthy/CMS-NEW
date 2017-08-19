@@ -20,23 +20,49 @@
         <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
       </div>
       <div class="col-md-8 col-sm-8 col-xs-12">
+        <form class="form-horizontal form-label-left" id="formCategory" method="post" enctype="multipart/form-data" novalidate>
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Thêm danh mục</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category_component">Component<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12 item">
+                  <input id="category_component" class="form-control col-md-7 col-xs-12" name="category_component" required="required" type="text" value="<?= $formData['category_component']?>">
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="text-center">
+                *:<code><?= lang('requiredfields')?></code>
+              </div>
+              <div class="form-group pull-right">
+                <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+                <button type="submit" class="btn btn-success"><?= lang('save')?></button>
+                <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Cropper</h2>
+            <h2>Ảnh đại diện</h2>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
             <button type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">
-              Launch the demo
+              Thêm ảnh đại diện
             </button>
+            <div class="docs-preview clearfix">
+              <div class="img-preview preview-lg" style="width: 160px;height: 90px;overflow: hidden;"></div>
+            </div>
           </div>
         </div>
       </div> 
-      <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="docs-preview clearfix">
-          <div class="img-preview preview-lg" style="width: 160px;height: 90px;overflow: hidden;"></div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -44,13 +70,12 @@
 <!-- Image modal -->
 <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 1000px;">
       <div class="modal-header" style="background-color: #27ae60;">
-        <h5 class="modal-title" style="color: #fff;"><i class="fa fa-picture-o fa-lg"></i> <?= lang('image')?></h5>
+        <h5 class="modal-title" style="color: #fff;font-weight: bold;"><i class="fa fa-picture-o fa-lg"></i> <?= lang('image')?></h5>
       </div>
       <div class="modal-body">
-        <!-- <label class="control-label col-md-2 col-sm-2 col-xs-12">Ảnh mới</label> -->
-        <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>"><?= lang('chooseimg')?>
+        <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>">
           <input type="file" class="sr-only" id="inputImage" name="file">
           <span class="fa fa-upload"></span>
         </label>
@@ -95,7 +120,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="save-image" class="btn btn-primary" data-dismiss="modal"><?= lang('save')?></button>
+        <button type="button" id="destroy-image" class="btn btn-default" data-dismiss="modal"><?= lang('cancel')?></button>
       </div>
     </div>
   </div>

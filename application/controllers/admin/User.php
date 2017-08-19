@@ -380,7 +380,7 @@ class User extends MY_Controller {
     			$this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['cropper.min.css'];
-    			$this->_data['extraJs'] = ['validator.js','cropper.min.js','module/profile.js'];
+    			$this->_data['extraJs'] = ['validator.js','cropper.min.js','module/profile.js','language/'.$this->_data['language'].'.js'];
         		$this->my_layout->view("admin/user/profile", $this->_data);
     		} else {
     			$notify = array(
@@ -434,21 +434,31 @@ class User extends MY_Controller {
 
     public function ajaxChangeAvatar($id)
     {
-        $myUser = $this->muser->getData("",array('id' => $id));
+    	$rs = 0;
+        $myUser = $this->muser->getData("id,user_username,user_avatar,user_folder",array('id' => $id));
         $dataURL = $this->input->post('dataURL');
         if ($dataURL != null) {
-            if ($myUser['user_avatar'] != '') {
-                $this->muser->delimage($myUser['user_folder'],$myUser['user_avatar']);
-            }
             $dataURL = str_replace('data:image/png;base64,', '', $dataURL);
             $dataURL = str_replace(' ', '+', $dataURL);
             $fileData = base64_decode($dataURL);
             $avatarName = $myUser['user_username'].time().".png";
             $fileName = realpath(APPPATH . "../media/user/".$myUser['user_folder'])."/".$avatarName;
-            file_put_contents($fileName, $fileData);
-            if ($this->muser->edit($id,array('user_avatar' => $avatarName))) {
-                echo "ok";
+            $transFile = file_put_contents($fileName, $fileData);
+            if ($transFile != false) {
+            	$this->muser->do_resize($fileName,realpath(APPPATH . "../media/user/".$myUser['user_folder']));
+            	if ($myUser['user_avatar'] != '') {
+	                $this->muser->delimage($myUser['user_folder'],$myUser['user_avatar']);
+	            }
+            	if ($this->muser->edit($id,array('user_avatar' => $avatarName))) {
+            		if ($id == $this->_data['user_active']['active_user_id']) {
+            			$this->_data['user_active']['active_user_avatar'] = base_url().'media/user/'.$myUser['user_folder'].'/thumb_'.$avatarName;
+	            		$this->session->unset_userdata('userActive');
+	            		$this->session->set_userdata('userActive', $this->_data['user_active']);
+            		}
+	                $rs = 1;
+	            }
             }
         }
+        echo $rs;
     } 
 }

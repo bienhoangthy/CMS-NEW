@@ -113,7 +113,28 @@ class muser extends MY_Model
         else
         {
             $data = $this->upload->data();
+            $this->do_resize($folder.$data['file_name'],$folder);
             return $data;
+        }
+    }
+
+    public function do_resize($source_path,$target_path)
+    {
+        if ($source_path != '' && $target_path != '') {
+            $config_resize = array(
+                'image_library' => 'gd2',
+                'source_image' => $source_path,
+                'new_image' => $target_path,
+                'maintain_ratio' => TRUE,
+                'create_thumb' => TRUE,
+                'width' => 150,
+                'height' => 150
+            );
+            $this->load->library('image_lib', $config_resize);
+            if (!$this->image_lib->resize()) {
+                echo $this->image_lib->display_errors();
+            }
+            $this->image_lib->clear();
         }
     }
 
@@ -126,8 +147,12 @@ class muser extends MY_Model
     public function delimage($folder_name,$image_name)
     {
         $link_image = $this->_file_path.'/'.$folder_name.'/'.$image_name;
+        $link_image_thumb = $this->_file_path.'/'.$folder_name.'/thumb_'.$image_name;
         if (file_exists($link_image)) {
             unlink($link_image);
+        }
+        if (file_exists($link_image_thumb)) {
+            unlink($link_image_thumb);
         }
     }
 }

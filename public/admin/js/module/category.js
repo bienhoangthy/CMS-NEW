@@ -12,13 +12,6 @@ window.onload = function () {
           dataY.value = Math.round(e.detail.y);
           dataHeight.value = Math.round(e.detail.height);
           dataWidth.value = Math.round(e.detail.width);
-          // console.log(e.detail.x);
-          // console.log(e.detail.y);
-          // console.log(e.detail.width);
-          // console.log(e.detail.height);
-          // console.log(e.detail.rotate);
-          // console.log(e.detail.scaleX);
-          // console.log(e.detail.scaleY);
         },
       };
   var cropper = new Cropper(image, options);
@@ -30,8 +23,6 @@ window.onload = function () {
   if (URL) {
     inputImage.onchange = function () {
       var files = this.files;
-      //var file;
-
       if (cropper && files && files.length) {
         file = files[0];
 
@@ -48,5 +39,23 @@ window.onload = function () {
     inputImage.disabled = true;
     inputImage.parentNode.className += ' disabled';
   }
+
+  document.getElementById('save-image').addEventListener('click', function(){
+    var imageData = cropper.getCroppedCanvas();
+    var dataURL = imageData.toDataURL();
+    var form = document.getElementById('formCategory');
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.id = 'file-image';
+    input.name = 'file';
+    input.value = dataURL;
+    form.appendChild(input);
+  });
+
+  document.getElementById('destroy-image').addEventListener('click', function(){
+    cropper.destroy();
+    var input = document.getElementById('file-image');
+    input.value = null;
+  });
 
 };

@@ -32,6 +32,7 @@ $lang['wrongid'] = 'ID không đúng';
 $lang['requiredfields'] = 'Các trường bắt buộc';
 $lang['save'] = 'Lưu';
 $lang['reset'] = 'Nhập lại';
+$lang['cancel'] = 'Hủy';
 $lang['choose'] = 'Chọn';
 $lang['active'] = 'Hoạt động';
 $lang['inactive'] = 'Không hoạt động';

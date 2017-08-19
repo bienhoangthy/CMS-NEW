@@ -43,34 +43,52 @@ window.onload = function () {
   }
 
   document.getElementById('send-server').addEventListener('click', function(){
+    //var token_name = document.getElementById('token').getAttribute('name');
     var token = document.getElementById('token').value;
   	var id = document.getElementById('id-user').value;
     var imageData = cropper.getCroppedCanvas();
     var dataURL = imageData.toDataURL();
-    //console.log(dataURL);
-    //cropper.getCroppedCanvas().toBlob(function (blob) {
-      //var formData = new FormData();
-      //formData.append('csrf_admin_thy', token);
-      //formData.append('avatar-crop', blob);
-      var url = configs.admin_site+'user/ajaxChangeAvatar/'+id;
-      $.ajax({
-          type: 'post',
-          data: {'csrf_admin_thy':token,'dataURL':dataURL},
-          url: url,
-          success: function(rs) {
-              alert(rs);
+    var url = configs.admin_site+'user/ajaxChangeAvatar/'+id;
+    $.ajax({
+        type: 'post',
+        data: {'csrf_admin_thy':token,'dataURL':dataURL},
+        url: url,
+        success: function(rs) {
+          if (rs == 1) {
+            swal({
+              title: complete,
+              text: done+update+avatar+success,
+              type: "success",
+              confirmButtonColor: "#5cb85c",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function(isConfirm){
+              if (isConfirm) {
+                location.reload();
+              } else {
+                location.reload();
+              }
+            });
+          } else {
+            swal({
+              title: notcomplete,
+              text: retry,
+              type: "warning",
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function(isConfirm){
+              if (isConfirm) {
+                location.reload();
+              } else {
+                location.reload();
+              }
+            });
           }
-      });
-      // $.ajax(url, {
-      //   method: "POST",
-      //   data: {'csrf_admin_thy':token,formData},
-      //   success: function(rs) {
-      //     alert(rs);
-      //   },
-      //   error: function() {
-      //     console.log('Upload error');
-      //   }
-      // });
+        }
+    });
   });
 
 };
