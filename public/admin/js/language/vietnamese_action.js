@@ -1,0 +1,9 @@
+var title = "Cập nhật nhanh";
+var inputname = "Nhập tên bạn muốn đổi";
+var inputvalue = "Nhập giá trị mới";
+var errorinput = "Bạn phải nhập tên quyền muốn đổi!";
+var errorinputvalue = "Bạn phải nhập giá trị mới!";
+var success = "Thành công!";
+var edited = "Đã cập nhật: ";
+var error = "Lỗi!";
+var notedit = "Không thể cập nhật!";

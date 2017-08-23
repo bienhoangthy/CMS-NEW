@@ -14,20 +14,18 @@ class Config extends MY_Controller {
     	$this->mpermission->checkPermission("config","index",$this->_data['user_active']['active_user_group']);
     	$this->load->helper('text');
         $this->_data['title'] = lang('list');
-    	$this->_data['flanguage'] = isset($_GET['flanguage']) ? $_GET['flanguage'] : $this->_data['language'];
+    	$this->_data['flanguage'] = $_GET['flanguage'] ?? $this->_data['language'];
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['flanguage']);
         $this->_data['list'] = $this->mconfig->getConfig($this->_data['flanguage']['lang_code']);
+        $this->_data['extraJs'] = ['module/config.js','language/'.$this->_data['language'].'_action.js'];
         $this->my_layout->view("admin/config/index", $this->_data);
     }
 
     public function add()
     {
     	$this->mpermission->checkPermission("config","add",$this->_data['user_active']['active_user_group']);
-    	$this->_data['title'] = lang('configadd');
-    	$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+    	$this->_data['langPost'] = $_GET['flanguage'] ?? $this->_data['language'];
     	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
-    	$this->_data['token_name'] = $this->security->get_csrf_token_name();
-        $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['formData'] = array(
         	'config_code' => '', 
         	'config_status' => 1
@@ -37,7 +35,7 @@ class Config extends MY_Controller {
         	'config_value' => '' 
         );
         if (isset($_POST['config_name'])) {
-        	$lang = $this->input->post('config_lang') != null ? $this->input->post('config_lang') : $this->_data['language'];
+        	$lang = $this->input->post('config_lang') ?? $this->_data['language'];
         	$this->_data['formData'] = array(
 	        	'config_code' => $this->input->post('config_code'), 
 	        	'config_createdate' => date("Y-m-d"), 
@@ -95,6 +93,9 @@ class Config extends MY_Controller {
             	}
             }
         }
+        $this->_data['title'] = lang('configadd');
+        $this->_data['token_name'] = $this->security->get_csrf_token_name();
+        $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['action'] = 1;//Add
         $this->_data['config_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
         $this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
@@ -108,7 +109,7 @@ class Config extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myConfig = $this->mconfig->getData("",array('id' => $id));
     		if ($myConfig && $myConfig['id'] > 0) {
-    			$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+    			$this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
 		    	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
 		        $this->_data['formData'] = array(
 		        	'config_code' => $myConfig['config_code'], 
@@ -127,7 +128,7 @@ class Config extends MY_Controller {
 			        );
 		        }
 		        if (isset($_POST['config_name'])) {
-		        	$lang = $this->input->post('config_lang') != null ? $this->input->post('config_lang') : $this->_data['language'];
+		        	$lang = $this->input->post('config_lang') ?? $this->_data['language'];
 		        	$this->_data['formData'] = array(
 			        	'config_code' => $myConfig['config_code'],
 			        	'config_status' => $this->input->post('config_status'),
@@ -295,5 +296,19 @@ class Config extends MY_Controller {
         $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['extraJs'] = ['module/config.js'];
         $this->my_layout->view("admin/config/logo_favicon", $this->_data);
+    }
+
+    public function ajaxQuickedit()
+    {
+        $rs = "no";
+        if ($this->mpermission->permission("config_ajaxQuickedit",$this->_data['user_active']['active_user_group']) == true) {
+            $id = $this->input->get('id');
+            $value = $this->input->get('value');
+            if ($id != null && $value != null) {
+                if ($this->mconfig_translation->edit($id,array('config_value' => $value))) {
+                    echo "ok";
+                }
+            }
+        }
     }
 }

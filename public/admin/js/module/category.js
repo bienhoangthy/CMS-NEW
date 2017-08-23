@@ -65,18 +65,32 @@ window.onload = function () {
 
 function deleteImg(id)
 {
-  var url = configs.admin_site+configs .controller+'/deleteImage';
-  $.ajax({
-    url: url,
-    data: {"id":id},
-    cache: false,
-    success: function(rs) {
-      if (rs == 1) {
-        swal(complete, done+delimage+success,"success");
-      } else {
-        swal(notcomplete, retry,"error");
+  swal({
+    title: confirm,
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes!",
+    closeOnConfirm: false
+  },
+  function(){
+    var url = configs.admin_site+configs .controller+'/deleteImage';
+    $.ajax({
+      url: url,
+      data: {"id":id},
+      cache: false,
+      success: function(rs) {
+        if (rs == 1) {
+          swal(complete, done+delimage+success,"success");
+          var currentImg = document.getElementById('current-image');
+          var btnDelimg = document.getElementById('button-delimg');
+          if (currentImg) {currentImg.remove();}
+          if (btnDelimg) {btnDelimg.remove();}
+        } else {
+          swal(notcomplete, retry,"error");
+        }
       }
-    }
+    });
   });
 }
 

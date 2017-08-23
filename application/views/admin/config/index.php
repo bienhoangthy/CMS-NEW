@@ -32,7 +32,6 @@
 														<li><a href="<?= current_url().'?flanguage='.$value['lang_code']?>"><?= $value['lang_name']?></a></li>
 													<?php endforeach ?>
 												<?php endif ?>
-												<li><a href="<?= current_url().'?flanguage=showall'?>"><?= lang('showall')?></a></li>
 											</ul>
 										</div>
 									</th>
@@ -52,11 +51,11 @@
 											<td><?= $value['config_name']?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="javascript:void(0)" onclick="quickedit('<?= $value['id_lang']?>','<?= $value['config_name']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
-											<td><p data-toggle="tooltip" data-placement="bottom" title="<?= $value['config_value']?>"><?= word_limiter($value['config_value'], 10);?></p></td>
+											<td id="value<?= $value['id_lang']?>"><p data-toggle="tooltip" data-placement="bottom" title="<?= $value['config_value']?>"><?= word_limiter($value['config_value'], 10);?></p></td>
 											<td class="text-center"><code><?= $value['config_code']?></code></td>
 											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span></td>
 											<td class="text-center">

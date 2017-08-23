@@ -11,12 +11,13 @@ class mconfig extends MY_Model
 
     public function getConfig($lang='show_all')
     {
-        if ($lang == 'show_all') {
-            //$sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c right join '.$this->table_translation.' ct on c.id = ct.config_id order by c.id asc';
-            $sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c left join '.$this->table_translation.' ct on c.id = ct.config_id order by c.id asc';
-        } else {
-            $sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where ct.language_code = "'.$lang.'" order by c.id asc';
-        }
+        // if ($lang == 'show_all') {
+        //     //$sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c right join '.$this->table_translation.' ct on c.id = ct.config_id order by c.id asc';
+        //     $sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c left join '.$this->table_translation.' ct on c.id = ct.config_id order by c.id asc';
+        // } else {
+            
+        // }
+        $sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.id as id_lang,ct.config_name,ct.config_value from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where ct.language_code = "'.$lang.'" order by c.id asc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;

@@ -1,0 +1,9 @@
+var title = "Quick update";
+var inputname = "Enter the name you want to change";
+var inputvalue = "Enter the new value";
+var errorinput = "You must enter the name you want to change!";
+var errorinputvalue = "You must enter the new value!";
+var success = "Success!";
+var edited = "Edited: ";
+var error = "Error!";
+var notedit = "Can not update!";

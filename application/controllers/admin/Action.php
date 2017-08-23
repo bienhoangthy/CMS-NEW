@@ -65,7 +65,7 @@ class Action extends MY_Controller {
         }
         $this->_data['list'] = $this->maction->getQuery("", $and, "action_value asc","");
         $this->_data['record'] = $this->maction->countQuery($and);
-        $this->_data['extraJs'] = ['validator.js','module/action.js'];
+        $this->_data['extraJs'] = ['validator.js','module/action.js','language/'.$this->_data['language'].'_action.js'];
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
     	$this->my_layout->view("admin/action/index", $this->_data);

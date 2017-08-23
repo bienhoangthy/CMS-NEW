@@ -1,0 +1,3 @@
+<?php 
+require APPPATH . '/language/english/master.php';
+ ?>

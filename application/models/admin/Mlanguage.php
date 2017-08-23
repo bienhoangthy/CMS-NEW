@@ -15,7 +15,7 @@ class mlanguage extends MY_Model
         } else {
             $language = $this->getData("lang_name,lang_code,lang_flag",array('lang_code' => $item,'lang_staus' => 1));
             if (empty($language)) {
-                $language = array('lang_name' => lang('showall'), 'lang_code' => 'show_all', 'lang_flag' => '');
+                $language = array('lang_name' => 'Tiếng Việt', 'lang_code' => 'vietnamese', 'lang_flag' => 'flag_vietnamese.png');
             }
             return $language;
         }

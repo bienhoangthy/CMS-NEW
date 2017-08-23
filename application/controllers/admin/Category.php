@@ -12,18 +12,17 @@ class Category extends MY_Controller {
 	public function index()
 	{
 		$this->mpermission->checkPermission("category","index",$this->_data['user_active']['active_user_group']);
-        $this->_data['flanguage'] = isset($_GET['flanguage']) ? $_GET['flanguage'] : $this->_data['language'];
+        $this->_data['flanguage'] = $_GET['flanguage'] ?? $this->_data['language'];
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['flanguage']);
     	$this->_data['title'] = lang('list');
 		$this->_data['list'] = $this->mcategory->getCategory($this->_data['flanguage']['lang_code']);
-		//var_dump($this->_data['list']);die();
 		$this->my_layout->view("admin/category/index", $this->_data);
 	}
 
 	public function add()
 	{
 		$this->mpermission->checkPermission("category","add",$this->_data['user_active']['active_user_group']);
-		$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+		$this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
     	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
         $this->_data['formData'] = array( 
         	'category_parent' => 0, 
@@ -44,7 +43,7 @@ class Category extends MY_Controller {
         );
         if (isset($_POST['category_name'])) {
         	$this->load->helper('alias');
-        	$lang = $this->input->post('category_lang') != null ? $this->input->post('category_lang') : $this->_data['language'];
+        	$lang = $this->input->post('category_lang') ?? $this->_data['language'];
         	$this->_data['formData'] = array( 
 	        	'category_parent' => $this->input->post('category_parent'),
 	        	'category_component' => $this->input->post('category_component'),
@@ -137,7 +136,7 @@ class Category extends MY_Controller {
 		if (is_numeric($id) && $id > 0) {
 			$myCategory = $this->mcategory->getData("",array('id' => $id));
 			if ($myCategory && $myCategory['id'] > 0) {
-				$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+				$this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
 				$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
 				$this->_data['formData'] = array( 
 		        	'category_parent' => $myCategory['category_parent'], 
@@ -172,7 +171,7 @@ class Category extends MY_Controller {
 		        }
 		        if (isset($_POST['category_name'])) {
 		        	$this->load->helper('alias');
-		        	$lang = $this->input->post('category_lang') != null ? $this->input->post('category_lang') : $this->_data['language'];
+		        	$lang = $this->input->post('category_lang') ?? $this->_data['language'];
 		        	$this->_data['formData'] = array( 
 			        	'category_parent' => $this->input->post('category_parent'),
 			        	'category_component' => $this->input->post('category_component'),
@@ -300,18 +299,34 @@ class Category extends MY_Controller {
 
 	public function delete($id)
 	{
+		$this->mpermission->checkPermission("category","delete",$this->_data['user_active']['active_user_group']);
 		if (is_numeric($id) && $id > 1) {
-				$myCategory = $this->mcategory->getData("",array('id' => $id));
-				if ($myCategory && $myCategory['id'] > 1) {
-					# code...
-				} else {
-					# code...
-				}
-				
+			$myCategory = $this->mcategory->getData("",array('id' => $id));
+			if ($myCategory && $myCategory['id'] > 1) {
+				$this->mcategory->delete($id);
+				$this->mcategory_translation->deleteAnd(array('category_id' => $id));
+				$this->mcategory->delimage($myCategory['category_picture']);
+				$this->mcategory->editAnd("category_parent = ".$id, array('category_parent' => 1));
+				$title = lang('success');
+                $text = lang('category').lang('deleted');
+                $type = 'success';
 			} else {
-				# code...
+				$title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('category');
+                $type = 'error';
 			}
-				
+		} else {
+			$title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+		}
+		$notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		$this->session->set_userdata('notify', $notify);
+        redirect(my_library::admin_site()."category");
 	}
 
 	public function deleteImage()
@@ -329,5 +344,6 @@ class Category extends MY_Controller {
 				}
 			}
 		}
+		echo $rs;
 	}
 }

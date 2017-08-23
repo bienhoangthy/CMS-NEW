@@ -183,7 +183,7 @@
                 <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
                   <?= lang('editphoto')?>
                 </button>
-                <button type="button" class="btn btn-danger btn-xs" onclick="deleteImg(<?= $id?>)">
+                <button type="button" id="button-delimg" class="btn btn-danger btn-xs" onclick="deleteImg(<?= $id?>)">
                   <?= lang('deletephoto')?>
                 </button><br>
                 <img src="<?= my_library::base_file().'category/'.$formData['category_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: 180px; margin-bottom: 10px;position: absolute;">

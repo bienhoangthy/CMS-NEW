@@ -12,3 +12,4 @@ var avatar = "avatar";
 var update = "update ";
 var retry = "Please retry!";
 var delimage = "delete photo";
+var confirm = "Are you sure?";
