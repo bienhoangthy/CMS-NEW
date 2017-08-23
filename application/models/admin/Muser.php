@@ -147,7 +147,7 @@ class muser extends MY_Model
     public function delimage($folder_name,$image_name)
     {
         $link_image = $this->_file_path.'/'.$folder_name.'/'.$image_name;
-        $link_image_thumb = $this->_file_path.'/'.$folder_name.'/thumb_'.$image_name;
+        $link_image_thumb = $this->_file_path.'/'.$folder_name.'/thumb-'.$image_name;
         if (file_exists($link_image)) {
             unlink($link_image);
         }

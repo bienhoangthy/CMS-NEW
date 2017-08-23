@@ -11,3 +11,4 @@ var notcomplete = "Không hoàn thành";
 var avatar = "ảnh đại diện";
 var update = "cập nhật ";
 var retry = "Vui lòng thử lại!";
+var delimage = "xóa hình";

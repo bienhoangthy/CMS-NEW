@@ -19,50 +19,193 @@
         </button>
         <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
       </div>
-      <div class="col-md-8 col-sm-8 col-xs-12">
-        <form class="form-horizontal form-label-left" id="formCategory" method="post" enctype="multipart/form-data" novalidate>
+      <form class="form-horizontal form-label-left" id="formCategory" method="post" enctype="multipart/form-data" novalidate>
+        <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="x_panel">
-            <div class="x_title">
-              <h2>Thêm danh mục</h2>
-              <div class="clearfix"></div>
-            </div>
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category_component">Component<span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="category_name"><?= lang('categoryname')?><span class="required">*</span>
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12 item">
+                  <input id="category_name" class="form-control col-md-7 col-xs-12" name="category_name" required="required" type="text" value="<?= $formDataLang['category_name']?>">
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category_alias">Alias<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 item">
-                  <input id="category_component" class="form-control col-md-7 col-xs-12" name="category_component" required="required" type="text" value="<?= $formData['category_component']?>">
+                  <input id="category_alias" class="form-control col-md-7 col-xs-12" name="category_alias" required="required" type="text" value="<?= $formDataLang['category_alias']?>">
+                </div>
+              </div> -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="category_detail"><?= lang('detail')?>
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <textarea name="category_detail"><?= $formDataLang['category_detail']?></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="category_seo_title">SEO Title
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <input id="category_seo_title" class="form-control col-md-7 col-xs-12" name="category_seo_title" type="text" value="<?= $formDataLang['category_seo_title']?>">
+                    <p class="text-info well well-sm no-shadow">
+                      <i class="fa fa-info-circle"></i> <?= lang('seotitle')?>
+                    </p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="category_seo_description">SEO Description
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <input id="category_seo_description" class="form-control col-md-7 col-xs-12" name="category_seo_description" type="text" value="<?= $formDataLang['category_seo_description']?>">
+                  <p class="text-info well well-sm no-shadow">
+                    <i class="fa fa-info-circle"></i> <?= lang('seodescription')?>
+                  </p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="category_seo_keyword">SEO Keyword
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <input id="category_seo_keyword" class="form-control col-md-7 col-xs-12" name="category_seo_keyword" type="text" value="<?= $formDataLang['category_seo_keyword']?>">
+                  <p class="text-info well well-sm no-shadow">
+                    <i class="fa fa-info-circle"></i> <?= lang('seokeyword')?>
+                  </p>
                 </div>
               </div>
               <div class="ln_solid"></div>
               <div class="text-center">
                 *:<code><?= lang('requiredfields')?></code>
               </div>
-              <div class="form-group pull-right">
-                <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-                <button type="submit" class="btn btn-success"><?= lang('save')?></button>
-                <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>Ảnh đại diện</h2>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <button type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">
-              Thêm ảnh đại diện
-            </button>
-            <div class="docs-preview clearfix">
-              <div class="img-preview preview-lg" style="width: 160px;height: 90px;overflow: hidden;"></div>
             </div>
           </div>
         </div>
-      </div> 
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_parent"><?= lang('parent')?><span class="required">*</span>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12 item">
+                  <select class="form-control" name="category_parent">
+                    <?= $parent?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_component">Component<span class="required">*</span>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12 item">
+                  <select class="form-control" name="category_component">
+                    <?= $component?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_icon">Icon
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <input id="category_icon" class="form-control" name="category_icon" type="text" value="<?= $formData['category_icon']?>" placeholder="fa-home">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_view_type">type<span class="required">*</span>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12 item">
+                  <select class="form-control" name="category_view_type">
+                    <?= $typeview?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_orderby"><?= lang('orderby')?>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <input id="category_orderby" class="form-control" name="category_orderby" type="number" value="<?= $formData['category_orderby']?>" placeholder="fa-home">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_status"><?= lang('status')?><span class="required">*</span>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12" style="margin-top: 8px;">
+                  <input type="radio" class="flat" name="category_status" id="category_status1" value="1" <?= $formData['category_status'] == 1 ? 'checked="checked"' : '';?>/> <?= lang('active')?><br>
+                  <input type="radio" class="flat" name="category_status" id="category_status2" value="2" <?= $formData['category_status'] == 2 ? 'checked="checked"' : '';?>/> <?= lang('inactive')?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+            <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_lang"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" style="height: 20px; width: auto;">
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <select class="form-control" name="category_lang" onchange="alertChange('<?= $langPost['lang_code']?>');">
+                    <?= $category_lang?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_lang"><?= lang('translations')?>:
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 8px;">
+                  <?php if (!empty($listLanguage)): ?>
+                    <?php foreach ($listLanguage as $key => $value): ?>
+                      <?php if ($value['lang_code'] != $langPost['lang_code']): ?>
+                        <?php 
+                          if (isset($id) && $this->mcategory_translation->checkEditLang($id,$value['lang_code']) == true) {
+                            $icon = 'edit';$title = lang('edit').' '.$value['lang_name'];
+                          } else {
+                            $icon = 'plus-square-o';$title = lang('add').' '.$value['lang_name'];
+                          }
+                          
+                         ?>
+                        <a href="<?= current_url().'?lang='.$value['lang_code']?>" data-toggle="tooltip" data-placement="right" title="<?= $title?>"><i class="fa fa-<?= $icon?>"></i> <?= $value['lang_name']?></a><img src="<?= my_library::base_file().'language/flag_'.$value['lang_code'].'.png'?>" style="height: 15px; width: auto; margin-left: 5px;"><br>
+                      <?php endif ?>
+                    <?php endforeach ?>
+                  <?php endif ?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2><?= lang('typicalphoto')?></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <?php if ($formData['category_picture'] != ''): ?>
+                <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
+                  <?= lang('editphoto')?>
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" onclick="deleteImg(<?= $id?>)">
+                  <?= lang('deletephoto')?>
+                </button><br>
+                <img src="<?= my_library::base_file().'category/'.$formData['category_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: 180px; margin-bottom: 10px;position: absolute;">
+              <?php else: ?>
+                <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
+                  <?= lang('addphoto')?>
+                </button>
+              <?php endif ?>
+              <div class="docs-preview clearfix">
+                <div class="img-preview preview-lg" style="width: 320px;height: 180px;overflow: hidden;"></div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group pull-right">
+            <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+            <button type="submit" class="btn btn-success"><?= lang('save')?></button>
+            <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+          </div>
+        </div> 
+      </form>
     </div>
   </div>
 </div>
@@ -120,7 +263,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="save-image" class="btn btn-primary" data-dismiss="modal"><?= lang('save')?></button>
+        <button type="button" id="save-image" class="btn btn-primary" data-dismiss="modal"><?= lang('drop')?></button>
         <button type="button" id="destroy-image" class="btn btn-default" data-dismiss="modal"><?= lang('cancel')?></button>
       </div>
     </div>

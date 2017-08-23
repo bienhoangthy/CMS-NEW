@@ -108,11 +108,8 @@ class Config extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myConfig = $this->mconfig->getData("",array('id' => $id));
     		if ($myConfig && $myConfig['id'] > 0) {
-    			$this->_data['title'] = lang('editconfig')." #".$id;
     			$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
 		    	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
-		    	$this->_data['token_name'] = $this->security->get_csrf_token_name();
-		        $this->_data['token_value'] = $this->security->get_csrf_hash();
 		        $this->_data['formData'] = array(
 		        	'config_code' => $myConfig['config_code'], 
 		        	'config_status' => $myConfig['config_status']
@@ -197,6 +194,9 @@ class Config extends MY_Controller {
 		            }
 		        }
                 $this->_data['id'] = $id;
+                $this->_data['title'] = lang('editconfig')." #".$id;
+                $this->_data['token_name'] = $this->security->get_csrf_token_name();
+                $this->_data['token_value'] = $this->security->get_csrf_hash();
 		        $this->_data['config_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
 		        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
 		        $this->_data['extraJs'] = ['validator.js','icheck.min.js'];

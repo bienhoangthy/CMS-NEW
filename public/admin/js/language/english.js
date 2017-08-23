@@ -11,3 +11,4 @@ var notcomplete = "Not Complete";
 var avatar = "avatar";
 var update = "update ";
 var retry = "Please retry!";
+var delimage = "delete photo";

@@ -117,7 +117,7 @@ class CI_Image_lib {
 	 *
 	 * @var string
 	 */
-	public $thumb_marker		= 'thumb_';
+	public $thumb_marker		= 'thumb-';
 
 	/**
 	 * Whether to maintain aspect ratio when resizing or use hard values

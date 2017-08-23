@@ -102,11 +102,8 @@ class Module extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myModule = $this->mmodule->getData("",array('id' => $id));
     		if ($myModule && $myModule['id'] > 0) {
-    			$this->_data['title'] = lang('editmodule')." #".$id;
     			$langGet = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
     			$this->_data['langPost'] = $this->mlanguage->getLanguage($langGet);
-    			$this->_data['token_name'] = $this->security->get_csrf_token_name();
-                $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['formData'] = array(
 		        	'module_parent' => $myModule['module_parent'], 
 		        	'module_component' => $myModule['module_component'], 
@@ -191,6 +188,9 @@ class Module extends MY_Controller {
 		            }  
 		        }
                 $this->_data['id'] = $id;
+                $this->_data['title'] = lang('editmodule')." #".$id;
+                $this->_data['token_name'] = $this->security->get_csrf_token_name();
+                $this->_data['token_value'] = $this->security->get_csrf_hash();
 		        $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['module_component']);
 		        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
 		        $this->_data['extraJs'] = ['validator.js','icheck.min.js'];
