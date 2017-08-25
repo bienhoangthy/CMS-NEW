@@ -45,7 +45,7 @@ window.onload = function () {
     if (cropBefore) {cropBefore.remove();}
     var imageData = cropper.getCroppedCanvas();
     var dataURL = imageData.toDataURL('image/jpeg');
-    var form = document.getElementById('formCategory');
+    var form = document.getElementById('formPage');
     var input = document.createElement('input');
     input.type = 'hidden';
     input.id = 'file-image';

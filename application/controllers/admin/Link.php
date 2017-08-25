@@ -96,7 +96,6 @@ class Link extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myLink = $this->mlink->getData("",array('id' => $id));
     		if ($myLink && $myLink['id'] > 0) {
-    			//
     			$this->_data['langPost'] = $_GET['flanguage'] ?? $this->_data['language'];
 		    	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
 		        $this->_data['formData'] = array(
@@ -193,7 +192,6 @@ class Link extends MY_Controller {
 		        $this->_data['token_name'] = $this->security->get_csrf_token_name();
 		        $this->_data['token_value'] = $this->security->get_csrf_hash();
 		    	$this->my_layout->view("admin/link/post", $this->_data);
-    			//
     		} else {
     			$notify = array(
                     'title' => lang('notfound'), 

@@ -11,7 +11,7 @@ class Module extends MY_Controller {
     public function index()
     {
         $this->mpermission->checkPermission("module","index",$this->_data['user_active']['active_user_group']);
-        $this->_data['flanguage'] = isset($_GET['flanguage']) ? $_GET['flanguage'] : $this->_data['language'];
+        $this->_data['flanguage'] = $_GET['flanguage'] ?? $this->_data['language'];
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['flanguage']);
     	$this->_data['title'] = lang('list');
         $this->_data['list'] = $this->mmodule->getModule($this->_data['flanguage']['lang_code']);
@@ -21,7 +21,7 @@ class Module extends MY_Controller {
     public function add()
     {
         $this->mpermission->checkPermission("module","add",$this->_data['user_active']['active_user_group']);
-    	$this->_data['langPost'] = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+    	$this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
     	$this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
         $this->_data['formData'] = array( 
         	'module_parent' => 0, 
@@ -102,7 +102,7 @@ class Module extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myModule = $this->mmodule->getData("",array('id' => $id));
     		if ($myModule && $myModule['id'] > 0) {
-    			$langGet = isset($_GET['lang']) ? $_GET['lang'] : $this->_data['language'];
+    			$langGet = $_GET['lang'] ?? $this->_data['language'];
     			$this->_data['langPost'] = $this->mlanguage->getLanguage($langGet);
                 $this->_data['formData'] = array(
 		        	'module_parent' => $myModule['module_parent'], 
