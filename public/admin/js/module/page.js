@@ -15,7 +15,7 @@ window.onload = function () {
         },
       };
   var cropper = new Cropper(image, options);
-
+  var saveImg = document.getElementById('save-image');
   // Import image
   var inputImage = document.getElementById('inputImage');
   var URL = window.URL || window.webkitURL;
@@ -25,11 +25,11 @@ window.onload = function () {
       var files = this.files;
       if (cropper && files && files.length) {
         file = files[0];
-
         if (/^image\/\w+/.test(file.type)) {
           blobURL = URL.createObjectURL(file);
           cropper.reset().replace(blobURL);
           inputImage.value = null;
+          saveImg.disabled = false;
         } else {
           window.alert('Please choose an image file.');
         }
@@ -40,7 +40,7 @@ window.onload = function () {
     inputImage.parentNode.className += ' disabled';
   }
 
-  document.getElementById('save-image').addEventListener('click', function(){
+  saveImg.addEventListener('click', function(){
     var cropBefore = document.getElementById('file-image');
     if (cropBefore) {cropBefore.remove();}
     var imageData = cropper.getCroppedCanvas();
@@ -58,6 +58,7 @@ window.onload = function () {
 
   document.getElementById('destroy-image').addEventListener('click', function(){
     cropper.destroy();
+    saveImg.disabled = true;
     var input = document.getElementById('file-image');
     if (input) {input.value = null;}
     var currentImg = document.getElementById('current-image');
@@ -104,9 +105,12 @@ tinymce.init({
     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
     'searchreplace wordcount visualblocks visualchars code fullscreen',
     'insertdatetime media nonbreaking save table contextmenu directionality',
-    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help'
+    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help responsivefilemanager'
   ],
   toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-  toolbar2: 'print preview media | forecolor backcolor emoticons | codesample help',
-  image_advtab: true
+  toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',
+  image_advtab: true,
+  external_filemanager_path:"/public/admin/js/filemanager/",
+  filemanager_title:"Responsive Filemanager" ,
+  external_plugins: { "filemanager" : "/public/admin/js/filemanager/plugin.min.js"}
 });

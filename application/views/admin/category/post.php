@@ -263,7 +263,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="save-image" class="btn btn-primary" data-dismiss="modal"><?= lang('drop')?></button>
+        <button type="button" id="save-image" class="btn btn-primary" disabled="disabled" data-dismiss="modal"><?= lang('drop')?></button>
         <button type="button" id="destroy-image" class="btn btn-default" data-dismiss="modal"><?= lang('cancel')?></button>
       </div>
     </div>
