@@ -35,7 +35,7 @@
 											</ul>
 										</div>
 									</th>
-									<th class="text-center" width="15%"><?= lang('createdate')?></th>
+									<th class="text-center" width="15%"><?= lang('updatedate')?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -67,7 +67,7 @@
 													<?php endforeach ?>
 												<?php endif ?>
 											</td>
-											<td class="text-center"><?= $value['page_createdate']?><br><?= lang('by')?> <cite><?= !empty($user) ? $user['user_fullname'] : ''?></cite></td>
+											<td class="text-center"><?= $value['page_updatedate']?><br><?= lang('by')?> <cite><?= !empty($user) ? $user['user_fullname'] : ''?></cite></td>
 										</tr>
 									<?php endforeach ?>
 								<?php endif ?>

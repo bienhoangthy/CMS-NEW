@@ -42,11 +42,11 @@
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $key => $value): ?>
 										<?php 
-											$linkEdit = my_library::admin_site().'config/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
-											$status = $this->mconfig->listStatusName($value['config_status']);
-											$listLanguage = $this->mconfig_translation->checkLanguage($value['id']);
-											$user = $this->muser->getData('user_fullname',array('id' => $value['config_user']));
-										 ?>
+										$linkEdit = my_library::admin_site().'config/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
+										$status = $this->mconfig->listStatusName($value['config_status']);
+										$listLanguage = $this->mconfig_translation->checkLanguage($value['id']);
+										$user = $this->muser->getData('user_fullname',array('id' => $value['config_user']));
+										?>
 										<tr class="showacction">
 											<td><?= $value['config_name']?>
 												<div style="height: 20px;">
@@ -71,6 +71,9 @@
 								<?php endif ?>
 							</tbody>
 						</table>
+						<?php if (isset($pagination)): ?>
+							<ul class="pagination pull-right"><?= $pagination?></ul>
+						<?php endif ?>
 					</div>
 				</div>
 			</div>

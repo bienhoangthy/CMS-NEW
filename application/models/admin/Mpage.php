@@ -11,7 +11,7 @@ class mpage extends MY_Model
 
     public function getPage($lang='vietnamese')
     {
-        $sql = 'select p.id,p.page_template,p.page_status,p.page_createdate,p.user,pt.id as page_id,pt.page_title,pt.page_alias from '.$this->table.' p inner join '.$this->table_translation.' pt on p.id = pt.page_id where pt.language_code = "'.$lang.'" order by p.page_orderby asc, p.id desc';
+        $sql = 'select p.id,p.page_template,p.page_status,p.page_updatedate,p.user,pt.id as page_id,pt.page_title,pt.page_alias from '.$this->table.' p inner join '.$this->table_translation.' pt on p.id = pt.page_id where pt.language_code = "'.$lang.'" order by p.page_orderby asc, p.id desc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;

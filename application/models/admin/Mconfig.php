@@ -9,7 +9,7 @@ class mconfig extends MY_Model
     protected $table = "cms_config";
     protected $table_translation = "cms_config_translation";
 
-    public function getConfig($lang='show_all')
+    public function getConfig($lang='vietnamese',$limit = '')
     {
         // if ($lang == 'show_all') {
         //     //$sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.config_name,ct.config_value from '.$this->table.' c right join '.$this->table_translation.' ct on c.id = ct.config_id order by c.id asc';
@@ -18,9 +18,20 @@ class mconfig extends MY_Model
             
         // }
         $sql = 'select c.id,c.config_code,c.config_status,c.config_user,ct.id as id_lang,ct.config_name,ct.config_value from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where ct.language_code = "'.$lang.'" order by c.id asc';
+        if ($limit != '') {
+            $sql .= ' limit '.$limit;
+        }
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;
+    }
+
+    public function countConfig($lang='vietnamese')
+    {
+        $sql = 'select count(*) as total from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where ct.language_code = "'.$lang.'" order by c.id asc';
+        $query = $this->db->query($sql);
+        $total = $query->row_array();
+        return $total['total'];
     }
 
     public function listStatusName($item = "")

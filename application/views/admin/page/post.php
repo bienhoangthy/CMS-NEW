@@ -31,8 +31,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_detail"><?= lang('detail')?> 
-                <button type="button" id="add-media"><span class="fa fa-camera"></span> Thêm media</button>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_detail"><?= lang('detail')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea name="page_detail"><?= $formDataLang['page_detail']?></textarea>

@@ -26,8 +26,18 @@ class Permission extends MY_Controller {
         if ($this->_data['formSearch']['fgroup'] > 0) {
             $andGroup .= " and id = ".$this->_data['formSearch']['fgroup'];
         }
-        $this->_data['listAction'] = $this->maction->getQuery("", $and, "action_value asc","");
+        //Paging
+        $this->load->library("My_paging");
+        $paging['per_page'] = 20;
+        $paging['num_links'] = 5;
+        $paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
+        $paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
+        $query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
+        $paging['base_url'] = my_library::admin_site() . 'permission/?' . $query_string . '&page=';
+        $limit = $paging['start'] . ',' . $paging['per_page'];
+        $this->_data['listAction'] = $this->maction->getQuery("", $and, "action_value asc",$limit);
         $this->_data['record'] = $this->maction->countQuery($and);
+        $this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
         $this->_data['listGroup'] = $this->mgroup->getQuery("id,group_name",$andGroup,"","");
         $this->_data['fgroup'] = $this->mgroup->dropdownlist($this->_data['formSearch']['fgroup']);
         $this->_data['extraCss'] = ['switchery.min.css'];

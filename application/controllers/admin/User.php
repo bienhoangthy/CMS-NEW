@@ -65,17 +65,15 @@ class User extends MY_Controller {
     	}
 		$paging['per_page'] = $this->_data['formData']['fperpage'];
 		$paging['num_links'] = 5;
-		$paging['page'] = $this->_data['page'] = isset($_GET['page']) && $_GET['page'] ? $_GET['page'] : 1;
+		$paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
 		$paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
 		$query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
 		$paging['base_url'] = my_library::admin_site() . 'user/?' . $query_string . '&page=';
-
 		$orderby = 'user_status asc,user_group asc';
 		$limit = $paging['start'] . ',' . $paging['per_page'];
 		$this->_data['list'] = $this->muser->getQuery($object = "", $and, $orderby, $limit);
 		$this->_data['record'] = $this->muser->countQuery($and);
 		$this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
-
 		$this->_data['fstatus'] = $this->muser->dropdownlistStatus($this->_data['formData']['fstatus']);
 		$this->_data['fgroup'] = $this->mgroup->dropdownlist($this->_data['formData']['fgroup']);
 		$this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];

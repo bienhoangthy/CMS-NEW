@@ -12,11 +12,23 @@ class Config extends MY_Controller {
     public function index()
     {
     	$this->mpermission->checkPermission("config","index",$this->_data['user_active']['active_user_group']);
+        $this->load->library("My_paging");
     	$this->load->helper('text');
         $this->_data['title'] = lang('list');
     	$this->_data['flanguage'] = $_GET['flanguage'] ?? $this->_data['language'];
+        $this->_data['page'] = $_GET['page'] ?? 1;
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['flanguage']);
-        $this->_data['list'] = $this->mconfig->getConfig($this->_data['flanguage']['lang_code']);
+        //Paging
+        $paging['per_page'] = 10;
+        $paging['num_links'] = 5;
+        $paging['page'] = $this->_data['page'];
+        $paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
+        $query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
+        $paging['base_url'] = my_library::admin_site() . 'config/?' . $query_string . '&page=';
+        $limit = $paging['start'] . ',' . $paging['per_page'];
+        $this->_data['list'] = $this->mconfig->getConfig($this->_data['flanguage']['lang_code'],$limit);
+        $record = $this->mconfig->countConfig($this->_data['flanguage']['lang_code']);
+        $this->_data["pagination"] = $this->my_paging->paging_donturl($record, $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
         $this->_data['extraJs'] = ['module/config.js','language/'.$this->_data['language'].'_action.js'];
         $this->my_layout->view("admin/config/index", $this->_data);
     }

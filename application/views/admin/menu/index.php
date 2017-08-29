@@ -17,7 +17,7 @@
 				<form class="form-horizontal form-label-left" method="post" novalidate>
 					<div class="x_panel">
 						<div class="x_title">
-							<h2><?= lang('addrole')?></h2>
+							<h2><?= lang('addmenu')?></h2>
 							<ul class="nav navbar-right panel_toolbox">
 								<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 								</li>
@@ -28,17 +28,17 @@
 						</div>
 						<div class="x_content">
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="action_name"><?= lang('rolename')?><span class="required">*</span>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu_name"><?= lang('menuname')?><span class="required">*</span>
 								</label>
 								<div class="col-md-6 col-sm-6 col-xs-12 item">
-									<input id="action_name" class="form-control col-md-7 col-xs-12" name="action_name" required="required" type="text" value="<?= $formData['action_name']?>" placeholder="<?= lang('listrole')?>">
+									<input id="menu_name" class="form-control col-md-7 col-xs-12" name="menu_name" required="required" type="text" value="<?= $formData['menu_name']?>">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="action_value"><?= lang('rolevalue')?><span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6 col-xs-12 item">
-									<input id="action_value" class="form-control col-md-7 col-xs-12" name="action_value" required="required" type="text" value="<?= $formData['action_value']?>" placeholder="action_index">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu_status"><?= lang('status')?></label>
+								<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 8px;">
+									<input type="radio" class="flat" name="menu_status" id="menu_status1" value="1" <?= $formData['menu_status'] == 1 ? 'checked="checked"' : '';?>/> <?= lang('active')?><br>
+									<input type="radio" class="flat" name="menu_status" id="menu_status2" value="2" <?= $formData['menu_status'] == 2 ? 'checked="checked"' : '';?>/> <?= lang('inactive')?>
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -57,51 +57,44 @@
 			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2><?= lang('listrole')?> <small><?= lang('all')?> (<?= $record?>)</small></h2>
+						<h2><?= lang('list')?></h2>
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
 							<li><a class="close-link"><i class="fa fa-close"></i></a>
 							</li>
 						</ul>
-						<div class="">
-							<form class="form-horizontal form-label-left" method="get">
-								<div class="form-group">
-									<div class="col-md-5 col-sm-5 col-xs-6">
-										<div class="input-group">
-										<input type="text" name="fkeyword" value="<?= $formSearch['fkeyword']?>" placeholder="<?= lang('search')?>" class="form-control">
-											<span class="input-group-btn">
-												<button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
-											</span>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th><?= lang('rolename')?></th>
-									<th><?= lang('rolevalue')?></th>
+									<th width="10%">ID</th>
+									<th width="40%"><?= lang('menuname')?></th>
+									<th class="text-center"  width="25%"><?= lang('status')?></th>
+									<th class="text-center" width="25%"><?= lang('updatedate')?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $key => $value): ?>
+										<?php
+											$status = $this->mmenu->listStatusName($value['menu_status']);
+											$user = $this->muser->getData('user_fullname',array('id' => $value['user']));
+											$linkEdit = my_library::admin_site().'menu/edit/'.$value['id'];
+										?>
 										<tr class="showacction">
 											<th scope="row"><?= $value['id']?></th>
-											<td><h5 id="name<?= $value['id']?>"><?= $value['action_name']?></h5>
+											<td><h5><?= $value['menu_name']?></h5>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="javascript:void(0)" onclick="changename('<?= $value['id']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
-											<td><h4><code><?= $value['action_value']?></code></h4></td>
+											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span></td>
+											<td class="text-center"><?= $value['menu_updatedate']?><br><?= lang('by')?> <cite><?= !empty($user) ? $user['user_fullname'] : ''?></cite></td>
 										</tr>
 									<?php endforeach ?>
 								<?php else: ?>
@@ -109,9 +102,6 @@
 								<?php endif ?>
 							</tbody>
 						</table>
-						<?php if (isset($pagination)): ?>
-			              	<ul class="pagination pull-right"><?= $pagination?></ul>
-			            <?php endif ?>
 					</div>
 				</div>
 			</div>

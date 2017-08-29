@@ -61,7 +61,7 @@ class Category extends MY_Controller {
 	        	'category_id' => 0,
 	        	'language_code' => $lang,
 	        	'category_name' => $this->input->post('category_name'),
-	        	'category_alias' => $alias,
+	        	'category_alias' => $alias ?? time(),
 	        	'category_detail' => $this->input->post('category_detail'),
 	        	'category_seo_title' => $this->input->post('category_seo_title'),
 	        	'category_seo_description' => $this->input->post('category_seo_description'),

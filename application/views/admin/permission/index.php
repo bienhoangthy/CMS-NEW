@@ -76,6 +76,9 @@
 								</tbody>
 							</table>
 						<?php endif ?>
+						<?php if (isset($pagination)): ?>
+			              	<ul class="pagination pull-right"><?= $pagination?></ul>
+			            <?php endif ?>
 					</div>
 				</div>
 			</div>

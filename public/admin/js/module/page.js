@@ -97,20 +97,9 @@ function deleteImg(id)
   });
 }
 
-tinymce.init({
-  selector: 'textarea',
-  height: 300,
-  theme: 'modern',
-  plugins: [
+tinymce.init({selector: 'textarea',height: 300,theme: 'modern',plugins: [
     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
     'searchreplace wordcount visualblocks visualchars code fullscreen',
     'insertdatetime media nonbreaking save table contextmenu directionality',
     'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help responsivefilemanager'
-  ],
-  toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-  toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',
-  image_advtab: true,
-  external_filemanager_path:"/public/admin/js/filemanager/",
-  filemanager_title:"Responsive Filemanager" ,
-  external_plugins: { "filemanager" : "/public/admin/js/filemanager/plugin.min.js"}
-});
+  ],toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',image_caption: true,image_advtab: true,relative_urls:false,external_filemanager_path:"/public/filemanager/",filemanager_title:"Quản lý file",filemanager_access_key: "e807f1fcf82d132f9bb018ca6738a19f",external_plugins: { "filemanager" : "/public/filemanager/plugin.min.js"}});

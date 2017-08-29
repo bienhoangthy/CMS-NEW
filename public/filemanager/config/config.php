@@ -1,5 +1,8 @@
 <?php
 if (session_id() == '') session_start();
+if (!isset($_SESSION["RF"])) {
+	exit();
+}
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
@@ -7,7 +10,7 @@ mb_http_input('UTF-8');
 mb_language('uni');
 mb_regex_encoding('UTF-8');
 ob_start('mb_output_handler');
-date_default_timezone_set('Europe/Rome');
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +30,7 @@ date_default_timezone_set('Europe/Rome');
 |
 */
 
-define('USE_ACCESS_KEYS', false); // TRUE or FALSE
+define('USE_ACCESS_KEYS', true); // TRUE or FALSE
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +76,7 @@ $config = array(
 	| with start and final /
 	|
 	*/
-	'upload_dir' => '/source/',
+	'upload_dir' => '/public/uploads/',
 	/*
 	|--------------------------------------------------------------------------
 	| relative path from filemanager folder to upload folder
@@ -82,7 +85,7 @@ $config = array(
 	| with final /
 	|
 	*/
-	'current_path' => '../source/',
+	'current_path' => '../uploads/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -141,7 +144,7 @@ $config = array(
 	|
 	*/
 
-	'access_keys' => array(),
+	'access_keys' => array('e807f1fcf82d132f9bb018ca6738a19f'),
 
 	//--------------------------------------------------------------------------------------------------------
 	// YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS

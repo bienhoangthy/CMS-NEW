@@ -63,8 +63,18 @@ class Action extends MY_Controller {
             $and .= ' and (action_name like "%' . $this->_data['formSearch']['fkeyword'] . '%"';
             $and .= ' or action_value like "%' . $this->_data['formSearch']['fkeyword'] . '%")';
         }
-        $this->_data['list'] = $this->maction->getQuery("", $and, "action_value asc","");
+        //Paging
+        $this->load->library("My_paging");
+        $paging['per_page'] = 10;
+        $paging['num_links'] = 5;
+        $paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
+        $paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
+        $query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
+        $paging['base_url'] = my_library::admin_site() . 'action/?' . $query_string . '&page=';
+        $limit = $paging['start'] . ',' . $paging['per_page'];
+        $this->_data['list'] = $this->maction->getQuery("", $and, "action_value asc",$limit);
         $this->_data['record'] = $this->maction->countQuery($and);
+        $this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
         $this->_data['extraJs'] = ['validator.js','module/action.js','language/'.$this->_data['language'].'_action.js'];
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
