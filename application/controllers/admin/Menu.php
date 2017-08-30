@@ -6,6 +6,7 @@ class Menu extends MY_Controller {
         parent::__construct();
         $this->lang->load('menu',$this->_data['language']);
         $this->load->Model("admin/mmenu");
+        $this->load->Model("admin/mcategory");
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
     }
     public function index()
@@ -69,6 +70,8 @@ class Menu extends MY_Controller {
                     'menu_status' => $myMenu['menu_status']
                 );
                 $this->_data['title'] = lang('editmenu').' #'.$id;
+                $this->_data['listCatagory'] = $this->mcategory->getCategory($this->_data['language']);
+                var_dump($this->_data['listCatagory']);die();
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 //$this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
