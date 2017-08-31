@@ -54,65 +54,60 @@
 						<div class="x_content">
 							<div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
 								<div class="panel">
-									<a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-										<h4 class="panel-title">Collapsible Group Items #1</h4>
+									<a class="panel-heading" role="tab" id="category" data-toggle="collapse" data-parent="#accordion" href="#collapseCate" aria-expanded="true" aria-controls="collapseCate">
+										<h4 class="panel-title"><?= lang('category')?></h4>
 									</a>
-									<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+									<div id="collapseCate" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="category">
 										<div class="panel-body">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>#</th>
-														<th>First Name</th>
-														<th>Last Name</th>
-														<th>Username</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<th scope="row">1</th>
-														<td>Mark</td>
-														<td>Otto</td>
-														<td>@mdo</td>
-													</tr>
-													<tr>
-														<th scope="row">2</th>
-														<td>Jacob</td>
-														<td>Thornton</td>
-														<td>@fat</td>
-													</tr>
-													<tr>
-														<th scope="row">3</th>
-														<td>Larry</td>
-														<td>the Bird</td>
-														<td>@twitter</td>
-													</tr>
-												</tbody>
-											</table>
+											<ul class="category-tree" style="list-style: none;">
+												<?php if (!empty($listCategory)): ?>
+													<?php foreach ($listCategory as $key => $value): ?>
+														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['category_name']?> / <code><?= $value['category_alias']?></code></li>
+														<?php if (isset($value['subcate'])): ?>
+															<?php foreach ($value['subcate'] as $key => $val): ?>
+																<li>&emsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $val['category_name']?> / <code><?= $val['category_alias']?></code></li>
+																<?php if (isset($val['sub_subcate'])): ?>
+																	<?php foreach ($val['sub_subcate'] as $key => $v): ?>
+																		<li>&emsp;&emsp;<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $v['category_name']?> / <code><?= $v['category_alias']?></code></li>
+																	<?php endforeach ?>
+																<?php endif ?>
+															<?php endforeach ?>
+														<?php endif ?>
+													<?php endforeach ?>
+												<?php endif ?>
+											</ul>
 										</div>
 									</div>
 								</div>
 								<div class="panel">
-									<a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										<h4 class="panel-title">Collapsible Group Items #2</h4>
+									<a class="panel-heading collapsed" role="tab" id="page" data-toggle="collapse" data-parent="#accordion" href="#collapsePage" aria-expanded="false" aria-controls="collapsePage">
+										<h4 class="panel-title"><?= lang('page')?></h4>
 									</a>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									<div id="collapsePage" class="panel-collapse collapse" role="tabpanel" aria-labelledby="page">
 										<div class="panel-body">
-											<p><strong>Collapsible Item 2 data</strong>
-											</p>
-											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+											<ul class="category-tree" style="list-style: none;">
+												<?php if (!empty($listPage)): ?>
+													<?php foreach ($listPage as $key => $value): ?>
+														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['page_title']?> / <code><?= $value['page_alias']?></code></li>
+													<?php endforeach ?>
+												<?php endif ?>
+											</ul>
 										</div>
 									</div>
 								</div>
 								<div class="panel">
-									<a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										<h4 class="panel-title">Collapsible Group Items #3</h4>
+									<a class="panel-heading collapsed" role="tab" id="link" data-toggle="collapse" data-parent="#accordion" href="#collapseLink" aria-expanded="false" aria-controls="collapseLink">
+										<h4 class="panel-title"><?= lang('link')?></h4>
 									</a>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									<div id="collapseLink" class="panel-collapse collapse" role="tabpanel" aria-labelledby="link">
 										<div class="panel-body">
-											<p><strong>Collapsible Item 3 data</strong>
-											</p>
-											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor
+											<ul class="category-tree" style="list-style: none;">
+												<?php if (!empty($listLink)): ?>
+													<?php foreach ($listLink as $key => $value): ?>
+														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['link_name']?> / <code><?= $value['link']?></code></li>
+													<?php endforeach ?>
+												<?php endif ?>
+											</ul>
 										</div>
 									</div>
 								</div>
@@ -133,68 +128,136 @@
 							<div class="clearfix"></div>
 						</div>
 						<div class="x_content">
-							<div class="dd" id="nestable3">
-								<ol class="dd-list">
-									<li class="dd-item dd3-item" data-id="13">
-										<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-											<span class="pull-left"> Home</span>
-											<cite class="pull-right"> Page</cite>
-										</div>
-										<ol class="dd-list">
-											<li class="dd-item dd3-item" data-id="16">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
+							<?php if (!empty($menuDetail)): ?>
+								<div class="dd" id="nestable3">
+									<ol class="dd-list">
+										<?php foreach ($menuDetail as $key => $value): ?>
+											<?php 
+											$name = '';
+											$alias = '';
+											switch ($value['ingredient']) {
+												case 1:
+												$ingredient = $this->mcategory_translation->getData("category_name,category_alias",array('category_id' => $value['ingredient_id'],'language_code' => $language));
+												if (!empty($ingredient)) {
+													$name = $ingredient['category_name'];
+													$alias = $ingredient['category_alias'];
+												}
+												break;
+												case 2:
+												$ingredient = $this->mpage_translation->getData("page_title,page_alias",array('page_id' => $value['ingredient_id'],'language_code' => $language));
+												if (!empty($ingredient)) {
+													$name = $ingredient['page_title'];
+													$alias = $ingredient['page_alias'];
+												}
+												break;
+												case 3:
+												$ingredient_link = $this->mlink->getData("link",array('id' => $value['ingredient_id']));
+												$ingredient_link_name = $this->mlink_translation->getData("link_name",array('link_id' => $value['ingredient_id'],'language_code' => $language));
+												if (!empty($ingredient_link)) {
+													$alias = $ingredient_link['link'];
+												}
+												if (!empty($ingredient_link_name)) {
+													$name = $ingredient_link_name['link_name'];
+												}
+												break;
+											}
+											$type = $this->mmenu_detail->listIngredient($value['ingredient']);
+											$checked = $value['click_allow'] == 1 ? 'checked="checked"' : '';
+											?>
+											<li class="dd-item dd3-item" data-id="<?= $value['id']?>">
+												<div class="dd-handle dd3-handle">Drag</div>
+												<div class="dd3-content show-extra">
+													<span class="pull-left"> <?= $name?></span>
+													<cite class="pull-right"> <?= $type['name']?></cite>
 												</div>
-											</li>
-											<li class="dd-item dd3-item" data-id="17">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
+												<div class="item-content" id="extra-<?= $value['id']?>" style="border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;padding-left: 20px;margin-top: -5px;display: none;">
+													<label>
+														<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
+													</label>
+													<label>
+														<span>Icon</span>
+														<input class="form-control" name="icon" type="text" value="<?= $value['icon']?>">
+													</label>
+													<label>
+														<span>Target</span>
+														<select class="form-control">
+															<option <?= $value['target'] == '_self' ? 'selected' : ''?>>_self</option>
+															<option <?= $value['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
+															<option <?= $value['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
+															<option <?= $value['target'] == '_top' ? 'selected' : ''?>>_top</option>
+														</select>
+													</label>
+													<button type="button" class="btn btn-danger"><?= lang('remove')?></button>
 												</div>
+												<?php if (isset($value['child'])): ?>
+													<ol class="dd-list">
+														<?php foreach ($value['child'] as $key => $val): ?>
+															<?php 
+															$name = '';
+															$alias = '';
+															switch ($val['ingredient']) {
+																case 1:
+																$ingredient = $this->mcategory_translation->getData("category_name,category_alias",array('category_id' => $val['ingredient_id'],'language_code' => $language));
+																if (!empty($ingredient)) {
+																	$name = $ingredient['category_name'];
+																	$alias = $ingredient['category_alias'];
+																}
+																break;
+																case 2:
+																$ingredient = $this->mpage_translation->getData("page_title,page_alias",array('page_id' => $val['ingredient_id'],'language_code' => $language));
+																if (!empty($ingredient)) {
+																	$name = $ingredient['page_title'];
+																	$alias = $ingredient['page_alias'];
+																}
+																break;
+																case 3:
+																$ingredient_link = $this->mlink->getData("link",array('id' => $val['ingredient_id']));
+																$ingredient_link_name = $this->mlink_translation->getData("link_name",array('link_id' => $val['ingredient_id'],'language_code' => $language));
+																if (!empty($ingredient_link)) {
+																	$alias = $ingredient_link['link'];
+																}
+																if (!empty($ingredient_link_name)) {
+																	$name = $ingredient_link_name['link_name'];
+																}
+																break;
+															}
+															$type = $this->mmenu_detail->listIngredient($val['ingredient']);
+															$checked = $val['click_allow'] == 1 ? 'checked="checked"' : '';
+															?>
+															<li class="dd-item dd3-item" data-id="<?= $val['id']?>">
+																<div class="dd-handle dd3-handle">Drag</div>
+																<div class="dd3-content show-extra">
+																	<span class="pull-left"> <?= $name?></span>
+																	<cite class="pull-right"> <?= $type['name']?></cite>
+																</div>
+																<div class="item-content" id="extra-<?= $val['id']?>" style="border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;padding-left: 20px;margin-top: -5px;display: none;">
+																	<label>
+																		<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
+																	</label>
+																	<label>
+																		<span>Icon</span>
+																		<input class="form-control" name="icon" type="text" value="<?= $val['icon']?>">
+																	</label>
+																	<label>
+																		<span>Target</span>
+																		<select class="form-control">
+																			<option <?= $val['target'] == '_self' ? 'selected' : ''?>>_self</option>
+																			<option <?= $val['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
+																			<option <?= $val['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
+																			<option <?= $val['target'] == '_top' ? 'selected' : ''?>>_top</option>
+																		</select>
+																	</label>
+																	<button type="button" class="btn btn-danger"><?= lang('remove')?></button>
+																</div>
+															</li>
+														<?php endforeach ?>
+													</ol>
+												<?php endif ?>
 											</li>
-											<li class="dd-item dd3-item" data-id="18">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
-												</div>
-											</li>
-										</ol>
-									</li>
-									<li class="dd-item dd3-item" data-id="14">
-										<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-											<span class="pull-left"> Home</span>
-											<cite class="pull-right"> Page</cite>
-										</div>
-									</li>
-									<li class="dd-item dd3-item" data-id="15">
-										<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-											<span class="pull-left"> Home</span>
-											<cite class="pull-right"> Page</cite>
-										</div>
-										<ol class="dd-list">
-											<li class="dd-item dd3-item" data-id="16">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
-												</div>
-											</li>
-											<li class="dd-item dd3-item" data-id="17">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
-												</div>
-											</li>
-											<li class="dd-item dd3-item" data-id="18">
-												<div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">
-													<span class="pull-left"> Home</span>
-													<cite class="pull-right"> Page</cite>
-												</div>
-											</li>
-										</ol>
-									</li>
-								</ol>
-							</div>
+										<?php endforeach ?>
+									</ol>
+								</div>
+							<?php endif ?>
 						</div>
 					</div>
 				</div>

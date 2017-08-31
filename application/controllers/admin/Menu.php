@@ -6,7 +6,6 @@ class Menu extends MY_Controller {
         parent::__construct();
         $this->lang->load('menu',$this->_data['language']);
         $this->load->Model("admin/mmenu");
-        $this->load->Model("admin/mcategory");
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
     }
     public function index()
@@ -61,6 +60,10 @@ class Menu extends MY_Controller {
 
     public function edit($id)
     {
+    	$this->load->Model("admin/mcategory");
+        $this->load->Model("admin/mpage");
+        $this->load->Model("admin/mlink");
+        $this->load->Model("admin/mmenu_detail");
         $this->mpermission->checkPermission("menu","edit",$this->_data['user_active']['active_user_group']);
         if (is_numeric($id) && $id > 0) {
             $myMenu = $this->mmenu->getData("",array('id' => $id));
@@ -70,11 +73,13 @@ class Menu extends MY_Controller {
                     'menu_status' => $myMenu['menu_status']
                 );
                 $this->_data['title'] = lang('editmenu').' #'.$id;
-                $this->_data['listCatagory'] = $this->mcategory->getCategory($this->_data['language']);
-                var_dump($this->_data['listCatagory']);die();
+                $this->_data['listCategory'] = $this->mcategory->getCategory($this->_data['language'],1);
+                $this->_data['listPage'] = $this->mpage->getPage($this->_data['language'],1);
+                $this->_data['listLink'] = $this->mlink->getLink($this->_data['language'],1);
+                $this->_data['menuDetail'] = $this->mmenu_detail->getMenuDetail($id);
+                //var_dump($this->_data['menuDetail']);die();
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
-                //$this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','nestable.css'];
                 $this->_data['extraJs'] = ['validator.js','icheck.min.js','jquery.nestable.js','module/menu.js'];
                 $this->my_layout->view("admin/menu/post", $this->_data);

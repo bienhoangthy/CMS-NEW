@@ -10,4 +10,10 @@ $lang['by'] = 'bởi';
 $lang['baseinfo'] = 'Thông tin cơ bản';
 $lang['ingredient'] = 'Thành phần';
 $lang['structure'] = 'Cấu trúc trình đơn';
+$lang['category'] = 'Danh mục';
+$lang['page'] = 'Trang';
+$lang['link'] = 'Liên kết';
+$lang['addtomenu'] = 'Thêm vào trình đơn';
+$lang['allowclick'] = 'Cho phép click';
+$lang['remove'] = 'Xóa';
  ?>

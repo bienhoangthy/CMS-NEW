@@ -10,4 +10,10 @@ $lang['by'] = 'by';
 $lang['baseinfo'] = 'Base infomation';
 $lang['ingredient'] = 'Ingredient';
 $lang['structure'] = 'Structure menu';
+$lang['category'] = 'Categories';
+$lang['page'] = 'Page';
+$lang['link'] = 'Link';
+$lang['addtomenu'] = 'Add to menu';
+$lang['allowclick'] = 'Allow Click';
+$lang['remove'] = 'Remove';
  ?>

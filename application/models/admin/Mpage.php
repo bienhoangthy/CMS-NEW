@@ -9,9 +9,13 @@ class mpage extends MY_Model
     protected $table = "cms_page";
     protected $table_translation = "cms_page_translation";
 
-    public function getPage($lang='vietnamese')
+    public function getPage($lang='vietnamese',$status = 0)
     {
-        $sql = 'select p.id,p.page_template,p.page_status,p.page_updatedate,p.user,pt.id as page_id,pt.page_title,pt.page_alias from '.$this->table.' p inner join '.$this->table_translation.' pt on p.id = pt.page_id where pt.language_code = "'.$lang.'" order by p.page_orderby asc, p.id desc';
+        $andStatus = ' ';
+        if ($status > 0) {
+            $andStatus = ' p.page_status = '.$status.' and ';
+        }
+        $sql = 'select p.id,p.page_template,p.page_status,p.page_updatedate,p.user,pt.id as page_id,pt.page_title,pt.page_alias from '.$this->table.' p inner join '.$this->table_translation.' pt on p.id = pt.page_id where'.$andStatus.'pt.language_code = "'.$lang.'" order by p.page_orderby asc, p.id desc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;

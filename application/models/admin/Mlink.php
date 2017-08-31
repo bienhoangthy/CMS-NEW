@@ -9,9 +9,13 @@ class mlink extends MY_Model
     protected $table = "cms_link";
     protected $table_translation = "cms_link_translation";
 
-    public function getLink($lang='vietnamese')
+    public function getLink($lang='vietnamese',$status = 0)
     {
-        $sql = 'select l.id,l.link,l.link_status,l.link_createdate,l.user,lt.link_name,lt.link_description from '.$this->table.' l inner join '.$this->table_translation.' lt on l.id = lt.link_id where lt.language_code = "'.$lang.'" order by l.id desc';
+        $andStatus = ' ';
+        if ($status > 0) {
+            $andStatus = ' l.link_status = '.$status.' and ';
+        }
+        $sql = 'select l.id,l.link,l.link_status,l.link_createdate,l.user,lt.link_name,lt.link_description from '.$this->table.' l inner join '.$this->table_translation.' lt on l.id = lt.link_id where'.$andStatus.'lt.language_code = "'.$lang.'" order by l.id desc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;
