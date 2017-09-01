@@ -14,13 +14,16 @@
 		</div>
 		<div class="clearfix"></div>
 		<div class="row">
-			<form class="form-horizontal form-label-left" method="post" novalidate>
+			<form class="form-horizontal form-label-left" id="formMenu" data-id="<?= $id?>" method="post" novalidate>
+				<input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+				<textarea name="menu_order" id="nestable-output" class="form-control hide"></textarea>
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="x_panel">
 						<div class="x_title">
 							<h2><?= lang('baseinfo')?></h2>
 							<div class="clearfix"></div>
 						</div>
+						<button type="submit" class="btn btn-success"><?= lang('save')?></button>
 						<div class="x_content">
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu_name"><?= lang('menuname')?><span class="required">*</span>
@@ -62,13 +65,13 @@
 											<ul class="category-tree" style="list-style: none;">
 												<?php if (!empty($listCategory)): ?>
 													<?php foreach ($listCategory as $key => $value): ?>
-														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['category_name']?> / <code><?= $value['category_alias']?></code></li>
+														<li><button type="button" class="btn btn-dark btn-xs add-menu" data-id="<?= $value['id']?>" data-name="<?= $value['category_name']?>" data-ingredient-id="1" data-ingredient-name="<?= lang('category')?>" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['category_name']?> / <code><?= $value['category_alias']?></code></li>
 														<?php if (isset($value['subcate'])): ?>
 															<?php foreach ($value['subcate'] as $key => $val): ?>
-																<li>&emsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $val['category_name']?> / <code><?= $val['category_alias']?></code></li>
+																<li>&emsp;<button type="button" class="btn btn-primary btn-xs add-menu" data-id="<?= $val['id']?>" data-name="<?= $val['category_name']?>" data-ingredient-id="1" data-ingredient-name="<?= lang('category')?>" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $val['category_name']?> / <code><?= $val['category_alias']?></code></li>
 																<?php if (isset($val['sub_subcate'])): ?>
 																	<?php foreach ($val['sub_subcate'] as $key => $v): ?>
-																		<li>&emsp;&emsp;<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $v['category_name']?> / <code><?= $v['category_alias']?></code></li>
+																		<li>&emsp;&emsp;<button type="button" class="btn btn-info btn-xs add-menu" data-id="<?= $v['id']?>" data-name="<?= $v['category_name']?>" data-ingredient-id="1" data-ingredient-name="<?= lang('category')?>" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $v['category_name']?> / <code><?= $v['category_alias']?></code></li>
 																	<?php endforeach ?>
 																<?php endif ?>
 															<?php endforeach ?>
@@ -88,7 +91,7 @@
 											<ul class="category-tree" style="list-style: none;">
 												<?php if (!empty($listPage)): ?>
 													<?php foreach ($listPage as $key => $value): ?>
-														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['page_title']?> / <code><?= $value['page_alias']?></code></li>
+														<li><button type="button" class="btn btn-dark btn-xs add-menu" data-id="<?= $value['id']?>" data-name="<?= $value['page_title']?>" data-ingredient-id="2" data-ingredient-name="<?= lang('page')?>" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['page_title']?> / <code><?= $value['page_alias']?></code></li>
 													<?php endforeach ?>
 												<?php endif ?>
 											</ul>
@@ -104,7 +107,7 @@
 											<ul class="category-tree" style="list-style: none;">
 												<?php if (!empty($listLink)): ?>
 													<?php foreach ($listLink as $key => $value): ?>
-														<li><button type="button" class="btn btn-dark btn-xs" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['link_name']?> / <code><?= $value['link']?></code></li>
+														<li><button type="button" class="btn btn-dark btn-xs add-menu" data-id="<?= $value['id']?>" data-name="<?= $value['link_name']?>" data-ingredient-id="3" data-ingredient-name="<?= lang('link')?>" data-toggle="tooltip" data-placement="left" title="<?= lang('addtomenu')?>"><i class="fa fa-share"></i></button><?= $value['link_name']?> / <code><?= $value['link']?></code></li>
 													<?php endforeach ?>
 												<?php endif ?>
 											</ul>
@@ -128,9 +131,9 @@
 							<div class="clearfix"></div>
 						</div>
 						<div class="x_content">
-							<?php if (!empty($menuDetail)): ?>
-								<div class="dd" id="nestable3">
-									<ol class="dd-list">
+							<div class="dd" id="nestable3">
+								<ol class="dd-list" id="nestable-content">
+									<?php if (!empty($menuDetail)): ?>
 										<?php foreach ($menuDetail as $key => $value): ?>
 											<?php 
 											$name = '';
@@ -164,13 +167,13 @@
 											$type = $this->mmenu_detail->listIngredient($value['ingredient']);
 											$checked = $value['click_allow'] == 1 ? 'checked="checked"' : '';
 											?>
-											<li class="dd-item dd3-item" data-id="<?= $value['id']?>">
+											<li class="dd-item dd3-item" id="nes-<?= $value['id']?>" data-id="<?= $value['id']?>">
 												<div class="dd-handle dd3-handle">Drag</div>
-												<div class="dd3-content show-extra">
+												<div class="dd3-content" onclick="showExtra('<?= $value['id']?>')">
 													<span class="pull-left"> <?= $name?></span>
 													<cite class="pull-right"> <?= $type['name']?></cite>
 												</div>
-												<div class="item-content" id="extra-<?= $value['id']?>" style="border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;padding-left: 20px;margin-top: -5px;display: none;">
+												<div class="item-content" id="extra-<?= $value['id']?>">
 													<label>
 														<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
 													</label>
@@ -181,13 +184,13 @@
 													<label>
 														<span>Target</span>
 														<select class="form-control">
-															<option <?= $value['target'] == '_self' ? 'selected' : ''?>>_self</option>
-															<option <?= $value['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
-															<option <?= $value['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
-															<option <?= $value['target'] == '_top' ? 'selected' : ''?>>_top</option>
+															<option value="_self" <?= $value['target'] == '_self' ? 'selected' : ''?>>_self</option>
+															<option value="_blank" <?= $value['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
+															<option value="_parent" <?= $value['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
+															<option value="_top" <?= $value['target'] == '_top' ? 'selected' : ''?>>_top</option>
 														</select>
 													</label>
-													<button type="button" class="btn btn-danger"><?= lang('remove')?></button>
+													<button type="button" onclick="removeNes('<?= $value['id']?>')" class="btn btn-danger"><?= lang('remove')?></button>
 												</div>
 												<?php if (isset($value['child'])): ?>
 													<ol class="dd-list">
@@ -224,13 +227,13 @@
 															$type = $this->mmenu_detail->listIngredient($val['ingredient']);
 															$checked = $val['click_allow'] == 1 ? 'checked="checked"' : '';
 															?>
-															<li class="dd-item dd3-item" data-id="<?= $val['id']?>">
+															<li class="dd-item dd3-item" id="nes-<?= $val['id']?>" data-id="<?= $val['id']?>">
 																<div class="dd-handle dd3-handle">Drag</div>
-																<div class="dd3-content show-extra">
+																<div class="dd3-content" onclick="showExtra('<?= $val['id']?>')">
 																	<span class="pull-left"> <?= $name?></span>
 																	<cite class="pull-right"> <?= $type['name']?></cite>
 																</div>
-																<div class="item-content" id="extra-<?= $val['id']?>" style="border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;padding-left: 20px;margin-top: -5px;display: none;">
+																<div class="item-content" id="extra-<?= $val['id']?>">
 																	<label>
 																		<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
 																	</label>
@@ -241,13 +244,13 @@
 																	<label>
 																		<span>Target</span>
 																		<select class="form-control">
-																			<option <?= $val['target'] == '_self' ? 'selected' : ''?>>_self</option>
-																			<option <?= $val['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
-																			<option <?= $val['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
-																			<option <?= $val['target'] == '_top' ? 'selected' : ''?>>_top</option>
+																			<option value="_self" <?= $val['target'] == '_self' ? 'selected' : ''?>>_self</option>
+																			<option value="_blank" <?= $val['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
+																			<option value="_parent" <?= $val['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
+																			<option value="_top" <?= $val['target'] == '_top' ? 'selected' : ''?>>_top</option>
 																		</select>
 																	</label>
-																	<button type="button" class="btn btn-danger"><?= lang('remove')?></button>
+																	<button type="button" onclick="removeNes('<?= $val['id']?>')" class="btn btn-danger"><?= lang('remove')?></button>
 																</div>
 															</li>
 														<?php endforeach ?>
@@ -255,9 +258,9 @@
 												<?php endif ?>
 											</li>
 										<?php endforeach ?>
-									</ol>
-								</div>
-							<?php endif ?>
+									<?php endif ?>
+								</ol>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -77,7 +77,7 @@ function deleteImg(id)
     closeOnConfirm: false
   },
   function(){
-    var url = configs.admin_site+configs .controller+'/deleteImage';
+    var url = configs.admin_site+configs.controller+'/deleteImage';
     $.ajax({
       url: url,
       data: {"id":id},

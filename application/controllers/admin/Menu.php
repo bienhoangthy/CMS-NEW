@@ -72,6 +72,22 @@ class Menu extends MY_Controller {
                     'menu_name' => $myMenu['menu_name'],
                     'menu_status' => $myMenu['menu_status']
                 );
+                if (isset($_POST['menu_name'])) {
+                    $order_menu = $this->input->post('menu_order');
+                    $order_menu = json_decode($order_menu,true);
+                    //var_dump($order_menu);die();
+                    foreach ($order_menu as $key => $value) {
+                        echo $value['id'];
+                        if (isset($value['children'])) {
+                            echo "child";
+                            foreach ($value['children'] as $key => $val) {
+                                echo $val['id'];
+                            }
+                        }
+                    }
+                    die();
+                }
+                $this->_data['id'] = $id;
                 $this->_data['title'] = lang('editmenu').' #'.$id;
                 $this->_data['listCategory'] = $this->mcategory->getCategory($this->_data['language'],1);
                 $this->_data['listPage'] = $this->mpage->getPage($this->_data['language'],1);
@@ -81,7 +97,7 @@ class Menu extends MY_Controller {
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','nestable.css'];
-                $this->_data['extraJs'] = ['validator.js','icheck.min.js','jquery.nestable.js','module/menu.js'];
+                $this->_data['extraJs'] = ['validator.js','icheck.min.js','jquery.nestable.js','module/menu.js','language/'.$this->_data['language'].'_action.js'];
                 $this->my_layout->view("admin/menu/post", $this->_data);
             } else {
                 $notify = array(
@@ -101,6 +117,31 @@ class Menu extends MY_Controller {
             $this->session->set_userdata('notify', $notify);
             redirect(my_library::admin_site()."menu");
         }
+    }
+
+    public function ajaxAddtoMenu()
+    {
+        $rs = 0;
+        if ($this->mpermission->permission("menu_ajaxAddtoMenu",$this->_data['user_active']['active_user_group']) == true) {
+            $menu_id = $this->input->get('menu_id');
+            $ingredient = $this->input->get('ingredient');
+            $ingredient_id = $this->input->get('ingredient_id');
+            if ($menu_id != null && $ingredient != null && $ingredient_id != null) {
+                $this->load->Model("admin/mmenu_detail");
+                $dataAdd = array(
+                    'menu_id' => $menu_id,
+                    'parent' => 0,
+                    'ingredient' => $ingredient,
+                    'ingredient_id' => $ingredient_id,
+                    'icon' => '',
+                    'click_allow' => 1,
+                    'target' => '_self',
+                    'order_by' =>0
+                );
+                $rs = $this->mmenu_detail->add($dataAdd);
+            }
+        }
+        echo $rs;
     }
 
     public function delete($id)

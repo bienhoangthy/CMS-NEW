@@ -7,3 +7,5 @@ var success = "Success!";
 var edited = "Edited: ";
 var error = "Error!";
 var notedit = "Can not update!";
+var added = "Added ";
+var nonpermission = "Not permission";

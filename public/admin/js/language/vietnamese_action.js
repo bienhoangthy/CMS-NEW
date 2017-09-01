@@ -7,3 +7,5 @@ var success = "Thành công!";
 var edited = "Đã cập nhật: ";
 var error = "Lỗi!";
 var notedit = "Không thể cập nhật!";
+var added = "Đã thêm ";
+var nonpermission = "Không được cấp quyền";
