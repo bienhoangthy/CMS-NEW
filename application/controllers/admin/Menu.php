@@ -73,19 +73,46 @@ class Menu extends MY_Controller {
                     'menu_status' => $myMenu['menu_status']
                 );
                 if (isset($_POST['menu_name'])) {
+                    $this->_data['formData'] = array(
+                        'menu_name' => $this->input->post('menu_name'), 
+                        'menu_status' => $this->input->post('menu_status'),
+                        'menu_updatedate' => date("Y-m-d"),
+                        'user' => $this->_data['user_active']['active_user_id']
+                    );
+                    $this->mmenu->edit($id,$this->_data['formData']);
+                    $countEdit = 0;
                     $order_menu = $this->input->post('menu_order');
-                    $order_menu = json_decode($order_menu,true);
-                    //var_dump($order_menu);die();
-                    foreach ($order_menu as $key => $value) {
-                        echo $value['id'];
-                        if (isset($value['children'])) {
-                            echo "child";
-                            foreach ($value['children'] as $key => $val) {
-                                echo $val['id'];
+                    if ($order_menu != null) {
+                        $order_menu = json_decode($order_menu,true);
+                        foreach ($order_menu as $key => $value) {
+                            if ($this->mmenu_detail->edit($value['id'],array('parent' => 0,'icon' => $this->input->post('icon'.$value['id']),'click_allow' =>  $this->input->post('allow'.$value['id']),'target' => $this->input->post('target'.$value['id']),'order_by' => $key))) {
+                                $countEdit++;
+                            }
+                            if (isset($value['children'])) {
+                                foreach ($value['children'] as $k => $val) {
+                                    if ($this->mmenu_detail->edit($val['id'],array('parent' => $value['id'],'icon' => $this->input->post('icon'.$val['id']),'click_allow' => $this->input->post('allow'.$val['id']),'target' => $this->input->post('target'.$val['id']),'order_by' => $k))) {
+                                        $countEdit++;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $listMenuDetail = $this->mmenu_detail->getQuery("id","menu_id = ".$id,"","");
+                        if (!empty($listMenuDetail)) {
+                            foreach ($listMenuDetail as $key => $value) {
+                                if ($this->mmenu_detail->edit($value['id'],array('icon' => $this->input->post('icon'.$value['id']),'click_allow' =>  $this->input->post('allow'.$value['id']),'target' => $this->input->post('target'.$value['id'])))) {
+                                    $countEdit++;
+                                }
                             }
                         }
                     }
-                    die();
+                    $notify = array(
+                        'title' => lang('success'), 
+                        'text' => lang('updated').$countEdit.' '.lang('ingredient').' '.lang('of').$this->_data['formData']['menu_name'],
+                        'type' => 'success'
+                    );
+                    $this->session->set_userdata('notify', $notify);
+                    redirect(my_library::admin_site()."menu/edit/".$id);
                 }
                 $this->_data['id'] = $id;
                 $this->_data['title'] = lang('editmenu').' #'.$id;
@@ -93,7 +120,6 @@ class Menu extends MY_Controller {
                 $this->_data['listPage'] = $this->mpage->getPage($this->_data['language'],1);
                 $this->_data['listLink'] = $this->mlink->getLink($this->_data['language'],1);
                 $this->_data['menuDetail'] = $this->mmenu_detail->getMenuDetail($id);
-                //var_dump($this->_data['menuDetail']);die();
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','nestable.css'];
@@ -121,24 +147,29 @@ class Menu extends MY_Controller {
 
     public function ajaxAddtoMenu()
     {
-        $rs = 0;
+        $rs = -1;
         if ($this->mpermission->permission("menu_ajaxAddtoMenu",$this->_data['user_active']['active_user_group']) == true) {
             $menu_id = $this->input->get('menu_id');
             $ingredient = $this->input->get('ingredient');
             $ingredient_id = $this->input->get('ingredient_id');
             if ($menu_id != null && $ingredient != null && $ingredient_id != null) {
                 $this->load->Model("admin/mmenu_detail");
-                $dataAdd = array(
-                    'menu_id' => $menu_id,
-                    'parent' => 0,
-                    'ingredient' => $ingredient,
-                    'ingredient_id' => $ingredient_id,
-                    'icon' => '',
-                    'click_allow' => 1,
-                    'target' => '_self',
-                    'order_by' =>0
-                );
-                $rs = $this->mmenu_detail->add($dataAdd);
+                $checkIngredient = $this->mmenu_detail->getData("id",array('menu_id' => $menu_id,'ingredient' => $ingredient,'ingredient_id' => $ingredient_id));
+                if ($checkIngredient && $checkIngredient['id'] > 0) {
+                    $rs = 0;
+                } else {
+                    $dataAdd = array(
+                        'menu_id' => $menu_id,
+                        'parent' => 0,
+                        'ingredient' => $ingredient,
+                        'ingredient_id' => $ingredient_id,
+                        'icon' => '',
+                        'click_allow' => 1,
+                        'target' => '_self',
+                        'order_by' =>0
+                    );
+                    $rs = $this->mmenu_detail->add($dataAdd);
+                }
             }
         }
         echo $rs;

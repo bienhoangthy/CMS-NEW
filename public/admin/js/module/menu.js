@@ -1,5 +1,6 @@
 $('.dd').nestable({maxDepth:2});
 $('.dd').on('change', function() {
+	event.preventDefault();
     var rs = $('.dd').nestable('serialize');
     $("#nestable-output").val(JSON.stringify(rs));
 });
@@ -14,9 +15,10 @@ function removeNes(id){
 	if (nes) {nes.remove();}
 }
 $('.add-menu').click(function(){
-	var allowclick = 'Cho phép click';
+	var allow = 'Cho phép';
+	var disallowance = 'Không cho phép';
 	var remove = 'Xóa';
-	if (configs.lang == 'english') {allowclick = 'Allow click';remove = 'Remove';}
+	if (configs.lang == 'english') {allow = 'Allow';disallowance = 'Disallowance';remove = 'Remove';}
 	var menu_id = $('#formMenu').attr('data-id');
 	var id = $(this).attr('data-id');
 	var name = $(this).attr('data-name');
@@ -30,10 +32,10 @@ $('.add-menu').click(function(){
 		success: function(rs) {
 			if (rs > 0) {
 				swal(success, added+ingredient+' '+name, "success");
-				var html = '<li class="dd-item dd3-item" id="nes-'+id+'" data-id="'+id+'"><div class="dd-handle dd3-handle">Drag</div><div class="dd3-content" onclick="showExtra(\''+id+'\')"><span class="pull-left"> '+name+'</span><cite class="pull-right"> '+ingredient+'</cite></div><div class="item-content" id="extra-'+id+'"><label>'+allowclick+' <input type="checkbox" class="flat" checked="checked"></label><label><span>Icon</span><input class="form-control" name="icon" type="text"></label><label><span>Target</span><select class="form-control"><option value="_self">_self</option><option value="_blank">_blank</option><option value="_parent">_parent</option><option value="_top">_top</option></select></label><button type="button" onclick="removeNes(\''+id+'\')" class="btn btn-danger">'+remove+'</button></div></li>';
+				var html = '<li class="dd-item dd3-item" id="nes-'+rs+'" data-id="'+rs+'"><div class="dd-handle dd3-handle">Drag</div><div class="dd3-content" onclick="showExtra(\''+rs+'\')"><span class="pull-left"> '+name+'</span><cite class="pull-right"> '+ingredient+'</cite></div><div class="item-content" id="extra-'+rs+'"><label><span>Click</span><select class="form-control" name="allow'+rs+'"><option value="1" selected>'+allow+'</option><option value="0">'+disallowance+'</option></select></label><label><span>Icon</span><input class="form-control" name="icon'+rs+'" type="text"></label><label><span>Target</span><select class="form-control" name="target'+rs+'"><option value="_self">_self</option><option value="_blank">_blank</option><option value="_parent">_parent</option><option value="_top">_top</option></select></label><button type="button" onclick="removeNes(\''+rs+'\')" class="btn btn-danger">'+remove+'</button></div></li>';
 				$('#nestable-content').append(html);
 			} else {
-				swal(error, nonpermission, "warning");
+				if (rs==0) {swal(error, exists, "warning");} else {swal(error, nonpermission, "warning");}
 			}
 		}
 	});

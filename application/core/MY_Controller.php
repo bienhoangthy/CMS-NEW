@@ -25,7 +25,7 @@ class MY_Controller extends CI_Controller {
 		//$this->_data['myModule'] = $this->mmodule->getModule($this->_data['language']);
 		if (!$this->_data['myModule'] = $this->cache->get('module')) {
 	        $this->_data['myModule'] = $this->mmodule->getModule($this->_data['language']);
-	        $this->cache->save('module', $this->_data['myModule'], 1800);
+	        $this->cache->save('module', $this->_data['myModule'], 3600);
 		}
 		//$this->session->set_userdata('language', 'vietnamese');
 		$this->_data['listLanguage'] = $this->mlanguage->getLanguage();

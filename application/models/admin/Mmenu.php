@@ -4,10 +4,8 @@ class mmenu extends MY_Model
     public function __construct()
     {
         parent::__construct();
-        //$this->load->Model("admin/mmenu_detail");
     }
     protected $table = "cms_menu";
-    //protected $table_detail = "cms_menu_detail";
 
     public function listStatusName($item = "")
     {

@@ -14,6 +14,9 @@ $lang['category'] = 'Danh mục';
 $lang['page'] = 'Trang';
 $lang['link'] = 'Liên kết';
 $lang['addtomenu'] = 'Thêm vào trình đơn';
-$lang['allowclick'] = 'Cho phép click';
+$lang['allow'] = 'Cho phép';
+$lang['disallowance'] = 'Không cho phép';
 $lang['remove'] = 'Xóa';
+$lang['updated'] = 'Đã cập nhật ';
+$lang['of'] = ' của ';
  ?>

@@ -9,3 +9,4 @@ var error = "Error!";
 var notedit = "Can not update!";
 var added = "Added ";
 var nonpermission = "Not permission";
+var exists = "This ingredient already exists";

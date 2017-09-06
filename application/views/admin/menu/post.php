@@ -175,15 +175,19 @@
 												</div>
 												<div class="item-content" id="extra-<?= $value['id']?>">
 													<label>
-														<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
+														<span>Click</span>
+														<select class="form-control" name="allow<?= $value['id']?>">
+															<option value="1" <?= $value['click_allow'] == 1 ? 'selected' : ''?>><?= lang('allow')?></option>
+															<option value="0" <?= $value['click_allow'] == 0 ? 'selected' : ''?>><?= lang('disallowance')?></option>
+														</select>
 													</label>
 													<label>
 														<span>Icon</span>
-														<input class="form-control" name="icon" type="text" value="<?= $value['icon']?>">
+														<input class="form-control" name="icon<?= $value['id']?>" type="text" value="<?= $value['icon']?>">
 													</label>
 													<label>
 														<span>Target</span>
-														<select class="form-control">
+														<select class="form-control" name="target<?= $value['id']?>">
 															<option value="_self" <?= $value['target'] == '_self' ? 'selected' : ''?>>_self</option>
 															<option value="_blank" <?= $value['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
 															<option value="_parent" <?= $value['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
@@ -235,15 +239,19 @@
 																</div>
 																<div class="item-content" id="extra-<?= $val['id']?>">
 																	<label>
-																		<?= lang('allowclick')?> <input type="checkbox" class="flat" <?= $checked?>>
+																		<span>Click</span>
+																		<select class="form-control" name="allow<?= $val['id']?>">
+																			<option value="1" <?= $val['click_allow'] == 1 ? 'selected' : ''?>><?= lang('allow')?></option>
+																			<option value="0" <?= $val['click_allow'] == 0 ? 'selected' : ''?>><?= lang('disallowance')?></option>
+																		</select>
 																	</label>
 																	<label>
 																		<span>Icon</span>
-																		<input class="form-control" name="icon" type="text" value="<?= $val['icon']?>">
+																		<input class="form-control" name="icon<?= $val['id']?>" type="text" value="<?= $val['icon']?>">
 																	</label>
 																	<label>
 																		<span>Target</span>
-																		<select class="form-control">
+																		<select class="form-control" name="target<?= $val['id']?>">
 																			<option value="_self" <?= $val['target'] == '_self' ? 'selected' : ''?>>_self</option>
 																			<option value="_blank" <?= $val['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
 																			<option value="_parent" <?= $val['target'] == '_parent' ? 'selected' : ''?>>_parent</option>

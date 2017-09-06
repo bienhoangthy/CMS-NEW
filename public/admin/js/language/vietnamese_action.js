@@ -9,3 +9,4 @@ var error = "Lỗi!";
 var notedit = "Không thể cập nhật!";
 var added = "Đã thêm ";
 var nonpermission = "Không được cấp quyền";
+var exists = "Thành phần này đã tồn tại!";
