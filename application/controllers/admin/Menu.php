@@ -6,6 +6,7 @@ class Menu extends MY_Controller {
         parent::__construct();
         $this->lang->load('menu',$this->_data['language']);
         $this->load->Model("admin/mmenu");
+        $this->load->Model("admin/mmenu_detail");
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
     }
     public function index()
@@ -63,7 +64,6 @@ class Menu extends MY_Controller {
     	$this->load->Model("admin/mcategory");
         $this->load->Model("admin/mpage");
         $this->load->Model("admin/mlink");
-        $this->load->Model("admin/mmenu_detail");
         $this->mpermission->checkPermission("menu","edit",$this->_data['user_active']['active_user_group']);
         if (is_numeric($id) && $id > 0) {
             $myMenu = $this->mmenu->getData("",array('id' => $id));
@@ -153,7 +153,6 @@ class Menu extends MY_Controller {
             $ingredient = $this->input->get('ingredient');
             $ingredient_id = $this->input->get('ingredient_id');
             if ($menu_id != null && $ingredient != null && $ingredient_id != null) {
-                $this->load->Model("admin/mmenu_detail");
                 $checkIngredient = $this->mmenu_detail->getData("id",array('menu_id' => $menu_id,'ingredient' => $ingredient,'ingredient_id' => $ingredient_id));
                 if ($checkIngredient && $checkIngredient['id'] > 0) {
                     $rs = 0;
@@ -175,8 +174,47 @@ class Menu extends MY_Controller {
         echo $rs;
     }
 
+    public function ajaxDeleteMenu()
+    {
+    	$rs = 0;
+    	if ($this->mpermission->permission("menu_ajaxDeleteMenu",$this->_data['user_active']['active_user_group']) == true) {
+    		$id = $this->input->get('id');
+    		if ($id != null) {
+    			$this->mmenu_detail->delete($id);
+    			$this->mmenu_detail->deleteAnd(array('parent' => $id));
+    			$rs = 1;
+    		}
+    	}
+    	echo $rs;
+    }
+
     public function delete($id)
     {
         $this->mpermission->checkPermission("menu","delete",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 1) {
+        	$myMenu = $this->mmenu->getData("",array('id' => $id));
+        	if ($myMenu && $myMenu['id'] > 1) {
+        		$this->mmenu->delete($id);
+        		$this->mmenu_detail->deleteAnd(array('menu_id' => $id));
+        		$title = lang('success');
+                $text = lang('menu').lang('deleted');
+                $type = 'success';
+        	} else {
+        		$title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('menu');
+                $type = 'error';
+        	}
+        } else {
+        	$title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+        }
+        $notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		$this->session->set_userdata('notify', $notify);
+        redirect(my_library::admin_site()."menu");
     }
 }

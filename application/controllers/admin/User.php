@@ -26,7 +26,7 @@ class User extends MY_Controller {
                 }
             }
             if ($countDel > 0) {
-                    $notify = array(
+                $notify = array(
                     'title' => lang('success'), 
                     'text' => $countDel.' user'.lang('deleted'),
                     'type' => 'success'
@@ -44,10 +44,10 @@ class User extends MY_Controller {
     	$this->load->library("My_paging");
     	$this->_data['title'] = lang('list');
     	$this->_data['formData'] = array(
-    		'fkeyword' => isset($_GET['fkeyword']) ? $_GET['fkeyword'] : '',
-    		'fstatus' => isset($_GET['fstatus']) ? $_GET['fstatus'] : 0,
-    		'fgroup' => isset($_GET['fgroup']) ? $_GET['fgroup'] : 0,
-    		'fperpage' => isset($_GET['fperpage']) ? $_GET['fperpage'] : 10
+    		'fkeyword' => $_GET['fkeyword'] ??  '',
+    		'fstatus' => $_GET['fstatus'] ?? 0,
+    		'fgroup' => $_GET['fgroup'] ?? 0,
+    		'fperpage' => $_GET['fperpage'] ?? 10
     	);
     	$and = '1';
     	if ($this->_data['formData']['fkeyword'] != '') {
@@ -71,7 +71,7 @@ class User extends MY_Controller {
 		$paging['base_url'] = my_library::admin_site() . 'user/?' . $query_string . '&page=';
 		$orderby = 'user_status asc,user_group asc';
 		$limit = $paging['start'] . ',' . $paging['per_page'];
-		$this->_data['list'] = $this->muser->getQuery($object = "", $and, $orderby, $limit);
+		$this->_data['list'] = $this->muser->getQuery("", $and, $orderby, $limit);
 		$this->_data['record'] = $this->muser->countQuery($and);
 		$this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
 		$this->_data['fstatus'] = $this->muser->dropdownlistStatus($this->_data['formData']['fstatus']);

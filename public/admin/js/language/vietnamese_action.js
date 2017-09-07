@@ -10,3 +10,5 @@ var notedit = "Không thể cập nhật!";
 var added = "Đã thêm ";
 var nonpermission = "Không được cấp quyền";
 var exists = "Thành phần này đã tồn tại!";
+var confirm_delete = "Bạn muốn xóa! ";
+var deleted = "Đã xóa! ";

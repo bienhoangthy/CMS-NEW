@@ -85,7 +85,7 @@
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th><?= lang('rolename')?></th>
+									<th width="50%"><?= lang('rolename')?></th>
 									<th><?= lang('rolevalue')?></th>
 								</tr>
 							</thead>

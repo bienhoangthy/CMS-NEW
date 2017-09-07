@@ -21,9 +21,12 @@
 					<div class="x_panel">
 						<div class="x_title">
 							<h2><?= lang('baseinfo')?></h2>
+							<ul class="nav navbar-right panel_toolbox">
+								<button type="submit" class="btn btn-success"><?= lang('save')?></button>
+								<button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+							</ul>
 							<div class="clearfix"></div>
 						</div>
-						<button type="submit" class="btn btn-success"><?= lang('save')?></button>
 						<div class="x_content">
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu_name"><?= lang('menuname')?><span class="required">*</span>
