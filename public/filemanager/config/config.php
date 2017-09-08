@@ -1,8 +1,8 @@
 <?php
 if (session_id() == '') session_start();
-if (!isset($_SESSION["RF"])) {
-	exit();
-}
+// if (!isset($_SESSION["RF"])) {
+// 	exit();
+// }
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
@@ -30,7 +30,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 |
 */
 
-define('USE_ACCESS_KEYS', true); // TRUE or FALSE
+define('USE_ACCESS_KEYS', TRUE); // TRUE or FALSE
 
 /*
 |--------------------------------------------------------------------------

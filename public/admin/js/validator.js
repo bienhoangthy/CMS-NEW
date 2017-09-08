@@ -31,6 +31,25 @@ var validator = (function($){
         complete        : 'Nhập không thành công',
         select          : 'Vui lòng chọn'
     };
+    if (configs.lang == 'english') {
+        message = {
+            invalid         : 'Illegal',
+            checked         : 'Please choose',
+            empty           : 'Please enter',
+            min             : 'Too short',
+            max             : 'Too long',
+            number_min      : 'too low',
+            number_max      : 'too high',
+            url             : 'Not a URL',
+            number          : 'Enter the number',
+            email           : 'Invalid email',
+            email_repeat    : 'Email does not match',
+            password_repeat : 'Do not match',
+            repeat          : 'Do not match',
+            complete        : 'Import failed',
+            select          : 'Please choose'
+        };
+    }
 
     if(!window.console){
         console={};
