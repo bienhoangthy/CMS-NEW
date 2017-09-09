@@ -49,16 +49,16 @@
 
             </div>
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              <a data-toggle="tooltip" data-placement="top" title="<?= lang('profile')?>" href="<?= my_library::admin_site().'user/profile/'.$user_active['active_user_id']?>">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              <a data-toggle="tooltip" data-placement="top" title="<?= lang('system')?>" href="<?= my_library::admin_site()?>system">
+                <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
+              <a data-toggle="tooltip" data-placement="top" title="<?= lang('lock')?>" href="<?= my_library::admin_site()?>index/lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="<?= my_library::admin_site()?>index/logout">
+              <a data-toggle="tooltip" data-placement="top" title="<?= lang('logout')?>" href="<?= my_library::admin_site()?>index/logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>

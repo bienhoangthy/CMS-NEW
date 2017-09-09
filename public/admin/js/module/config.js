@@ -49,3 +49,18 @@ function quickedit(id,name){
     });
   });
 }
+$('.delete').click(function(){
+  var id = $(this).attr('data-id');
+  var title = "Bạn muốn xóa "+configs.controller+" này!";
+    if (configs.lang == 'english') {title = "Do you want delete this "+configs.controller+"!"};
+    swal({
+      title: title,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes!"
+    },
+    function(){
+      window.location.href = configs.admin_site+configs.controller+"/delete/"+id;
+    });
+});

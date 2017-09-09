@@ -46,4 +46,6 @@ $lang['please'] = 'Please ';
 $lang['image'] = 'Update image';
 $lang['chooseimg'] = 'Choose image';
 $lang['close'] = 'Close';
+$lang['system'] = 'System';
+$lang['lock'] = 'Lock';
 ?>

@@ -1,6 +1,7 @@
 <?php
 if (session_id() == '') session_start();
-// if (!isset($_SESSION["RF"])) {
+// var_dump($_SESSION);die();
+// if (!isset($_SESSION["userActive"])) {
 // 	exit();
 // }
 

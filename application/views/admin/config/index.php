@@ -51,7 +51,7 @@
 											<td><?= $value['config_name']?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="javascript:void(0)" onclick="quickedit('<?= $value['id_lang']?>','<?= $value['config_name']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="javascript:void(0)" onclick="quickedit('<?= $value['id_lang']?>','<?= $value['config_name']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" data-id="<?= $value['id']?>" class="text-danger delete"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>

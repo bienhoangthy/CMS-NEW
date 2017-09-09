@@ -46,4 +46,6 @@ $lang['please'] = 'Vui lòng ';
 $lang['image'] = 'Cập nhật hình ảnh';
 $lang['chooseimg'] = 'Chọn ảnh';
 $lang['close'] = 'Đóng';
+$lang['system'] = 'Hệ thống';
+$lang['lock'] = 'Khóa';
 ?>
