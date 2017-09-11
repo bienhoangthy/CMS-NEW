@@ -38,6 +38,35 @@ class mcategory extends MY_Model
         return $list;
     }
 
+    public function getOther($lang='vietnamese',$component='')
+    {
+        $and = ' c.category_status = 1';
+        if ($component != '') {
+            $and .= ' and c.category_component = "'.$component.'"';
+        }
+        $select = 'c.id,ct.category_name';
+        $sql = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = 0 and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+        $query = $this->db->query($sql);
+        $list = $query->result_array();
+        foreach ($list as $key => $value) {
+            $sqlsub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$value['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+            $querysub = $this->db->query($sqlsub);
+            $list_lv2 = $querysub->result_array();
+            if (!empty($list_lv2)) {
+                foreach ($list_lv2 as $k => $val) {
+                    $sqlsub_sub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$val['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+                    $querysub_sub = $this->db->query($sqlsub_sub);
+                    $list_lv3 = $querysub_sub->result_array();
+                    if (!empty($list_lv3)) {
+                        $list_lv2[$k]['sub_subcate'] = $list_lv3;
+                    }
+                }
+                $list[$key]['subcate'] = $list_lv2;
+            }
+        }
+        return $list;
+    }
+
     public function selectParent($lang="vietnamese",$item = "")
     {
         $html = '<option value="0">-- '.lang('chooseparent').' --</option>';

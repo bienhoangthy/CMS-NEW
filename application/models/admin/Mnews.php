@@ -24,6 +24,21 @@ class mnews extends MY_Model
         return $query->result_array();
     }
 
+    public function countNews($and='')
+    {
+        $sql = 'select count(*) as total from '.$this->table.' n inner join '.$this->table_translation.' nt on n.id = nt.news_id where '.$and;
+        $query = $this->db->query($sql);
+        $total = $query->row_array();
+        return $total['total'];
+    }
+
+    public function dropdownlistCategory($cate=0,$lang_code)
+    {
+        $html = '';
+        $data = $this->mcategory->getOther($lang_code,"news");
+        return $data;
+    }
+
     public function listStatusName($item = "")
     {
         $arr = array(
@@ -98,39 +113,43 @@ class mnews extends MY_Model
         return $html;
     }
 
-    // public function listType($item = "")
-    // {
-    //     $arr = array(
-    //         1 => array(
-    //             'name'  => lang('tlist'),
-    //             'color' => 'primary'
-    //         ),
-    //         2 => array(
-    //             'name'  => lang('detail'),
-    //             'color' => 'info'
-    //         )
-    //     );
-    //     if (is_numeric($item)) {
-    //         return $arr[$item];
-    //     } else {
-    //         return $arr;
-    //     }
-    // }
+    public function listType($item = "")
+    {
+        $arr = array(
+            1 => array(
+                'name'  => lang('default'),
+                'icon' => 'fa-file-word-o'
+            ),
+            2 => array(
+                'name'  => lang('photonews'),
+                'icon' => 'fa-file-image-o'
+            ),
+            3 => array(
+                'name'  => lang('videonews'),
+                'icon' => 'fa-file-video-o'
+            )
+        );
+        if (is_numeric($item)) {
+            return $arr[$item];
+        } else {
+            return $arr;
+        }
+    }
 
-    // public function dropdownlistType($active = '')
-    // {
-    //     $html = '';
-    //     $data = $this->listType();
-    //     if ($data) {
-    //         foreach ($data as $key => $value) {
-    //             $selected = $active == $key ? 'selected' : '';
-    //             $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
-    //         }
-    //     } else {
-    //         $html .= '<option value="0">Data empty</option>';
-    //     }
-    //     return $html;
-    // }
+    public function dropdownlistType($active = '')
+    {
+        $html = '';
+        $data = $this->listType();
+        if ($data) {
+            foreach ($data as $key => $value) {
+                $selected = $active == $key ? 'selected' : '';
+                $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
+            }
+        } else {
+            $html .= '<option value="0">Data empty</option>';
+        }
+        return $html;
+    }
 
     public function do_resize($source_path,$target_path)
     {

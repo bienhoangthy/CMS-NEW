@@ -14,3 +14,6 @@
 tr.showacction td {
 	vertical-align: middle !important;
 }
+.x_content .edit {
+	display: none;
+}

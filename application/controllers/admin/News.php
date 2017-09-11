@@ -9,16 +9,15 @@ class News extends MY_Controller {
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mnews");
     }
-	public function index()
+	public function index($state=3)
 	{
 		$this->mpermission->checkPermission("news","index",$this->_data['user_active']['active_user_group']);
 		$this->load->library("My_paging");
-        $this->_data['title'] = lang('title');
-        $obj = 'n.id,n.news_category,n.news_status,n.news_state,n.news_picture,n.news_publicdate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';
+        $this->_data['title'] = lang('list');
+        $obj = 'n.id,n.news_category,n.news_type,n.news_view,n.news_hot,n.news_status,n.news_picture,n.news_orderby,n.news_updatedate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';
         $this->_data['formData'] = array(
             'fkeyword' => $_GET['fkeyword'] ?? '',
             'fstatus' => $_GET['fstatus'] ?? 0,
-            'fstate' => $_GET['fstate'] ?? 3,
             'fhot' => $_GET['fhot'] ?? 0,
             'fcategory' => $_GET['fcategory'] ?? 0,
             'fpublicdate' => $_GET['fpublicdate'] ?? '',
@@ -26,8 +25,9 @@ class News extends MY_Controller {
             'fperpage' => $_GET['fperpage'] ?? 20
         );
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['formData']['flanguage']);
-        $and = 'n.news_state = '. $this->_data['formData']['fstate'];
-        //$and = '1';
+        $this->_data['state'] = $state;
+        $this->_data['stateData'] = $this->mnews->listState($state);
+        $and = 'n.news_state = '. $state;
         if ($this->_data['formData']['fstatus'] > 0) {
             $and .= ' and n.news_status = '. $this->_data['formData']['fstatus'];
         }
@@ -39,10 +39,11 @@ class News extends MY_Controller {
         }
         if ($this->_data['formData']['fkeyword'] != '') {
             $and .= ' and (n.news_tag like "%' . $this->_data['formData']['fkeyword'] . '%"';
-            $and .= ' or nl.news_title like "%' . $this->_data['formData']['fkeyword'] . '%"';
-            $and .= ' or nl.news_alias like "%' . $this->_data['formData']['fkeyword'] . '%"';
-            $and .= ' or nl.news_summary like "%' . $this->_data['formData']['fkeyword'] . '%")';
+            $and .= ' or nt.news_title like "%' . $this->_data['formData']['fkeyword'] . '%"';
+            $and .= ' or nt.news_alias like "%' . $this->_data['formData']['fkeyword'] . '%"';
+            $and .= ' or nt.news_summary like "%' . $this->_data['formData']['fkeyword'] . '%")';
         }
+        $and .= ' and nt.language_code = "'.$this->_data['flanguage']['lang_code'].'"';
         // if ($this->_data['formData']['fpublicdate'] != '') {
         //     $and .= ' and n.news_publicdate = '. $this->_data['formData']['fpublicdate'];
         // }
@@ -55,11 +56,15 @@ class News extends MY_Controller {
         $orderby = 'n.news_orderby desc,n.id desc';
         $limit = $paging['start'] . ',' . $paging['per_page'];
         $this->_data['list'] = $this->mnews->getNews($obj, $and, $orderby, $limit);
-        //var_dump($this->_data['list']);die();
-        //Lỗi count
-        $this->_data['record'] = $this->mnews->countQuery($and);
+        $this->_data['record'] = $this->mnews->countNews($and);
         $this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
-        //$this->_data['extraJs'] = ['jquery.smartWizard.js'];
+        $this->_data['fstatus'] = $this->mnews->dropdownlistStatus($this->_data['formData']['fstatus']);
+        $this->_data['fcategory'] = $this->mnews->dropdownlistCategory('',$this->_data['formData']['flanguage']);
+        var_dump($this->_data['fcategory']);die();
+        $this->_data['token_name'] = $this->security->get_csrf_token_name();
+        $this->_data['token_value'] = $this->security->get_csrf_hash();
+        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css'];
+		$this->_data['extraJs'] = ['icheck.min.js','switchery.min.js','module/news.js'];
         $this->my_layout->view("admin/news/index", $this->_data);
 	}
 
