@@ -48,4 +48,7 @@ $lang['chooseimg'] = 'Chọn ảnh';
 $lang['close'] = 'Đóng';
 $lang['system'] = 'Hệ thống';
 $lang['lock'] = 'Khóa';
+$lang['choosecate'] = 'Chọn danh mục';
+$lang['chooseuser'] = 'Chọn nhân viên';
+$lang['uncategorized'] = 'Chưa phân loại';
 ?>

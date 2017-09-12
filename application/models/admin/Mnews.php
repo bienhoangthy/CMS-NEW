@@ -63,7 +63,7 @@ class mnews extends MY_Model
         $html = '';
         $data = $this->listStatusName();
         if ($data) {
-            $html .= '<option value="all">-- '.lang('choosestatus').' --</option>';
+            $html .= '<option value="0">'.lang('choosestatus').'</option>';
             foreach ($data as $key => $value) {
                 $selected = $active == $key ? 'selected' : '';
                 $html .= '<option ' . $selected . ' value="' . $key . '">- ' . $value["name"] . '</option>';
@@ -102,10 +102,10 @@ class mnews extends MY_Model
         $html = '';
         $data = $this->listState();
         if ($data) {
-            $html .= '<option value="all">-- '.lang('choosestate').' --</option>';
+            $html .= '<option value="0">'.lang('choosestate').'</option>';
             foreach ($data as $key => $value) {
                 $selected = $active == $key ? 'selected' : '';
-                $html .= '<option ' . $selected . ' value="' . $key . '">- ' . $value["name"] . '</option>';
+                $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
             }
         } else {
             $html .= '<option value="0">Data empty</option>';
@@ -141,12 +141,45 @@ class mnews extends MY_Model
         $html = '';
         $data = $this->listType();
         if ($data) {
+            $html .= '<option value="0">'.lang('choosetype').'</option>';
             foreach ($data as $key => $value) {
                 $selected = $active == $key ? 'selected' : '';
                 $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
             }
         } else {
             $html .= '<option value="0">Data empty</option>';
+        }
+        return $html;
+    }
+
+    public function listLayout($item = "")
+    {
+        $arr = array(
+            1 => array(
+                'name'  => lang('default'),
+                'file' => 'default'
+            ),
+            2 => array(
+                'name'  => lang('thematic'),
+                'file' => 'thematic'
+            )
+        );
+        if (is_numeric($item)) {
+            return $arr[$item];
+        } else {
+            return $arr;
+        }
+    }
+
+    public function dropdownlistLayout($active = '')
+    {
+        $html = '';
+        $data = $this->listLayout();
+        if ($data) {
+            foreach ($data as $key => $value) {
+                $selected = $active == $key ? 'selected' : '';
+                $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
+            }
         }
         return $html;
     }

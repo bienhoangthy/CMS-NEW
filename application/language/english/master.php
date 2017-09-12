@@ -48,4 +48,7 @@ $lang['chooseimg'] = 'Choose image';
 $lang['close'] = 'Close';
 $lang['system'] = 'System';
 $lang['lock'] = 'Lock';
+$lang['choosecate'] = 'Choose category';
+$lang['chooseuser'] = 'Choose user';
+$lang['uncategorized'] = 'Uncategorized';
 ?>

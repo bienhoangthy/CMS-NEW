@@ -38,7 +38,7 @@ class mcategory extends MY_Model
         return $list;
     }
 
-    public function getOther($lang='vietnamese',$component='')
+    public function dropdownlistCategory($active=0,$lang='vietnamese',$component='')
     {
         $and = ' c.category_status = 1';
         if ($component != '') {
@@ -48,24 +48,96 @@ class mcategory extends MY_Model
         $sql = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = 0 and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
-        foreach ($list as $key => $value) {
-            $sqlsub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$value['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
-            $querysub = $this->db->query($sqlsub);
-            $list_lv2 = $querysub->result_array();
-            if (!empty($list_lv2)) {
-                foreach ($list_lv2 as $k => $val) {
-                    $sqlsub_sub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$val['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
-                    $querysub_sub = $this->db->query($sqlsub_sub);
-                    $list_lv3 = $querysub_sub->result_array();
-                    if (!empty($list_lv3)) {
-                        $list_lv2[$k]['sub_subcate'] = $list_lv3;
+        $html = '<option value="0">'.lang('choosecate').'</option>';
+        $selected = $active == 1 ? 'selected' : '';
+        $html .= '<option '.$selected.' value="1">- '.lang('uncategorized').'</option>';
+        if (!empty($list)) {
+            foreach ($list as $value) {
+                $selected = $active == $value['id'] ? 'selected' : '';
+                $html .= '<option ' . $selected . ' value="' . $value['id'] . '">- ' . $value["category_name"] . '</option>';
+                //Sub
+                $sqlsub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$value['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+                $querysub = $this->db->query($sqlsub);
+                $list_lv2 = $querysub->result_array();
+                if (!empty($list_lv2)) {
+                    foreach ($list_lv2 as $val) {
+                        $selected = $active == $val['id'] ? 'selected' : '';
+                        $html .= '<option ' . $selected . ' value="' . $val['id'] . '">-- ' . $val["category_name"] . '</option>';
+                        //Sub-sub
+                        $sqlsub_sub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$val['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+                        $querysub_sub = $this->db->query($sqlsub_sub);
+                        $list_lv3 = $querysub_sub->result_array();
+                        if (!empty($list_lv3)) {
+                            foreach ($list_lv3 as $v) {
+                                $selected = $active == $v['id'] ? 'selected' : '';
+                                $html .= '<option ' . $selected . ' value="' . $v['id'] . '">---- ' . $v["category_name"] . '</option>';
+                            }
+                        }
                     }
                 }
-                $list[$key]['subcate'] = $list_lv2;
             }
+        } else {
+            $html = '<option value="0">Data empty</option>';
         }
-        return $list;
+        return $html;
     }
+
+    // public function getOther($lang='',$component='')
+    // {
+    //     $and = ' c.category_status = 1';
+    //     if ($component != '') {
+    //         $and .= ' and c.category_component = "'.$component.'"';
+    //     }
+    //     $select = 'c.id,ct.category_name';
+    //     $sql = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = 0 and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+    //     $query = $this->db->query($sql);
+    //     $list = $query->result_array();
+    //     foreach ($list as $key => $value) {
+    //         $sqlsub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$value['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+    //         $querysub = $this->db->query($sqlsub);
+    //         $list_lv2 = $querysub->result_array();
+    //         if (!empty($list_lv2)) {
+    //             foreach ($list_lv2 as $k => $val) {
+    //                 $sqlsub_sub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$val['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
+    //                 $querysub_sub = $this->db->query($sqlsub_sub);
+    //                 $list_lv3 = $querysub_sub->result_array();
+    //                 if (!empty($list_lv3)) {
+    //                     $list_lv2[$k]['sub_subcate'] = $list_lv3;
+    //                 }
+    //             }
+    //             $list[$key]['subcate'] = $list_lv2;
+    //         }
+    //     }
+    //     return $list;
+    // }
+
+    // public function dropdownlistCategory($active=0,$lang='vietnamese',$component='')
+    // {
+    //     $html = '';
+    //     $list = $this->getOther($lang,$component);
+    //     if ($list) {
+    //         $html .= '<option value="all">-- '.lang('choosecate').' --</option>';
+    //         foreach ($data as $value) {
+    //             $selected = $active == $value['id'] ? 'selected' : '';
+    //             $html .= '<option ' . $selected . ' value="' . $value['id'] . '">- ' . $value["category_name"] . '</option>';
+    //             if (isset($value['subcate'])) {
+    //                 foreach ($value['subcate'] as $val) {
+    //                     $selected = $active == $val['id'] ? 'selected' : '';
+    //                     $html .= '<option ' . $selected . ' value="' . $val['id'] . '">-- ' . $val["category_name"] . '</option>';
+    //                     if (isset($val['sub_subcate'])) {
+    //                         foreach ($val['sub_subcate'] as $v) {
+    //                             $selected = $active == $v['id'] ? 'selected' : '';
+    //                             $html .= '<option ' . $selected . ' value="' . $v['id'] . '">-- ' . $v["category_name"] . '</option>';
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     } else {
+    //         $html .= '<option value="0">Data empty</option>';
+    //     }
+    //     return $html;
+    // }
 
     public function selectParent($lang="vietnamese",$item = "")
     {

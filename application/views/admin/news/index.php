@@ -57,7 +57,7 @@
 						<div class="">
 							<form class="form-horizontal form-label-left" method="get">
 								<div class="form-group">
-									<div class="col-md-3 col-sm-3 col-xs-6">
+									<div class="col-md-2 col-sm-2 col-xs-6">
 										<div class="input-group">
 											<input type="text" name="fkeyword" value="<?= $formData['fkeyword']?>" placeholder="<?= lang('search')?>" class="form-control">
 											<span class="input-group-btn">
@@ -65,14 +65,36 @@
 											</span>
 										</div>
 									</div>
-									<div class="col-md-3 col-sm-4 col-xs-6">
-										<select class="form-control" name="fstatus" onchange="this.form.submit()">
-											<?= $fstatus?>
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="fcategory" onchange="this.form.submit()">
+											<?= $fcategory?>
 										</select>
 									</div>
-									<div class="col-md-3 col-sm-4 col-xs-6">
-										<select class="form-control" name="fgroup" onchange="this.form.submit()">
-
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="fstatus" onchange="this.form.submit()">
+											<?= $fstatus?>
+											<option <?= $formData['fstatus'] == 10 ? 'selected' : ''?> value="10">- <?= lang('hotnews')?></option>
+										</select>
+									</div>
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="ftype" onchange="this.form.submit()">
+											<?= $ftype?>
+										</select>
+									</div>
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="forder" onchange="this.form.submit()">
+											<option value=""><?= lang('orderby')?></option>
+											<option <?= $formData['forder'] == 'latest' ? 'selected' : ''?> value="latest"><?= lang('latest')?></option>
+											<option <?= $formData['forder'] == 'oldest' ? 'selected' : ''?> value="oldest"><?= lang('oldest')?></option>
+											<option <?= $formData['forder'] == 'mostviewed' ? 'selected' : ''?> value="mostviewed"><?= lang('mostviewed')?></option>
+											<option <?= $formData['forder'] == 'craetedate' ? 'selected' : ''?> value="craetedate"><?= lang('craetedate')?></option>
+											<option <?= $formData['forder'] == 'publishdate' ? 'selected' : ''?> value="publishdate"><?= lang('publishdate')?></option>
+											<option <?= $formData['forder'] == 'updatedate' ? 'selected' : ''?> value="updatedate"><?= lang('updatedate')?></option>
+										</select>
+									</div>
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="fuser" onchange="this.form.submit()">
+											<?= $fuser?>
 										</select>
 									</div>
 									<input type="hidden" name="page" value="<?= $page?>">  

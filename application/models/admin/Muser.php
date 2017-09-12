@@ -10,6 +10,26 @@ class muser extends MY_Model
     }
     protected $table = "cms_user";
 
+    public function dropdownlistUser($active="",$group=0)
+    {
+        $html = '';
+        $and = 'user_status = 1';
+        if ($group > 0) {
+            $and .= ' and user_group = '.$group;
+        }
+        $data = $this->getQuery("id,user_fullname",$and,"user_group asc","");
+        if ($data) {
+            $html .= '<option value="0">'.lang('chooseuser').'</option>';
+            foreach ($data as $value) {
+                $selected = $active == $value['id'] ? 'selected' : '';
+                $html .= '<option ' . $selected . ' value="' . $value['id'] . '">- ' . $value["user_fullname"] . '</option>';
+            }
+        } else {
+            $html .= '<option value="0">Data empty</option>';
+        }
+        return $html;
+    }
+
     public function listStatusName($item = "")
     {
         $arr = array(
