@@ -97,6 +97,22 @@ function deleteImg(id)
   });
 }
 
+$('#time').timepicker({ 'timeFormat': 'H:i:s' });
+$('#now').on('ifUnchecked', function () {$(".datetimepublish").prop('disabled', false);});
+$('#now').on('ifChecked', function () {$(".datetimepublish").prop('disabled', true);});
+
+tinymce.init({
+  selector: 'textarea#news_summary',
+  height: 100,
+  menubar: false,
+  plugins: [
+    'advlist charmap preview anchor textcolor',
+    'searchreplace visualblocks fullscreen',
+    'insertdatetime contextmenu paste'
+  ],
+  toolbar: 'undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | outdent indent | removeformat'
+});
+
 tinymce.init({selector: 'textarea#news_detail',height: 300,theme: 'modern',plugins: [
     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
     'searchreplace wordcount visualblocks visualchars code fullscreen',

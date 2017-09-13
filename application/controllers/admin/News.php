@@ -113,7 +113,6 @@ class News extends MY_Controller {
         	'news_status' => 1,
         	'news_picture' => '',
         	'news_orderby' => 0,
-        	'news_publicdate' => '',
         	'news_author' => '',
         	'news_source' => '',
         	'news_password' => ''
@@ -128,20 +127,141 @@ class News extends MY_Controller {
         );
         //Post
         if (isset($_POST['news_title'])) {
-        	var_dump($_POST);die();
+        	$timenow = date("Y-m-d H:i:s");
+        	$this->load->helper('alias');
+        	$lang = $this->input->post('news_lang') ?? $this->_data['language'];
+        	$method = $this->input->post('type_submit') ?? 1;
+        	$now = $this->input->post('now') ?? 0;
+        	$state = $method == 2 ? 2 : 1;
+        	$publicdate = $now == 1 ? $timenow : $this->input->post('date').' '.$this->input->post('time');
+        	$password = $this->input->post('news_password');
+        	$password = $password != null ? md5($password) : '';
+        	$file = $this->input->post('file');
+        	$this->_data['formData'] = array( 
+	        	'news_category' => $this->input->post('news_category'), 
+	        	'news_type' => $this->input->post('news_type'), 
+	            'news_view' => $this->input->post('news_view'),
+	            'news_layout' => $this->input->post('news_layout'),
+	            'news_hot' => $this->input->post('news_hot') ?? 0,
+	        	'news_tag' => $this->input->post('news_tag'),
+	        	'news_status' => $this->input->post('news_status'),
+	        	'news_state' => $state,
+	        	'news_picture' => '',
+	        	'news_orderby' => $this->input->post('news_orderby'),
+	        	'news_publicdate' => $publicdate,
+	        	'news_createdate' => $timenow,
+	        	'news_updatedate' => $timenow,
+	        	'news_author' => $this->input->post('news_author'),
+	        	'news_source' => $this->input->post('news_source'),
+	        	'news_password' => $password,
+	        	'user' => $this->_data['user_active']['active_user_id']
+	        );
+	        $alias = to_alias($this->input->post('news_title'));
+	        $this->_data['formDataLang'] = array(
+	        	'news_id' => 0,
+	        	'language_code' => $lang,
+	        	'news_title' => $this->input->post('news_title'),
+	        	'news_alias' => $alias ?? time(),
+	        	'news_summary' => $this->input->post('news_summary'),
+	        	'news_detail' => $this->input->post('news_detail'),
+	        	'news_seo_title' => $this->input->post('news_seo_title'),
+	        	'news_seo_keyword' => $this->input->post('news_seo_keyword'),
+	        	'news_seo_description' => $this->input->post('news_seo_description')
+	        );
+	        $checkName = $this->mnews_translation->getData('id',array('news_title' => $this->_data['formDataLang']['news_title']));
+            $checkAlias = $this->mnews_translation->getData('id',array('news_alias' => $this->_data['formDataLang']['news_alias']));
+            $error = false;
+            if ($state == 1) {
+            	do {
+	                if ($this->_data['formDataLang']['news_title'] == null) {
+	                    $text = lang('pleaseinput').lang('titlenews');$error = true;break;
+	                }
+	                if ($checkName && $checkName['id'] > 0) {
+	                    $text = lang('titlenews').lang('exists');$error = true;break;
+	                }
+	                if ($checkAlias && $checkAlias['id'] > 0) {
+	                    $this->_data['formDataLang']['news_alias'] = $this->_data['formDataLang']['news_alias'].'-1';
+	                }
+	            } while (0);
+            } else {
+            	do {
+	                if ($this->_data['formData']['news_category'] == null || $this->_data['formData']['news_category'] < 1) {
+	                    $text = lang('pleasechoose').lang('category');$error = true;break;
+	                }
+	                if ($this->_data['formData']['news_type'] < 1) {
+	                    $text = lang('pleasechoose').lang('type');$error = true;break;
+	                }
+	                if ($this->_data['formData']['news_layout'] < 1) {
+	                    $text = lang('pleasechoose').lang('layout');$error = true;break;
+	                }
+	                if ($this->_data['formData']['news_status'] < 1) {
+	                    $text = lang('pleasechoose').lang('status');$error = true;break;
+	                }
+	                if ($this->_data['formDataLang']['news_title'] == null) {
+	                    $text = lang('pleaseinput').lang('titlenews');$error = true;break;
+	                }
+	                if ($this->_data['formDataLang']['news_detail'] == null) {
+	                    $text = lang('pleaseinput').lang('detail');$error = true;break;
+	                }
+	                if ($checkName && $checkName['id'] > 0) {
+	                    $text = lang('titlenews').lang('exists');$error = true;break;
+	                }
+	                if ($checkAlias && $checkAlias['id'] > 0) {
+	                    $this->_data['formDataLang']['news_alias'] = $this->_data['formDataLang']['news_alias'].'-1';
+	                }
+	            } while (0);
+            }
+            if ($error == true) {
+            	$notify = array(
+                    'title' => lang('unsuccessful'), 
+                    'text' => $text,
+                    'type' => 'error'
+                );
+                $this->session->set_userdata('notify', $notify);
+            } else {
+            	$insert = $this->mnews->add($this->_data['formData']);
+            	if (is_numeric($insert) && $insert > 0) {
+	                if ($file != null) {
+	                    $news_picture = $this->mnews->saveImage($file,$insert,$this->_data['formDataLang']['news_alias']);
+	                    $this->mnews->edit($insert,array('news_picture' => $news_picture));
+	                }
+	                $this->_data['formDataLang']['news_id'] = $insert;
+	                $insert_lang = $this->mnews_translation->add($this->_data['formDataLang']);
+	                $titleinsertlang = is_numeric($insert_lang) > 0 ? ' | '.$lang : '';
+                    $notify = array(
+                        'title' => lang('success'), 
+                        'text' => lang('news').' #'.$insert.lang('added').$titleinsertlang,
+                        'type' => 'success'
+                    );
+                    $this->session->set_userdata('notify', $notify);
+                    switch ($method) {
+                    	case 1:
+                    		redirect(my_library::admin_site()."news/edit/".$insert);
+                    		break;
+                    	case 2:
+                    		redirect(my_library::admin_site()."news/index/2");
+                    		break;
+                    	case 3:
+                    		redirect(my_library::admin_site()."news/index/1");
+                    		break;
+                    	default:
+                    		redirect(my_library::admin_site()."news/index/1");
+                    		break;
+                    }
+            	}
+            }
         }
+        $this->_data['date'] = '';
+        $this->_data['time'] = '';
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
 		$this->_data['title'] = lang('newsadd');
 		$this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['news_category'],$this->_data['langPost']['lang_code'],'news');
 		$this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
 		$this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
-		//$this->_data['typeview'] = $this->mcategory->dropdownlistType($this->_data['formData']['category_view_type']);
-		//$this->_data['parent'] = $this->mcategory->selectParent($this->_data['language'],$this->_data['formData']['category_parent']);
-		//$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component']);
         $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];
-        $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','jquery.tagsinput.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
+        $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','jquery.tagsinput.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
 		$this->my_layout->view("admin/news/post", $this->_data);
 	}
 

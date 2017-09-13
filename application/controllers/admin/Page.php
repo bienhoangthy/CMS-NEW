@@ -93,7 +93,7 @@ class Page extends MY_Controller {
                     $this->_data['formData']['page_picture'] = $this->mpage->saveImage($file,$this->_data['formDataLang']['page_alias']);
                 }
                 $insert = $this->mpage->add($this->_data['formData']);
-                if (is_numeric($insert) > 0) {
+                if (is_numeric($insert)  && $insert > 0) {
                     $this->_data['formDataLang']['page_id'] = $insert;
                     $insert_lang = $this->mpage_translation->add($this->_data['formDataLang']);
                     $titleinsertlang = is_numeric($insert_lang) > 0 ? ' | '.$lang : '';

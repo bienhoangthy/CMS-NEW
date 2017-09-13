@@ -204,14 +204,19 @@ class mnews extends MY_Model
         }
     }
 
-    public function saveImage($file,$alias)
+    public function saveImage($file,$id,$alias)
     {
         $rs = '';
         $file = str_replace('data:image/jpeg;base64,', '', $file);
         $file = str_replace(' ', '+', $file);
         $fileData = base64_decode($file);
         $name = $alias.time().".jpeg";
-        $fileName = realpath(APPPATH . "../media/news/")."/".$name;
+        $folderName = realpath(APPPATH . "../media/news/")."/".$id;
+        if (!is_dir($folderName)) {
+            mkdir($folderName, 0777, true);
+            chmod($folderName, 0777);
+        }
+        $fileName = realpath(APPPATH . "../media/news/")."/".$id."/".$name;
         $transFile = file_put_contents($fileName, $fileData);
         if ($transFile != false) {
             $this->do_resize($fileName,realpath(APPPATH . "../media/news/"));

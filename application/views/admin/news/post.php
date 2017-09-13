@@ -14,12 +14,15 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
-      <div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 500px;max-width: 100%;">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-        </button>
-        <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
-      </div>
-      <form class="form-horizontal form-label-left" id="formNews" method="post" enctype="multipart/form-data" novalidate>
+      <form class="form-horizontal form-label-left" id="formNews" method="post">
+        <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="alert alert-success alert-dismissible fade in" role="alert" style="max-width: 100%;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+            </button>
+            <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
+          </div>
+        </div>
         <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="x_panel">
             <div class="x_content">
@@ -27,14 +30,14 @@
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_title"><?= lang('titlenews')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
-                  <input id="news_title" class="form-control col-md-7 col-xs-12" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
+                  <input id="news_title" class="form-control col-md-7 col-xs-12" maxlength="80" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_summary"><?= lang('summary')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <textarea style="width: 100%;" name="news_summary"><?= $formDataLang['news_summary']?></textarea>
+                  <textarea id="news_summary" name="news_summary"><?= $formDataLang['news_summary']?></textarea>
                 </div>
               </div>
               <div class="form-group">
@@ -83,9 +86,66 @@
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
           <div class="x_panel">
+            <div class="x_title">
+              <h2><?= lang('publish')?></h2>
+              <div class="pull-right">
+                <button type="submit" class="btn btn-success"><?= lang('save')?></button>
+                <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+              </div>
+              <div class="clearfix"></div>
+            </div>
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_type"><?= lang('choosetype')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="type_submit"><?= lang('operations')?>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <select class="form-control" name="type_submit">
+                    <option value="1"><?= lang('savedraft')?></option>
+                    <option value="2"><?= lang('savependding')?></option>
+                    <option value="3"><?= lang('saveclose')?></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_publicdate"><?= lang('date')?>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <input type="text" id="date" data-provide="datepicker" data-date-format="yyyy-mm-dd" name="date" class="form-control datetimepublish" value="<?= $date?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_publicdate"><?= lang('time')?>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <input type="text" id="time" name="time" class="form-control datetimepublish" value="<?= $time?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-7 col-md-offset-4 col-sm-7 .col-sm-offset-4 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" class="flat" name="now" id="now" value="1"> <?= lang('now')?>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_category"><?= lang('category')?>
+                </label>
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <select class="form-control" name="news_category">
+                    <?= $category?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_type"><?= lang('type')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <select class="form-control" name="news_type">
@@ -117,7 +177,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_orderby"><?= lang('hotnews')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_hot"><?= lang('hotnews')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <label style="margin-top: 5px;">
@@ -139,15 +199,6 @@
         <div class="col-md-4 col-sm-4 col-xs-12">
           <div class="x_panel">
             <div class="x_content">
-              <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_category"><?= lang('category')?>
-                </label>
-                <div class="col-md-7 col-sm-7 col-xs-12">
-                  <select class="form-control" name="news_category">
-                    <?= $category?>
-                  </select>
-                </div>
-              </div>
               <div class="form-group">
                 <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_author"><?= lang('author')?>
                 </label>
@@ -249,14 +300,7 @@
               </div>
             </div>
           </div>
-        </div> 
-        <div class="col-md-4 col-sm-4 col-xs-12">
-          <div class="form-group pull-right">
-            <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-            <button type="submit" class="btn btn-success"><?= lang('save')?></button>
-            <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
-          </div>
-        </div> 
+        </div>  
       </form>
     </div>
   </div>

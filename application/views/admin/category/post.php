@@ -19,7 +19,7 @@
         </button>
         <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
       </div>
-      <form class="form-horizontal form-label-left" id="formCategory" method="post" enctype="multipart/form-data" novalidate>
+      <form class="form-horizontal form-label-left" id="formCategory" method="post">
         <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="x_panel">
             <div class="x_content">
