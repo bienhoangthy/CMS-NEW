@@ -32,12 +32,12 @@ class mnews extends MY_Model
         return $total['total'];
     }
 
-    public function dropdownlistCategory($cate=0,$lang_code)
-    {
-        $html = '';
-        $data = $this->mcategory->getOther($lang_code,"news");
-        return $data;
-    }
+    // public function dropdownlistCategory($cate=0,$lang_code)
+    // {
+    //     $html = '';
+    //     $data = $this->mcategory->getOther($lang_code,"news");
+    //     return $data;
+    // }
 
     public function listStatusName($item = "")
     {
@@ -216,19 +216,19 @@ class mnews extends MY_Model
             mkdir($folderName, 0777, true);
             chmod($folderName, 0777);
         }
-        $fileName = realpath(APPPATH . "../media/news/")."/".$id."/".$name;
+        $fileName = $folderName."/".$name;
         $transFile = file_put_contents($fileName, $fileData);
         if ($transFile != false) {
-            $this->do_resize($fileName,realpath(APPPATH . "../media/news/"));
+            $this->do_resize($fileName,$folderName);
             $rs = $name;
         }
         return $rs;
     }
 
-    public function delimage($image_name)
+    public function delimage($id,$image_name)
     {
-        $link_image = realpath(APPPATH . "../media/news/")."/".$image_name;
-        $link_image_thumb = realpath(APPPATH . "../media/news/").'/thumb-'.$image_name;
+        $link_image = realpath(APPPATH . "../media/news/")."/".$id."/".$image_name;
+        $link_image_thumb = realpath(APPPATH . "../media/news/")."/".$id.'/thumb-'.$image_name;
         if (file_exists($link_image)) {
             unlink($link_image);
         }

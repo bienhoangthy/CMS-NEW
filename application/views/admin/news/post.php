@@ -294,8 +294,7 @@
             <div class="x_content">
               <div class="control-group">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <input id="tags_1" type="text" name="news_tag" class="tags form-control" value="<?= $formData['news_tag']?>" />
-                  <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                  <input name="news_tag" id="tags" value="<?= $formData['news_tag']?>">
                 </div>
               </div>
             </div>

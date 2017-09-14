@@ -53,4 +53,7 @@ $lang['savedraft'] = 'Save Draft';
 $lang['savependding'] = 'Save & Pending';
 $lang['savepublish'] = 'Save & Publish';
 $lang['saveclose'] = 'Save & Close';
+$lang['incorrectpassword'] = 'Incorrect password!';
+$lang['needpassword'] = 'Need password!';
+$lang['newsedit'] = 'Edit News';
  ?>

@@ -53,4 +53,7 @@ $lang['savedraft'] = 'Lưu nháp';
 $lang['savependding'] = 'Lưu & Chờ duyệt';
 $lang['savepublish'] = 'Lưu & Xuất bản';
 $lang['saveclose'] = 'Lưu & Đóng';
+$lang['incorrectpassword'] = 'Mật khẩu không chính xác!';
+$lang['needpassword'] = 'Cần mật khẩu!';
+$lang['newsedit'] = 'Chỉnh sửa bài viết';
  ?>

@@ -136,14 +136,13 @@ class News extends MY_Controller {
         	$publicdate = $now == 1 ? $timenow : $this->input->post('date').' '.$this->input->post('time');
         	$password = $this->input->post('news_password');
         	$password = $password != null ? md5($password) : '';
-        	$file = $this->input->post('file');
         	$this->_data['formData'] = array( 
 	        	'news_category' => $this->input->post('news_category'), 
 	        	'news_type' => $this->input->post('news_type'), 
 	            'news_view' => $this->input->post('news_view'),
 	            'news_layout' => $this->input->post('news_layout'),
 	            'news_hot' => $this->input->post('news_hot') ?? 0,
-	        	'news_tag' => $this->input->post('news_tag'),
+	        	'news_tag' => $this->input->post('news_tag') ?? '',
 	        	'news_status' => $this->input->post('news_status'),
 	        	'news_state' => $state,
 	        	'news_picture' => '',
@@ -221,9 +220,12 @@ class News extends MY_Controller {
             } else {
             	$insert = $this->mnews->add($this->_data['formData']);
             	if (is_numeric($insert) && $insert > 0) {
+            		$file = $this->input->post('file');
 	                if ($file != null) {
 	                    $news_picture = $this->mnews->saveImage($file,$insert,$this->_data['formDataLang']['news_alias']);
-	                    $this->mnews->edit($insert,array('news_picture' => $news_picture));
+	                    if ($news_picture != '') {
+	                    	$this->mnews->edit($insert,array('news_picture' => $news_picture));
+	                    }
 	                }
 	                $this->_data['formDataLang']['news_id'] = $insert;
 	                $insert_lang = $this->mnews_translation->add($this->_data['formDataLang']);
@@ -267,13 +269,117 @@ class News extends MY_Controller {
 
 	public function edit($id)
 	{
-
+		$this->mpermission->checkPermission("news","edit",$this->_data['user_active']['active_user_group']);
+		if (is_numeric($id) && $id > 0) {
+			$myNews = $this->mnews->getData("",array('id' => $id));
+			if ($myNews && $myNews['id'] > 0) {
+				// $password = $_GET['password'] ?? '';
+				// if ($myNews['news_password'] != '' && $this->mpermission->permission("news_news_accessall",$this->_data['user_active']['active_user_group']) != true) {
+				// 	if (md5($password) != $myNews['news_password']) {
+				// 		$text = $password == '' ? lang('needpassword') : lang('incorrectpassword');
+				// 		$notify = array(
+		  //                   'title' => lang('unsuccessful'), 
+		  //                   'text' => $text,
+		  //                   'type' => 'error'
+		  //               );
+		  //               $this->session->set_userdata('notify', $notify);
+		  //               redirect(my_library::admin_site()."news/index/".$myNews['news_state']);exit();
+				// 	}
+				// }
+				$this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
+                $this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
+                $this->_data['formData'] = array( 
+		        	'news_category' => $myNews['news_category'], 
+		        	'news_type' => $myNews['news_type'], 
+		            'news_view' => $myNews['news_view'],
+		            'news_layout' => $myNews['news_layout'],
+		            'news_hot' => $myNews['news_hot'],
+		        	'news_tag' => $myNews['news_tag'],
+		        	'news_status' => $myNews['news_status'],
+		        	'news_picture' => $myNews['news_picture'],
+		        	'news_orderby' => $myNews['news_orderby'],
+		        	'news_author' => $myNews['news_author'],
+		        	'news_source' => $myNews['news_source'],
+		        	'news_password' => $myNews['news_password']
+		        );
+		        $myNews_lang = $this->mnews_translation->getData("",array('news_id' => $id,'language_code' => $this->_data['langPost']['lang_code']));
+		        if (!empty($myNews_lang)) {
+		        	$this->_data['formDataLang'] = array(
+			        	'news_title' => $myNews_lang['news_title'],
+			        	'news_summary' => $myNews_lang['news_summary'],
+			        	'news_detail' => $myNews_lang['news_detail'],
+			        	'news_seo_title' => $myNews_lang['news_seo_title'],
+			        	'news_seo_keyword' => $myNews_lang['news_seo_keyword'],
+			        	'news_seo_description' => $myNews_lang['news_seo_description']
+			        );
+		        } else {
+		        	$this->_data['formDataLang'] = array(
+			        	'news_title' => '',
+			        	'news_summary' => '',
+			        	'news_detail' => '',
+			        	'news_seo_title' => '',
+			        	'news_seo_keyword' => '',
+			        	'news_seo_description' => ''
+			        );
+		        }
+		        //Post
+		        if (isset($_POST['news_title'])) {
+		        	var_dump($_POST);die();
+		        }
+		        $this->_data['id'] = $id;
+		        $this->_data['date'] = date("Y-m-d",strtotime($myNews['news_publicdate']));
+		        $this->_data['time'] = date("H:i:s",strtotime($myNews['news_publicdate']));
+		        $this->_data['token_name'] = $this->security->get_csrf_token_name();
+		        $this->_data['token_value'] = $this->security->get_csrf_hash();
+				$this->_data['title'] = lang('newsedit')." #".$id;
+				$this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['news_category'],$this->_data['langPost']['lang_code'],'news');
+				$this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
+				$this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
+		        $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
+		        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
+		        $this->_data['extraJs'] = ['validator.js','language/'.$this->_data['language'].'.js','icheck.min.js','switchery.min.js','jquery.tagsinput.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+				$this->my_layout->view("admin/news/post", $this->_data);
+			} else {
+				$notify = array(
+                    'title' => lang('notfound'), 
+                    'text' => lang('news').lang('notexists'),
+                    'type' => 'warning'
+                );
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."news");
+			}
+		} else {
+			$notify = array(
+                'title' => lang('notfound'), 
+                'text' => lang('wrongid'),
+                'type' => 'warning'
+            );
+            $this->session->set_userdata('notify', $notify);
+            redirect(my_library::admin_site()."news");
+		}
 	}
 
 	public function delete($id)
 	{
 
 	}
+
+	// public function checkPassword()
+	// {
+	// 	$rs = 0;
+	// 	$id = $_GET['id'];
+	// 	$password = $_GET['password'];
+	// 	if ($id != null && $password != null) {
+	// 		$myNews = $this->mnews->getData("news_password",array('id' => $id));
+	// 		if (md5($password) == $myNews['news_password']) {
+	// 			$rs = 1;
+	// 			$this->session->unset_userdata("news_password_".$id);
+	// 			$this->session->set_userdata('news_password_'.$id, true);
+	// 		}
+	// 	}
+	// 	echo $rs;
+	// }
+
 
 	public function deleteImage()
 	{

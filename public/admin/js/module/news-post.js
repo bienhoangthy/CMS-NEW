@@ -77,7 +77,7 @@ function deleteImg(id)
     closeOnConfirm: false
   },
   function(){
-    var url = configs.admin_site+configs .controller+'/deleteImage';
+    var url = configs.admin_site+configs.controller+'/deleteImage';
     $.ajax({
       url: url,
       data: {"id":id},
@@ -100,7 +100,7 @@ function deleteImg(id)
 $('#time').timepicker({ 'timeFormat': 'H:i:s' });
 $('#now').on('ifUnchecked', function () {$(".datetimepublish").prop('disabled', false);});
 $('#now').on('ifChecked', function () {$(".datetimepublish").prop('disabled', true);});
-
+$('#tags').tagsInput();
 tinymce.init({
   selector: 'textarea#news_summary',
   height: 100,
