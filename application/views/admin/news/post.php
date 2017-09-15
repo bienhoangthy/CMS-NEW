@@ -2,7 +2,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><?= $title?></h3>
+        <h3><?= $title?> <a href="<?= my_library::admin_site()?>news/index/<?= $state?>"><button type="button" class="btn btn-<?= $stateData['color']?> btn-xs"><i class="fa fa-list"></i> <?= lang('listsingle').$stateData['name']?></button></a> <a href="<?= my_library::admin_site()?>news/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('newsadd')?></button></a></h3>
       </div>
       <div class="title_right hidden-xs">
         <ol class="breadcrumb pull-right">
@@ -14,15 +14,15 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="alert alert-success alert-dismissible fade in" role="alert" style="max-width: 100%;">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+          </button>
+          <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
+        </div>
+      </div>
       <form class="form-horizontal form-label-left" id="formNews" method="post">
         <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-        <div class="col-md-6 col-sm-6 col-xs-12">
-          <div class="alert alert-success alert-dismissible fade in" role="alert" style="max-width: 100%;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-            </button>
-            <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
-          </div>
-        </div>
         <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="x_panel">
             <div class="x_content">
@@ -33,6 +33,17 @@
                   <input id="news_title" class="form-control col-md-7 col-xs-12" maxlength="80" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
                 </div>
               </div>
+              <?php if (isset($formDataLang['news_alias']) && isset($id)): ?>
+                <div class="form-inline" style="margin-left: 10px;">
+                  <div class="form-group">
+                    <label class="control-label" style="text-align: left !important;" for="news_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
+                    </label><br>
+                    <code><?= base_url()?></code>
+                    <input type="text" class="form-control" name="news_alias" value="<?= $formDataLang['news_alias']?>">
+                    <code>-post<?= $id?>.html</code>
+                  </div>
+                </div>
+              <?php endif ?>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_summary"><?= lang('summary')?>
                 </label>
@@ -87,10 +98,17 @@
         <div class="col-md-4 col-sm-4 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2><?= lang('publish')?></h2>
+              <h2><?= $stateData['name']?></h2>
               <div class="pull-right">
-                <button type="submit" class="btn btn-success"><?= lang('save')?></button>
-                <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+                <?php if (isset($id)): ?>
+                  <button type="submit" class="btn btn-success" style="margin-right: -2px;"><?= lang('update')?></button>
+                <?php else: ?>
+                  <button type="submit" class="btn btn-success" style="margin-right: -2px;"><?= lang('create')?></button>
+                <?php endif ?>
+                <button type="reset" class="btn btn-primary" style="margin-right: -2px;"><?= lang('reset')?></button>
+                <?php if ($state == 3): ?>
+                  <a href="#"><button type="button" class="btn btn-danger"><?= lang('unpublish')?></button></a>
+                <?php endif ?>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -100,9 +118,7 @@
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <select class="form-control" name="type_submit">
-                    <option value="1"><?= lang('savedraft')?></option>
-                    <option value="2"><?= lang('savependding')?></option>
-                    <option value="3"><?= lang('saveclose')?></option>
+                    <?= $stateOperations?>
                   </select>
                 </div>
               </div>
@@ -214,11 +230,16 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_password"><?= lang('password')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_password"><?php if ($formData['news_password'] != ''): ?>
+                  <?= lang('changepass')?>
+                <?php else: ?>
+                  <?= lang('password')?>
+                <?php endif ?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
-                  <input id="news_password" class="form-control" name="news_password" type="text" value="<?= $formData['news_password']?>">
+                  <input id="news_password" class="form-control" name="news_password" type="text">
                 </div>
+                <!-- Xóa pass -->
               </div>
             </div>
           </div>

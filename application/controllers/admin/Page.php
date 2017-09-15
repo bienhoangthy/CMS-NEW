@@ -228,7 +228,7 @@ class Page extends MY_Controller {
                                 } else {
                                     $notify = array(
                                         'title' => lang('success'), 
-                                        'text' => lang('page').' '.$id.lang('edited'),
+                                        'text' => lang('page').' #'.$id.lang('edited'),
                                         'type' => 'success'
                                     );
                                 }

@@ -32,13 +32,6 @@ class mnews extends MY_Model
         return $total['total'];
     }
 
-    // public function dropdownlistCategory($cate=0,$lang_code)
-    // {
-    //     $html = '';
-    //     $data = $this->mcategory->getOther($lang_code,"news");
-    //     return $data;
-    // }
-
     public function listStatusName($item = "")
     {
         $arr = array(
@@ -109,6 +102,26 @@ class mnews extends MY_Model
             }
         } else {
             $html .= '<option value="0">Data empty</option>';
+        }
+        return $html;
+    }
+
+    public function stateOperations($state=1)
+    {
+        switch ($state) {
+            case 1:
+                $html = '<option value="1">'.lang('savedraft').'</option><option value="2">'.lang('saveclose').'</option><option value="3">'.lang('savependding').'</option>';
+                break;
+            case 2:
+                $html = '<option value="1">'.lang('save').'</option><option value="2">'.lang('saveclose').'</option><option value="3">'.lang('savepublish').'</option>';
+                break;
+            case 3:
+                $html = '<option value="1">'.lang('save').'</option><option value="2">'.lang('saveclose').'</option>';
+                break;
+            
+            default:
+                $html = '';
+                break;
         }
         return $html;
     }
