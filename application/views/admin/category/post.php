@@ -211,7 +211,7 @@
 </div>
 
 <!-- Image modal -->
-<div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
+<div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1" style="z-index: 9999999;">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="width: 1000px;">
       <div class="modal-header" style="background-color: #27ae60;">

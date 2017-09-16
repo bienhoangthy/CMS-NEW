@@ -12,6 +12,7 @@ class News extends MY_Controller {
 	public function index($state=3)
 	{
 		$this->mpermission->checkPermission("news","index",$this->_data['user_active']['active_user_group']);
+		$state = $state < 1 || $state > 3 ? 3 : $state;
 		$this->load->library("My_paging");
         $this->_data['title'] = lang('list');
         $obj = 'n.id,n.news_category,n.news_type,n.news_view,n.news_hot,n.news_status,n.news_picture,n.news_orderby,n.news_updatedate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';
@@ -81,7 +82,13 @@ class News extends MY_Controller {
         $paging['num_links'] = 5;
         $paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
         $paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
-        $query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
+        $query_string = '';
+        $this->_data['filter'] = '';
+        if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING']) {
+        	$query_string = str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']);
+        	$this->_data['filter'] = '?'.$_SERVER['QUERY_STRING'];
+        }
+        //$query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
         $paging['base_url'] = my_library::admin_site() . 'news/?' . $query_string . '&page=';
         $limit = $paging['start'] . ',' . $paging['per_page'];
         $this->_data['list'] = $this->mnews->getNews($obj, $and, $orderby, $limit);
@@ -339,8 +346,13 @@ class News extends MY_Controller {
 			        	}
 			        	$date = $this->input->post('date');
 			        	$publicdate = $now == 1 ? $timenow : $date.' '.$this->input->post('time');
-			        	$password = $this->input->post('news_password');
-			        	$password = $password != null ? md5($password) : $myNews['news_password'];
+			        	$delpass = $this->input->post('delpass');
+			        	if ($delpass != null && $delpass == 1) {
+			        		$password = '';
+			        	} else {
+			        		$password = $this->input->post('news_password');
+			        		$password = $password != null ? md5($password) : $myNews['news_password'];
+			        	}
 			        	$this->_data['formData'] = array( 
 				        	'news_category' => $this->input->post('news_category'), 
 				        	'news_type' => $this->input->post('news_type'), 
@@ -536,9 +548,238 @@ class News extends MY_Controller {
 		}
 	}
 
+	public function pending($id)
+	{
+		$backUrl = $this->input->get('r');
+		$backUrl = $backUrl != null ? base64_decode($backUrl) : my_library::admin_site()."news";
+		if ($this->mpermission->permission("news_pending",$this->_data['user_active']['active_user_group']) == true) {
+			if (is_numeric($id) && $id > 0) {
+				$myNews = $this->mnews->getData("",array('id' => $id));
+				$myNews_lang = $this->mnews_translation->getData("",array('news_id' => $id,'language_code' => $this->_data['language']));
+				if ($myNews && $myNews_lang) {
+					$error = false;
+					do {
+		                if ($myNews['news_category'] < 1) {
+		                    $text = lang('pleasechoose').lang('category');$error = true;break;
+		                }
+		                if ($myNews['news_type'] < 1) {
+		                    $text = lang('pleasechoose').lang('type');$error = true;break;
+		                }
+		                if ($myNews['news_layout'] < 1) {
+		                    $text = lang('pleasechoose').lang('layout');$error = true;break;
+		                }
+		                if ($myNews['news_status'] < 1) {
+		                    $text = lang('pleasechoose').lang('status');$error = true;break;
+		                }
+		                if ($myNews_lang['news_title'] == '') {
+		                    $text = lang('pleaseinput').lang('titlenews');$error = true;break;
+		                }
+		                if ($myNews_lang['news_detail'] == '') {
+		                    $text = lang('pleaseinput').lang('detail');$error = true;break;
+		                }
+		            } while (0);
+					if ($error == true) {
+						$title = lang('unsuccessful');
+		                $type = 'error';
+					} else {
+						$dataEdit = array(
+							'news_state' => 2,
+							'news_updatedate' => date("Y-m-d H:i:s"),
+							'user' => $this->_data['user_active']['active_user_id']
+						);
+						if ($this->mnews->edit($id,$dataEdit)) {
+							$title = lang('success');
+			                $text = lang('moved').lang('pending').' #'.$id;
+			                $type = 'success';
+						} else {
+							$title = lang('unsuccessful');
+			                $text = lang('checkinfo');
+			                $type = 'error';
+						}
+					}
+				} else {
+					$title = lang('unsuccessful');
+	                $text = lang('notfound').' '.lang('news');
+	                $type = 'error';
+				}
+			} else {
+				$title = lang('unsuccessful');
+	            $text = lang('wrongid');
+	            $type = 'error';
+			}
+		} else {
+			$title = lang('unsuccessful');
+            $text = lang('nonperpending');
+            $type = 'warning';
+		}
+		$notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		if ($notify) {
+			$this->session->set_userdata('notify', $notify);
+		}
+		redirect($backUrl);
+	}
+
+	public function publish($id)
+	{
+		$backUrl = $this->input->get('r');
+		$backUrl = $backUrl != null ? base64_decode($backUrl) : my_library::admin_site()."news";
+		if ($this->mpermission->permission("news_publish",$this->_data['user_active']['active_user_group']) == true) {
+			if (is_numeric($id) && $id > 0) {
+				$myNews = $this->mnews->getData("",array('id' => $id));
+				$myNews_lang = $this->mnews_translation->getData("",array('news_id' => $id,'language_code' => $this->_data['language']));
+				if ($myNews && $myNews_lang) {
+					$error = false;
+					do {
+		                if ($myNews['news_category'] < 1) {
+		                    $text = lang('pleasechoose').lang('category');$error = true;break;
+		                }
+		                if ($myNews['news_type'] < 1) {
+		                    $text = lang('pleasechoose').lang('type');$error = true;break;
+		                }
+		                if ($myNews['news_layout'] < 1) {
+		                    $text = lang('pleasechoose').lang('layout');$error = true;break;
+		                }
+		                if ($myNews['news_status'] < 1) {
+		                    $text = lang('pleasechoose').lang('status');$error = true;break;
+		                }
+		                if ($myNews_lang['news_title'] == '') {
+		                    $text = lang('pleaseinput').lang('titlenews');$error = true;break;
+		                }
+		                if ($myNews_lang['news_detail'] == '') {
+		                    $text = lang('pleaseinput').lang('detail');$error = true;break;
+		                }
+		            } while (0);
+					if ($error == true) {
+						$title = lang('unsuccessful');
+		                $type = 'error';
+					} else {
+						$publishdate = $myNews['news_publicdate'] != '0000-00-00 00:00:00' ? $myNews['news_publicdate'] : date("Y-m-d H:i:s");
+						$dataEdit = array(
+							'news_state' => 3,
+							'news_status' => 1,
+							'news_publicdate' => $publishdate,
+							'news_updatedate' => date("Y-m-d H:i:s"),
+							'user' => $this->_data['user_active']['active_user_id']
+						);
+						if ($this->mnews->edit($id,$dataEdit)) {
+							$title = lang('success');
+			                $text = lang('published').' #'.$id;
+			                $type = 'success';
+						} else {
+							$title = lang('unsuccessful');
+			                $text = lang('checkinfo');
+			                $type = 'error';
+						}
+					}
+				} else {
+					$title = lang('unsuccessful');
+	                $text = lang('notfound').' '.lang('news');
+	                $type = 'error';
+				}
+			} else {
+				$title = lang('unsuccessful');
+	            $text = lang('wrongid');
+	            $type = 'error';
+			}
+		} else {
+			$title = lang('unsuccessful');
+            $text = lang('nonperpublish');
+            $type = 'warning';
+		}
+		$notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		if ($notify) {
+			$this->session->set_userdata('notify', $notify);
+		}
+		redirect($backUrl);
+	}
+
+	public function unpublish($id)
+	{
+		$backUrl = $this->input->get('r');
+		$backUrl = $backUrl != null ? base64_decode($backUrl) : my_library::admin_site()."news";
+		if ($this->mpermission->permission("news_unpublish",$this->_data['user_active']['active_user_group']) == true) {
+			if (is_numeric($id) && $id > 0) {
+				$myNews = $this->mnews->getData("",array('id' => $id));
+				if ($myNews && $myNews['id'] > 0) {
+					$dataEdit = array(
+						'news_state' => 2,
+						'news_updatedate' => date("Y-m-d H:i:s"),
+						'user' => $this->_data['user_active']['active_user_id']
+					);
+					if ($this->mnews->edit($id,$dataEdit)) {
+						$title = lang('success');
+		                $text = lang('unpublished').' #'.$id;
+		                $type = 'success';
+					} else {
+						$title = lang('unsuccessful');
+		                $text = lang('checkinfo');
+		                $type = 'error';
+		            }
+				} else {
+					$title = lang('unsuccessful');
+	                $text = lang('notfound').' '.lang('news');
+	                $type = 'error';
+				}
+			} else {
+				$title = lang('unsuccessful');
+	            $text = lang('wrongid');
+	            $type = 'error';
+			}
+		} else {
+			$title = lang('unsuccessful');
+            $text = lang('nonperunpublish');
+            $type = 'warning';
+		}
+		$notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		if ($notify) {
+			$this->session->set_userdata('notify', $notify);
+		}
+		redirect($backUrl);
+	}
+
 	public function delete($id)
 	{
-
+		$this->mpermission->checkPermission("news","delete",$this->_data['user_active']['active_user_group']);
+		if (is_numeric($id) && $id > 0) {
+            $myNews = $this->mnews->getData("",array('id' => $id));
+            if ($myNews && $myNews['news_state'] < 3) {
+                $this->mnews->delete($id);
+                $this->mnews_translation->deleteAnd(array('news_id' => $id));
+                $folderName = realpath(APPPATH . "../media/news/")."/".$id;
+                $this->mnews->delFolder($folderName);
+                $title = lang('success');
+                $text = lang('news').lang('deleted');
+                $type = 'success';
+            } else {
+                $title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('news');
+                $type = 'error';
+            }
+        } else {
+            $title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+        }
+        $notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+        $state = isset($myNews['news_state']) ? $myNews['news_state'] : 1;
+        $this->session->set_userdata('notify', $notify);
+        redirect(my_library::admin_site()."news/index/".$state);
 	}
 
 	// public function checkPassword()

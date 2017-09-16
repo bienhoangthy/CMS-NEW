@@ -106,8 +106,8 @@
                   <button type="submit" class="btn btn-success" style="margin-right: -2px;"><?= lang('create')?></button>
                 <?php endif ?>
                 <button type="reset" class="btn btn-primary" style="margin-right: -2px;"><?= lang('reset')?></button>
-                <?php if ($state == 3): ?>
-                  <a href="#"><button type="button" class="btn btn-danger"><?= lang('unpublish')?></button></a>
+                <?php if ($state == 3 && $id): ?>
+                  <a href="<?= my_library::admin_site().'news/unpublish/'.$id?>"><button type="button" class="btn btn-danger"><?= lang('unpublish')?></button></a>
                 <?php endif ?>
               </div>
               <div class="clearfix"></div>
@@ -229,18 +229,32 @@
                   <input id="news_source" class="form-control" name="news_source" type="text" value="<?= $formData['news_source']?>">
                 </div>
               </div>
-              <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_password"><?php if ($formData['news_password'] != ''): ?>
-                  <?= lang('changepass')?>
-                <?php else: ?>
-                  <?= lang('password')?>
-                <?php endif ?>
-                </label>
-                <div class="col-md-7 col-sm-7 col-xs-12">
-                  <input id="news_password" class="form-control" name="news_password" type="text">
+              <?php if ($formData['news_password'] != ''): ?>
+                <div class="form-group">
+                  <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_password"><?= lang('changepass')?>
+                  </label>
+                  <div class="col-md-7 col-sm-7 col-xs-12">
+                    <input id="news_password" class="form-control" name="news_password" type="text">
+                  </div>
                 </div>
-                <!-- Xóa pass -->
-              </div>
+                <div class="form-group">
+                  <div class="col-md-7 col-md-offset-4 col-sm-7 .col-sm-offset-4 col-xs-12">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="delpass" value="1"> <?= lang('delpass')?>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              <?php else: ?>
+                <div class="form-group">
+                  <label class="control-label col-md-5 col-sm-5 col-xs-12" for="news_password"><?= lang('password')?>
+                  </label>
+                  <div class="col-md-7 col-sm-7 col-xs-12">
+                    <input id="news_password" class="form-control" name="news_password" type="text">
+                  </div>
+                </div>
+              <?php endif ?>
             </div>
           </div>
         </div>
@@ -327,7 +341,7 @@
 </div>
 
 <!-- Image modal -->
-<div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
+<div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1" style="z-index: 9999999;">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="width: 1000px;">
       <div class="modal-header" style="background-color: #27ae60;">

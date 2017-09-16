@@ -14,7 +14,7 @@
 		<div class="clearfix"></div>
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="x_panel">
+				<div class="x_panel" style="max-height: 150px;">
 					<div class="x_title">
 						<h3><?= $stateData['name']?> <small><?= lang('all')?>(<?= $record?>)</small></h3>
 						<div class="clearfix"></div>
@@ -104,10 +104,10 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<div class="table-responsive">
+						<div class="table-responsive" style="overflow-x: unset;">
 							<form method="post">
 								<input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-								<table class="table table-striped jambo_table bulk_action" style="margin-bottom: 45px;">
+								<table class="table table-striped jambo_table bulk_action">
 									<thead>
 										<tr class="headings">
 											<th>
@@ -150,7 +150,7 @@
 												$category_name = $category['category_name'] ?? '';
 												$type = $this->mnews->listType($value['news_type']);
 												$status = $this->mnews->listStatusName($value['news_status']);
-												$linkEdit = my_library::admin_site().'news/edit/'.$value['id'];
+												$linkEdit = my_library::admin_site().'news/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
 												$linkView = base_url().$value['news_alias'].'-post'.$value['id'].'.html';
 												$listLanguage = $this->mnews_translation->checkLanguage($value['id']);
 												$userUpdate = $this->muser->getData("id,user_username","id = ".$value['user']);
@@ -184,8 +184,30 @@
 															<ul role="menu" class="dropdown-menu" style="min-width: 0px;">
 																<li><a href="<?= $linkEdit?>"><?= lang('edit')?></a></li>
 																<li><a href="javascript:;" data-id="<?= $value['id']?>" class="show-extra"><?= lang('quickedit')?></a></li>
+																<?php 
+																	$backUrl = '?r='.base64_encode(current_url().$filter);
+																	switch ($state) {
+																		case 1:
+																			$linkPending = my_library::admin_site().'news/pending/'.$value['id'].$backUrl;
+																			echo '<li><a href="'.$linkPending.'" style="color: blue;">'.lang('pending').'</a></li>';
+																			break;
+																		case 2:
+																			$linkPublish = my_library::admin_site().'news/publish/'.$value['id'].$backUrl;
+																			echo '<li><a href="'.$linkPublish.'" style="color: green;">'.lang('publish').'</a></li>';
+																			break;
+																		case 3:
+																			$linkUnpublish = my_library::admin_site().'news/unpublish/'.$value['id'].$backUrl;
+																			echo '<li><a href="'.$linkUnpublish.'" style="color: red;">'.lang('unpublish').'</a></li>';
+																			break;
+																		default:
+																			echo '';
+																			break;
+																	}
+																 ?>
 																<li><a href="<?= $linkView?>" target="_blank"><?= lang('reviewed')?></a></li>
-																<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" style="color: red;"><?= lang('delete')?></a></li>
+																<?php if ($state != 3): ?>
+																	<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" style="color: red;"><?= lang('delete')?></a></li>
+																<?php endif ?>
 															</ul>
 														</div>
 													</td>
