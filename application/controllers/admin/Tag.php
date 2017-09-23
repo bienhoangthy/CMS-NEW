@@ -264,4 +264,28 @@ class Tag extends MY_Controller {
     	}
     	echo json_encode($rs);
     }
+
+    public function aj_autoCompleteTag()
+        {
+            $key = $_GET['key'] ?? strtoupper($_GET['key']);
+            $and='tag_status = 1';
+            if($key)
+            {
+                $and .= ' and (tag_name like "%'.$key.'%"';
+                $and .= ' or tag_alias like "%'.$key.'%")';          
+            }
+            $limit="0,10";
+            $object = 'DISTINCT tag_name';
+            $orderby = 'id desc';  
+            $result = $this->mtag->getQuery($object, $and, $orderby, $limit);      
+            $data = array();
+            if($result)
+            {
+                foreach ($result as $value) {
+                    $row_array['name'] = $value['tag_name'];                                          
+                    array_push($data, $row_array);                        
+                }
+            }            
+            echo json_encode($data);
+        }
 }

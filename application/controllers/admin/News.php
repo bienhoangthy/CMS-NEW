@@ -272,8 +272,8 @@ class News extends MY_Controller {
 		$this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
 		$this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
         $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
-        $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','jquery.tagsinput.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','jquery-ui.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
+        $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','jquery-ui.min.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
 		$this->my_layout->view("admin/news/post", $this->_data);
 	}
 
@@ -517,6 +517,7 @@ class News extends MY_Controller {
 			        $this->_data['state'] = $myNews['news_state'];
 			        $this->_data['stateOperations'] = $this->mnews->stateOperations($this->_data['state']);
 			        $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
+                    $this->_data['tags'] = explode(",", $this->_data['formData']['news_tag']);
 			        $this->_data['token_name'] = $this->security->get_csrf_token_name();
 			        $this->_data['token_value'] = $this->security->get_csrf_hash();
 					$this->_data['title'] = lang('newsedit')." #".$id;
@@ -524,8 +525,8 @@ class News extends MY_Controller {
 					$this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
 					$this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
 			        $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-			        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
-			        $this->_data['extraJs'] = ['validator.js','language/'.$this->_data['language'].'.js','icheck.min.js','switchery.min.js','jquery.tagsinput.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+                    $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','jquery-ui.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
+                    $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','jquery-ui.min.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
 					$this->my_layout->view("admin/news/post", $this->_data);
 				}
 			} else {

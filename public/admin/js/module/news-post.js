@@ -100,7 +100,6 @@ function deleteImg(id)
 $('#time').timepicker({ 'timeFormat': 'H:i:s' });
 $('#now').on('ifUnchecked', function () {$(".datetimepublish").prop('disabled', false);});
 $('#now').on('ifChecked', function () {$(".datetimepublish").prop('disabled', true);});
-$('#tags').tagsInput();
 tinymce.init({
   selector: 'textarea#news_summary',
   height: 100,
@@ -119,3 +118,60 @@ tinymce.init({selector: 'textarea#news_detail',height: 300,theme: 'modern',plugi
     'insertdatetime media nonbreaking save table contextmenu directionality',
     'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help responsivefilemanager'
   ],toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',image_caption: true,image_advtab: true,relative_urls:false,external_filemanager_path:"/public/filemanager/",filemanager_title:"Quản lý file",filemanager_access_key: "e807f1fcf82d132f9bb018ca6738a19f",external_plugins: { "filemanager" : "/public/filemanager/plugin.min.js"}});
+
+//Tags
+
+var news_tag = $('#news_tag');
+
+$('#tags').autocomplete({             
+    source: function( request, response ) {
+        $.ajax({
+            url:configs.admin_site+'tag/aj_autoCompleteTag',
+            dataType: "json",
+            data: {
+               key: request.term,                           
+            },
+             success: function( data ) {                    
+                response( $.map( data, function( item ) {
+                    return {
+                        label: item.name                            
+                    }                  
+                }));
+            }
+        });
+    },
+    autoFocus: true,
+    minLength: 2,
+    select: function( event, ui ) {
+    	news_tag.val(news_tag.val()+ui.item.label+',');
+        var html = '<span class="label label-info">'+ui.item.label+'<i class="fa fa-close fa-lg delete-tag"></i></span> ';
+        $('#tag-post').append(html);
+        this.value = '';
+      	return false;
+    }       
+});
+
+$('#add-tag').click(function(){
+	var tag = $('#tags').val();
+	if (tag != '') {
+		news_tag.val(news_tag.val()+tag+',');
+		$('#tags').val('');
+		var html = '<span class="label label-info">'+tag+'<i class="fa fa-close fa-lg delete-tag"></i></span> ';
+        $('#tag-post').append(html);
+	} else {
+		new PNotify({
+          title: notcomplete,
+          text: inputtag,
+          type: 'error',
+          styling: 'bootstrap3'
+        });
+	}
+});
+
+$('#tag-post').on('click', '.delete-tag', function(){
+	var str = $(this).parent().text()+",";
+	var old = news_tag.val();
+	var new_value = old.replace(str,"");
+	news_tag.val(new_value);
+	$(this).parent().remove();
+});

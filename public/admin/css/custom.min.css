@@ -17,3 +17,7 @@ tr.showacction td {
 .x_content .edit {
 	display: none;
 }
+#tag-post .delete-tag {
+	color: #4B5F71;
+	padding-left: 3px;
+}
