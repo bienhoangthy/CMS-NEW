@@ -160,11 +160,11 @@ $('#add-tag').click(function(){
         $('#tag-post').append(html);
 	} else {
 		new PNotify({
-          title: notcomplete,
-          text: inputtag,
-          type: 'error',
-          styling: 'bootstrap3'
-        });
+      title: notcomplete,
+      text: inputtag,
+      type: 'error',
+      styling: 'bootstrap3'
+    });
 	}
 });
 

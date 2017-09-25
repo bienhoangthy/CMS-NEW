@@ -9,6 +9,40 @@ class mnews extends MY_Model
     protected $table = "cms_news";
     protected $table_translation = "cms_news_translation";
 
+    public function forwardPending($id,$lang)
+    {
+        if ($id > 0) {
+            $myNews = $this->getData("news_category,news_type,news_layout,news_status",array('id' => $id));
+            $myNewsLang = $this->mnews_translation->getData("news_title,news_alias,news_detail",array('news_id' => $id,'language_code' => $lang));
+            if ($myNews && $myNewsLang) {
+                if ($myNews['news_category'] > 0 && $myNews['news_type'] > 0 && $myNews['news_layout'] > 0 && $myNews['news_status'] > 0) {
+                    if ($myNewsLang['news_title'] != '' && $myNewsLang['news_alias'] != '' && $myNewsLang['news_detail'] != '') {
+                        if ($this->edit($id,array('news_state' => 2))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function forwardPublish($id,$lang)
+    {
+        if ($id > 0) {
+            $myNews = $this->getData("news_category,news_type,news_layout,news_status,news_publicdate",array('id' => $id));
+            $myNewsLang = $this->mnews_translation->getData("news_title,news_alias,news_detail",array('news_id' => $id,'language_code' => $lang));
+            if ($myNews && $myNewsLang) {
+                if ($myNews['news_category'] > 0 && $myNews['news_type'] > 0 && $myNews['news_layout'] > 0 && $myNews['news_status'] > 0 && $myNews['news_publicdate'] != '0000-00-00 00:00:00') {
+                    if ($myNewsLang['news_title'] != '' && $myNewsLang['news_alias'] != '' && $myNewsLang['news_detail'] != '') {
+                        if ($this->edit($id,array('news_state' => 3))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function getNews($obj='',$and='',$orderby='',$limit='')
     {
         if ($obj) {

@@ -105,8 +105,10 @@
 					</div>
 					<div class="x_content">
 						<div class="table-responsive" style="overflow-x: unset;">
-							<form method="post">
+							<form method="post" action="<?= my_library::admin_site().'news/listProcess'?>">
 								<input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+								<input type="hidden" name="state" value="<?= $state?>">
+								<input type="hidden" id="lang" value="<?= $flanguage['lang_code']?>">
 								<table class="table table-striped jambo_table bulk_action">
 									<thead>
 										<tr class="headings">
@@ -134,9 +136,20 @@
 											<th class="column-title"><?= lang('updatedate')?> </th>
 											<th class="bulk-actions" colspan="8">
 												( <span class="action-cnt"> </span> )
-												<button type="submit" class="btn btn-primary btn-xs antoo" style="margin-bottom: -2px;">Chuyển bài </button>
-												<button type="submit" class="btn btn-info btn-xs antoo" style="margin-bottom: -2px;">Rút bài </button>
-												<button type="submit" class="btn btn-danger btn-xs antoo" name="delAll" onclick="return confirm_delete_all();" style="margin-bottom: -2px;"><?= lang('deleteall')?></button>
+												<?php switch ($state) {
+													case 1:
+														echo '<button type="submit" name="fsubmit" value="2" class="btn btn-primary btn-xs antoo" style="margin-bottom: -2px;"><span class="fa fa-long-arrow-right"></span> '.lang('pending').'</button><button type="submit" name="fsubmit" value="3" class="btn btn-success btn-xs antoo" style="margin-bottom: -2px;"><span class="fa fa-long-arrow-right"></span> '.lang('publish').'</button><button type="submit" name="fsubmit" value="5" class="btn btn-danger btn-xs antoo" onclick="return confirm_delete_all();" style="margin-bottom: -2px;"><span class="fa fa-trash"></span> '.lang('deleteall').'</button>';
+														break;
+													case 2:
+														echo '<button type="submit" name="fsubmit" value="1" class="btn btn-info btn-xs antoo" style="margin-bottom: -2px;">'.lang('draft').' <span class="fa fa-long-arrow-left"></span></button><button type="submit" name="fsubmit" value="3" class="btn btn-success btn-xs antoo" style="margin-bottom: -2px;"><span class="fa fa-long-arrow-right"></span> '.lang('publish').'</button><button type="submit" name="fsubmit" value="5" class="btn btn-danger btn-xs antoo" onclick="return confirm_delete_all();" style="margin-bottom: -2px;"><span class="fa fa-trash"></span> '.lang('deleteall').'</button>';
+														break;
+													case 3:
+														echo '<button type="submit" name="fsubmit" value="4" class="btn btn-primary btn-xs antoo" style="margin-bottom: -2px;">'.lang('pending').' <span class="fa fa-long-arrow-left"></span></button>';
+														break;
+													default:
+														echo '';
+														break;
+												} ?>
 											</th>
 											<th width="10%"></th>
 										</tr>
@@ -160,12 +173,12 @@
 														<input type="checkbox" class="flat" value="<?= $value['id']?>" name="table_records[]">
 													</td>
 													<td><?= $value['id']?></td>
-													<td width="30%">
+													<td width="30%" id="title<?= $value['id']?>">
 														<a href="<?= $linkView?>" target="_blank"><?= $value['news_title']?></a> - <i class="fa <?= $type['icon']?>" data-toggle="tooltip" data-placement="top" title="<?= $type['name']?>"></i>
 													</td>
 													<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
 													<td><a href="<?= my_library::admin_site().'category/edit/'.$value['news_category']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
-													<td class="text-center">
+													<td class="text-center" id="status<?= $value['id']?>">
 														<span class="label label-<?= $status['color']?>"><?= $status['name']?></span><br>
 														<?= $value['news_hot'] == 1 ? '<span class="label label-danger" data-toggle="tooltip" data-placement="top" title="'.lang('hotnews').'">Hot</span> ' : '' ?>
 														<?= $value['news_password'] != '' ? '<span class="label label-default" data-toggle="tooltip" data-placement="top" title="'.lang('security').'"><i class="fa fa-key"></i></span>' : '' ?>
@@ -175,7 +188,7 @@
 															<img src="<?= my_library::base_file().'language/flag_'.$vallang['language_code'].'.png'?>" style="max-width: 20px;height: auto;">
 														<?php endforeach ?>
 													</td>
-													<td><span class="badge bg-green"><?= $value['news_view']?></span></td>
+													<td><span class="badge bg-green" id="view<?= $value['id']?>"><?= $value['news_view']?></span></td>
 													<td><?= date("Y-m-d", strtotime($value['news_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_username'].'</a>' : ''?></td>
 													<td width="10%">
 														<div class="btn-group">
@@ -223,14 +236,14 @@
 																<div class="form-group">
 											                        <label class="control-label col-md-4 col-sm-4"><?= lang('title')?></label>
 											                        <div class="col-md-8 col-sm-8">
-											                          <input type="text" class="form-control" value="<?= $value['news_title']?>">
+											                          <input type="text" id="news_title<?= $value['id']?>" class="form-control" value="<?= $value['news_title']?>">
 											                        </div>
 											                    </div>
 											                    <div class="clearfix"></div>
 											                    <div class="form-group" style="margin-top: 5px;">
 											                        <label class="control-label col-md-4 col-sm-4">Alias</label>
 											                        <div class="col-md-8 col-sm-8">
-											                          <input type="text" class="form-control" value="<?= $value['news_alias']?>">
+											                          <input type="text" id="news_alias<?= $value['id']?>" class="form-control" value="<?= $value['news_alias']?>">
 											                        </div>
 											                    </div>
 															</div>
@@ -238,36 +251,31 @@
 																<div class="form-group">
 											                        <label class="control-label col-md-6 col-sm-6"><?= lang('views')?></label>
 											                        <div class="col-md-6 col-sm-6">
-											                          <input type="number" class="form-control" value="<?= $value['news_view']?>">
+											                          <input type="number" id="news_view<?= $value['id']?>" class="form-control" value="<?= $value['news_view']?>">
 											                        </div>
 											                    </div>
 											                    <div class="clearfix"></div>
 											                    <div class="form-group" style="margin-top: 5px;">
 											                        <label class="control-label col-md-6 col-sm-6"><?= lang('orderby')?></label>
 											                        <div class="col-md-6 col-sm-6">
-											                          <input type="number" class="form-control" value="<?= $value['news_orderby']?>">
+											                          <input type="number" id="news_orderby<?= $value['id']?>" class="form-control" value="<?= $value['news_orderby']?>">
 											                        </div>
 											                    </div>
 															</div>
 															<div class="col-md-2 col-sm-2 ">
-																<div class="radio" style="margin-top: 0px;">
+										                        <div style="margin-left: 20px;">
 										                            <label>
-										                              <input type="radio" class="flat"<?= $value['news_status'] == 1 ? ' checked' : ''?> name="status<?= $value['id']?>"> <?= lang('active')?>
-										                            </label>
-										                        </div>
-										                        <div class="radio">
-										                            <label>
-										                              <input type="radio" class="flat"<?= $value['news_status'] == 2 ? ' checked' : ''?> name="status<?= $value['id']?>"> <?= lang('inactive')?>
+										                              	<input type="checkbox" id="news_status<?= $value['id']?>" class="js-switch"<?= $value['news_status'] == 1 ? ' checked' : ''?>/> <?= lang('display')?>
 										                            </label>
 										                        </div>
 										                        <div style="margin-left: 20px;">
 										                            <label>
-										                              	<input type="checkbox" class="js-switch"<?= $value['news_hot'] == 1 ? ' checked' : ''?>/> Hot
+										                              	<input type="checkbox" id="news_hot<?= $value['id']?>" class="js-switch"<?= $value['news_hot'] == 1 ? ' checked' : ''?>/> <?= lang('hotnews')?>
 										                            </label>
 										                        </div>
 															</div>
 															<div class="col-md-2 col-sm-2 text-center">
-																<button type="button" class="btn btn-success"><?= lang('save')?></button><br>
+																<button type="button" onclick="saveQuick(<?= $value['id']?>)" class="btn btn-success"><?= lang('save')?></button><br>
 																<button type="button" class="btn btn-default" onclick="closeExtra(<?= $value['id']?>)"><?= lang('cancel')?></button>
 															</div>
 														</div>

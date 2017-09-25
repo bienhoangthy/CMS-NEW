@@ -303,7 +303,7 @@
             <div class="x_content">
               <div class="control-group">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <input type="text" name="news_tag" id="news_tag"  value="<?= $formData['news_tag']?>">
+                  <input type="hidden" name="news_tag" id="news_tag"  value="<?= $formData['news_tag']?>">
                   <div class="input-group">
                     <input type="text" id="tags" class="form-control">
                     <span class="input-group-btn">
@@ -318,7 +318,6 @@
                         <?php endif ?>
                       <?php endforeach ?>
                     <?php endif ?>
-                    <!-- <span class="label label-info">Test <i class="fa fa-close fa-lg delete-tag"></i></span> -->
                   </div>
                 </div>
               </div>
