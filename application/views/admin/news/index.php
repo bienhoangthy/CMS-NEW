@@ -165,6 +165,7 @@
 												$status = $this->mnews->listStatusName($value['news_status']);
 												$linkEdit = my_library::admin_site().'news/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
 												$linkView = base_url().$value['news_alias'].'-post'.$value['id'].'.html';
+												$linkReview = my_library::admin_site().'news/review/'.$value['id'].'?lang='.$flanguage['lang_code'];
 												$listLanguage = $this->mnews_translation->checkLanguage($value['id']);
 												$userUpdate = $this->muser->getData("id,user_username","id = ".$value['user']);
 												?>
@@ -173,14 +174,17 @@
 														<input type="checkbox" class="flat" value="<?= $value['id']?>" name="table_records[]">
 													</td>
 													<td><?= $value['id']?></td>
-													<td width="30%" id="title<?= $value['id']?>">
-														<a href="<?= $linkView?>" target="_blank"><?= $value['news_title']?></a> - <i class="fa <?= $type['icon']?>" data-toggle="tooltip" data-placement="top" title="<?= $type['name']?>"></i>
+													<td width="30%">
+														<a id="title<?= $value['id']?>" text-success" href="<?= $linkView?>" target="_blank"><?= $value['news_title']?></a> - <i class="fa <?= $type['icon']?>" data-toggle="tooltip" data-placement="top" title="<?= $type['name']?>"></i>
+														<h6><?= lang('publishdate').': '.$value['news_publicdate']?></h6>
 													</td>
 													<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
 													<td><a href="<?= my_library::admin_site().'category/edit/'.$value['news_category']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
-													<td class="text-center" id="status<?= $value['id']?>">
-														<span class="label label-<?= $status['color']?>"><?= $status['name']?></span><br>
-														<?= $value['news_hot'] == 1 ? '<span class="label label-danger" data-toggle="tooltip" data-placement="top" title="'.lang('hotnews').'">Hot</span> ' : '' ?>
+													<td class="text-center">
+														<span id="status<?= $value['id']?>">
+															<span class="label label-<?= $status['color']?>"><?= $status['name']?></span><br>
+															<?= $value['news_hot'] == 1 ? '<span class="label label-danger" data-toggle="tooltip" data-placement="top" title="'.lang('hotnews').'">Hot</span>' : '' ?>
+														</span>
 														<?= $value['news_password'] != '' ? '<span class="label label-default" data-toggle="tooltip" data-placement="top" title="'.lang('security').'"><i class="fa fa-key"></i></span>' : '' ?>
 													</td>
 													<td class="text-center">
@@ -217,7 +221,7 @@
 																			break;
 																	}
 																 ?>
-																<li><a href="<?= $linkView?>" target="_blank"><?= lang('reviewed')?></a></li>
+																<li><a href="<?= $linkReview?>"><?= lang('reviewed')?></a></li>
 																<?php if ($state != 3): ?>
 																	<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" style="color: red;"><?= lang('delete')?></a></li>
 																<?php endif ?>
@@ -227,7 +231,6 @@
 												</tr>
 												<tr class="edit" id="extra-<?= $value['id']?>">
 													<td colspan="2">
-														<span class="label label-success"><?= lang('quickedit')?></span><br>
 														#<?= $value['id']?>
 													</td>
 													<td colspan="8">

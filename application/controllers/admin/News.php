@@ -18,7 +18,7 @@ class News extends MY_Controller {
         }
 		$this->load->library("My_paging");
         $this->_data['title'] = lang('list');
-        $obj = 'n.id,n.news_category,n.news_type,n.news_view,n.news_hot,n.news_status,n.news_picture,n.news_orderby,n.news_updatedate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';
+        $obj = 'n.id,n.news_category,n.news_type,n.news_view,n.news_hot,n.news_status,n.news_picture,n.news_orderby,n.news_publicdate,n.news_updatedate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';
         $this->_data['formData'] = array(
             'fkeyword' => $_GET['fkeyword'] ?? '',
             'forder' => $_GET['forder'] ?? '',
@@ -625,6 +625,52 @@ class News extends MY_Controller {
 		}
 	}
 
+    public function review($id)
+    {
+        $this->mpermission->checkPermission("news","review",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 0) {
+            $this->_data['langPost'] = $_GET['lang'] ?? $this->_data['language'];
+            $this->_data['langPost'] = $this->mlanguage->getLanguage($this->_data['langPost']);
+            $this->_data['myNews'] = $this->mnews->getData("",array('id' => $id));
+            $this->_data['myNews_lang'] = $this->mnews_translation->getData("",array('news_id' => $id,'language_code' => $this->_data['langPost']['lang_code']));
+            if ($this->_data['myNews'] && $this->_data['myNews_lang']) {
+                
+                $this->_data['title'] = lang('reviewed').' '.lang('news').' #'.$id;
+                $this->_data['id'] = $id;
+                //var_dump($myNews);die();
+                // $this->_data['stateOperations'] = $this->mnews->stateOperations($this->_data['state']);
+                // $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
+                // $this->_data['tags'] = explode(",", $this->_data['formData']['news_tag']);
+                // $this->_data['token_name'] = $this->security->get_csrf_token_name();
+                // $this->_data['token_value'] = $this->security->get_csrf_hash();
+                // $this->_data['title'] = lang('newsedit')." #".$id;
+                // $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['news_category'],$this->_data['langPost']['lang_code'],'news');
+                // $this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
+                // $this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
+                // $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
+                // $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','jquery-ui.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
+                // $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','jquery-ui.min.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+                $this->my_layout->view("admin/news/review", $this->_data);
+            } else {
+                $notify = array(
+                    'title' => lang('notfound'), 
+                    'text' => lang('news').lang('notexists'),
+                    'type' => 'warning'
+                );
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."news");
+            }
+        } else {
+            $notify = array(
+                'title' => lang('notfound'), 
+                'text' => lang('wrongid'),
+                'type' => 'warning'
+            );
+            $this->session->set_userdata('notify', $notify);
+            redirect(my_library::admin_site()."news");
+        }
+    }
+
 	public function pending($id)
 	{
 		$backUrl = $this->input->get('r');
@@ -885,6 +931,7 @@ class News extends MY_Controller {
                                 'user' => $this->_data['user_active']['active_user_id']
                             );
                             if ($this->mnews->edit($id,$dataEdit)) {
+                                $statusArr = $this->mnews->listStatusName($status);
                                 $message = array('success' => lang('news').' #'.$id.lang('edited').' | '.$lang);
                                 $newsLang = $this->mnews_translation->getData("id",array('news_id' => $id, 'language_code' => $lang));
                                 if ($newsLang && $newsLang['id'] > 0) {
@@ -897,9 +944,9 @@ class News extends MY_Controller {
                                         'news_alias' => $alias
                                     );
                                     if ($this->mnews_translation->edit($newsLang['id'],$dataEditLang)) {
-                                        $rs = array_merge($dataEdit,$dataEditLang,$message);
+                                        $rs = array_merge($dataEdit,$dataEditLang,$statusArr,$message);
                                     }  else {
-                                        $rs = array_merge($dataEdit,$message);
+                                        $rs = array_merge($dataEdit,$statusArr,$message);
                                     }
                                 }
                             }
@@ -916,6 +963,7 @@ class News extends MY_Controller {
                             'user' => $this->_data['user_active']['active_user_id']
                         );
                         if ($this->mnews->edit($id,$dataEdit)) {
+                            $statusArr = $this->mnews->listStatusName($status);
                             $message = array('success' => lang('news').' #'.$id.lang('edited').' | '.$lang);
                             $newsLang = $this->mnews_translation->getData("id",array('news_id' => $id, 'language_code' => $lang));
                             if ($newsLang && $newsLang['id'] > 0) {
@@ -928,9 +976,9 @@ class News extends MY_Controller {
                                     'news_alias' => $alias
                                 );
                                 if ($this->mnews_translation->edit($newsLang['id'],$dataEditLang)) {
-                                    $rs = array_merge($dataEdit,$dataEditLang,$message);
+                                    $rs = array_merge($dataEdit,$dataEditLang,$statusArr,$message);
                                 }  else {
-                                    $rs = array_merge($dataEdit,$message);
+                                    $rs = array_merge($dataEdit,$statusArr,$message);
                                 }
                             }
                         }

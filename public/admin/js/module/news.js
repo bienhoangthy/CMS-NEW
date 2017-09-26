@@ -2,12 +2,12 @@ $('.show-extra').click(function(){
 	var id = $(this).attr('data-id');
 	var extra = $('#extra-'+id);
 	var status = extra.css('display');
-	if (status == 'none') {extra.show();} else {extra.hide();}
+	if (status == 'none') {extra.show('slow');} else {extra.hide();}
 });
 function closeExtra(id)
 {
 	var extra = $('#extra-'+id);
-	if (extra) {extra.hide();}
+	if (extra) {extra.hide('slow');}
 }
 
 function saveQuick(id)
@@ -30,15 +30,17 @@ function saveQuick(id)
 	        url: url,
 	        success: function(rs) {
 	            if (rs.success) {
-	            	var html_title = '<a href="'+configs.base_url+rs.news_alias+'-post'+id+'.html" target="_blank">'+rs.news_title+'</a>  <i class="fa fa-check fa-lg text-success"</i>';
+	            	var title = "Sửa nhanh thành công";
+	            	var hotnews = "Nổi bật";
+	            	if (configs.lang == "english") {var title = "Quick edit success";hotnews = "Hot News";}
 	            	var text_view = rs.news_view;
-	            	//Thêm html vào chổ này
-	            	var html_status = '';
-	            	$('#title'+id).html(html_title);
+	            	var html_status = '<span class="label label-'+rs.color+'">'+rs.name+'</span><br>';
+	            	if (hot == 1) {html_status += '<span class="label label-danger" data-toggle="tooltip" data-placement="top" title="'+hotnews+'">Hot</span>';}
+	            	$('#title'+id).html(rs.news_title+' <i class="fa fa-check fa-lg text-success"</i>');
+	            	$('#title'+id).prop("href", configs.base_url+rs.news_alias+'-post'+id+'.html');
 	            	$('#view'+id).text(text_view);
 	            	$('#status'+id).html(html_status);
-	            	var title = "Sửa nhanh thành công";
-	            	if (configs.lang == "english") {var title = "Quick edit success";}
+	            	closeExtra(id)
 	            	new PNotify({
 				      title: title,
 				      text: rs.success,
