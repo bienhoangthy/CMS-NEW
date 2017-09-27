@@ -11,6 +11,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->Model("admin/mmodule");
 		$this->load->Model("admin/mpermission");
 		$this->load->Model("admin/mlanguage");
+		// $this->load->Model("admin/mactivity");
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->my_layout->setLayout("admin/template/index");
 		$this->_data['user_active'] = $this->session->userdata('userActive');

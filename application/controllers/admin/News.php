@@ -8,6 +8,7 @@ class News extends MY_Controller {
         $this->lang->load('news',$this->_data['language']);
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mnews");
+        $this->load->Model("admin/mactivity");
     }
 	public function index($state=3)
 	{
@@ -121,6 +122,7 @@ class News extends MY_Controller {
                     case 1:
                         foreach ($listID as $value) {
                             if ($this->mnews->edit($value,array('news_state' => 1))) {
+                                $this->mactivity->addActivity(2,$value,5,$this->_data['user_active']['active_user_id']);
                                 $num++;
                             }
                         }
@@ -130,6 +132,7 @@ class News extends MY_Controller {
                         $this->mpermission->checkPermission("news","pending",$this->_data['user_active']['active_user_group']);
                         foreach ($listID as $value) {
                             if ($this->mnews->forwardPending($value,$language) == true) {
+                                $this->mactivity->addActivity(2,$value,6,$this->_data['user_active']['active_user_id']);
                                 $num++;
                             }
                         }
@@ -139,6 +142,7 @@ class News extends MY_Controller {
                         $this->mpermission->checkPermission("news","publish",$this->_data['user_active']['active_user_group']);
                         foreach ($listID as $value) {
                             if ($this->mnews->forwardPublish($value,$language) == true) {
+                                $this->mactivity->addActivity(2,$value,7,$this->_data['user_active']['active_user_id']);
                                 $num++;
                             }
                         }
@@ -148,6 +152,7 @@ class News extends MY_Controller {
                         $this->mpermission->checkPermission("news","unpublish",$this->_data['user_active']['active_user_group']);
                         foreach ($listID as $value) {
                             if ($this->mnews->edit($value,array('news_state' => 2))) {
+                                $this->mactivity->addActivity(2,$value,8,$this->_data['user_active']['active_user_id']);
                                 $num++;
                             }
                         }
@@ -162,6 +167,8 @@ class News extends MY_Controller {
                                 $this->mnews_translation->deleteAnd(array('news_id' => $value));
                                 $folderName = realpath(APPPATH . "../media/news/")."/".$value;
                                 $this->mnews->delFolder($folderName);
+                                $this->mactivity->deleteAnd(array('activity_component' => 2,'activity_id_com' => $value));
+                                $this->mactivity->addActivity(2,$value,3,$this->_data['user_active']['active_user_id']);
                                 $num++;
                             }
                         }
@@ -311,6 +318,8 @@ class News extends MY_Controller {
             } else {
             	$insert = $this->mnews->add($this->_data['formData']);
             	if (is_numeric($insert) && $insert > 0) {
+                    $this->mactivity->addActivity(2,$insert,1,$this->_data['user_active']['active_user_id']);
+                    $this->mactivity->addActivity(2,$insert,$state+4,$this->_data['user_active']['active_user_id']);
             		$file = $this->input->post('file');
 	                if ($file != null) {
 	                    $news_picture = $this->mnews->saveImage($file,$insert,$this->_data['formDataLang']['news_alias']);
@@ -534,6 +543,10 @@ class News extends MY_Controller {
 			                    }
 			                }
 				            if ($this->mnews->edit($id,$this->_data['formData'])) {
+                                $this->mactivity->addActivity(2,$id,2,$this->_data['user_active']['active_user_id']);
+                                if ($state != $myNews['news_state']) {
+                                    $this->mactivity->addActivity(2,$id,$state+4,$this->_data['user_active']['active_user_id']);
+                                }
 				            	if (!empty($myNews_lang)) {
 				            		if ($this->mnews_translation->edit($myNews_lang['id'],$this->_data['formDataLang'])) {
 				            			$notify = array(
@@ -634,22 +647,17 @@ class News extends MY_Controller {
             $this->_data['myNews'] = $this->mnews->getData("",array('id' => $id));
             $this->_data['myNews_lang'] = $this->mnews_translation->getData("",array('news_id' => $id,'language_code' => $this->_data['langPost']['lang_code']));
             if ($this->_data['myNews'] && $this->_data['myNews_lang']) {
-                
                 $this->_data['title'] = lang('reviewed').' '.lang('news').' #'.$id;
                 $this->_data['id'] = $id;
-                //var_dump($myNews);die();
-                // $this->_data['stateOperations'] = $this->mnews->stateOperations($this->_data['state']);
-                // $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
-                // $this->_data['tags'] = explode(",", $this->_data['formData']['news_tag']);
-                // $this->_data['token_name'] = $this->security->get_csrf_token_name();
-                // $this->_data['token_value'] = $this->security->get_csrf_hash();
-                // $this->_data['title'] = lang('newsedit')." #".$id;
-                // $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['news_category'],$this->_data['langPost']['lang_code'],'news');
-                // $this->_data['type'] = $this->mnews->dropdownlistType($this->_data['formData']['news_type']);
-                // $this->_data['layout'] = $this->mnews->dropdownlistLayout($this->_data['formData']['news_layout']);
-                // $this->_data['news_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-                // $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','jquery-ui.min.css','bootstrap-datepicker.css','jquery.timepicker.min.css','cropper.min.css'];
-                // $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','jquery-ui.min.js','bootstrap-datepicker.min.js','jquery.timepicker.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/news-post.js'];
+                $this->_data['listLanguage'] = $this->mnews_translation->checkLanguage($id);
+                $this->_data['state'] = $this->_data['myNews']['news_state'];
+                $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
+                $this->_data['type'] = $this->mnews->listType($this->_data['myNews']['news_type']);
+                $this->_data['layout'] = $this->mnews->listLayout($this->_data['myNews']['news_layout']);
+                $this->_data['status'] = $this->mnews->listStatusName($this->_data['myNews']['news_status']);
+                $this->_data['user'] = $this->muser->getData("user_fullname","id = ".$this->_data['myNews']['user']);
+                $this->_data['user_fullname'] = $this->_data['user']['user_fullname'] ?? '';
+                $this->_data['listActivity'] = $this->mactivity->getQuery("", "activity_component = 2 and activity_id_com = ".$id, "id desc","");
                 $this->my_layout->view("admin/news/review", $this->_data);
             } else {
                 $notify = array(
@@ -670,6 +678,49 @@ class News extends MY_Controller {
             redirect(my_library::admin_site()."news");
         }
     }
+    
+    public function draft($id)
+	{
+		$backUrl = $this->input->get('r');
+		$backUrl = $backUrl != null ? base64_decode($backUrl) : my_library::admin_site()."news";
+		if (is_numeric($id) && $id > 0) {
+			$myNews = $this->mnews->getData("",array('id' => $id));
+			if ($myNews && $myNews['id'] > 0) {
+				$dataEdit = array(
+					'news_state' => 1,
+					'news_updatedate' => date("Y-m-d H:i:s"),
+					'user' => $this->_data['user_active']['active_user_id']
+				);
+				if ($this->mnews->edit($id,$dataEdit)) {
+                    $this->mactivity->addActivity(2,$id,5,$this->_data['user_active']['active_user_id']);
+					$title = lang('success');
+	                $text = lang('moveddown').lang('draft').' #'.$id;
+	                $type = 'success';
+				} else {
+					$title = lang('unsuccessful');
+	                $text = lang('checkinfo');
+	                $type = 'error';
+	            }
+			} else {
+				$title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('news');
+                $type = 'error';
+			}
+		} else {
+			$title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+		}
+		$notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+		if ($notify) {
+			$this->session->set_userdata('notify', $notify);
+		}
+		redirect($backUrl);
+	}
 
 	public function pending($id)
 	{
@@ -711,8 +762,9 @@ class News extends MY_Controller {
 							'user' => $this->_data['user_active']['active_user_id']
 						);
 						if ($this->mnews->edit($id,$dataEdit)) {
+                            $this->mactivity->addActivity(2,$id,6,$this->_data['user_active']['active_user_id']);
 							$title = lang('success');
-			                $text = lang('moved').lang('pending').' #'.$id;
+			                $text = lang('movedup').lang('pending').' #'.$id;
 			                $type = 'success';
 						} else {
 							$title = lang('unsuccessful');
@@ -789,6 +841,7 @@ class News extends MY_Controller {
 							'user' => $this->_data['user_active']['active_user_id']
 						);
 						if ($this->mnews->edit($id,$dataEdit)) {
+                            $this->mactivity->addActivity(2,$id,7,$this->_data['user_active']['active_user_id']);
 							$title = lang('success');
 			                $text = lang('published').' #'.$id;
 			                $type = 'success';
@@ -838,8 +891,9 @@ class News extends MY_Controller {
 						'user' => $this->_data['user_active']['active_user_id']
 					);
 					if ($this->mnews->edit($id,$dataEdit)) {
+                        $this->mactivity->addActivity(2,$id,8,$this->_data['user_active']['active_user_id']);
 						$title = lang('success');
-		                $text = lang('unpublished').' #'.$id;
+		                $text = lang('unpublished').' '.lang('news').' #'.$id;
 		                $type = 'success';
 					} else {
 						$title = lang('unsuccessful');
@@ -882,6 +936,8 @@ class News extends MY_Controller {
                 $this->mnews_translation->deleteAnd(array('news_id' => $id));
                 $folderName = realpath(APPPATH . "../media/news/")."/".$id;
                 $this->mnews->delFolder($folderName);
+                $this->mactivity->deleteAnd(array('activity_component' => 2,'activity_id_com' => $id));
+                $this->mactivity->addActivity(2,$id,3,$this->_data['user_active']['active_user_id']);
                 $title = lang('success');
                 $text = lang('news').lang('deleted');
                 $type = 'success';
@@ -931,6 +987,7 @@ class News extends MY_Controller {
                                 'user' => $this->_data['user_active']['active_user_id']
                             );
                             if ($this->mnews->edit($id,$dataEdit)) {
+                                $this->mactivity->addActivity(2,$id,4,$this->_data['user_active']['active_user_id']);
                                 $statusArr = $this->mnews->listStatusName($status);
                                 $message = array('success' => lang('news').' #'.$id.lang('edited').' | '.$lang);
                                 $newsLang = $this->mnews_translation->getData("id",array('news_id' => $id, 'language_code' => $lang));
@@ -963,6 +1020,7 @@ class News extends MY_Controller {
                             'user' => $this->_data['user_active']['active_user_id']
                         );
                         if ($this->mnews->edit($id,$dataEdit)) {
+                            $this->mactivity->addActivity(2,$id,4,$this->_data['user_active']['active_user_id']);
                             $statusArr = $this->mnews->listStatusName($status);
                             $message = array('success' => lang('news').' #'.$id.lang('edited').' | '.$lang);
                             $newsLang = $this->mnews_translation->getData("id",array('news_id' => $id, 'language_code' => $lang));
@@ -991,6 +1049,38 @@ class News extends MY_Controller {
             }
         }
         echo json_encode($rs);
+    }
+
+    public function activity($id)
+    {
+        $this->mpermission->checkPermission("news","activity",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 0) {
+            $myNews = $this->mnews->getData("id,news_state",array('id' => $id));
+            if ($myNews) {
+                $this->_data['id'] = $id;
+                $this->_data['state'] = $myNews['news_state'];
+                $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
+                $this->_data['title'] = lang('activitiesHistory').' #'.$id;
+                $this->_data['listActivity'] = $this->mactivity->getQuery("", "activity_component = 2 and activity_id_com = ".$id, "id desc","");
+                $this->my_layout->view("admin/news/activity", $this->_data);
+            } else {
+                $notify = array(
+                    'title' => lang('notfound'), 
+                    'text' => lang('news').lang('notexists'),
+                    'type' => 'warning'
+                );
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."news");
+            }
+        } else {
+            $notify = array(
+                'title' => lang('notfound'), 
+                'text' => lang('wrongid'),
+                'type' => 'warning'
+            );
+            $this->session->set_userdata('notify', $notify);
+            redirect(my_library::admin_site()."news");
+        }
     }
 
 	public function deleteImage()

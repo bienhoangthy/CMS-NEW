@@ -14,10 +14,10 @@
     <link href="<?= my_library::admin_css()?>sweetalert.css" rel="stylesheet">
     <script type="text/javascript">
         var configs = {
-        base_url: '<?= my_library::base_url()?>',
-        admin_site: '<?= my_library::admin_site()?>',
-        controller: '<?= $controller?>',
-        lang: '<?= $language?>'
+            base_url: '<?= my_library::base_url()?>',
+            admin_site: '<?= my_library::admin_site()?>',
+            controller: '<?= $controller?>',
+            lang: '<?= $language?>'
         }
     </script>
     <?php if (!empty($extraCss)): ?>

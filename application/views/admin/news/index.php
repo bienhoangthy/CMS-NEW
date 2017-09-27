@@ -166,6 +166,7 @@
 												$linkEdit = my_library::admin_site().'news/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
 												$linkView = base_url().$value['news_alias'].'-post'.$value['id'].'.html';
 												$linkReview = my_library::admin_site().'news/review/'.$value['id'].'?lang='.$flanguage['lang_code'];
+												$linkHistory = my_library::admin_site().'news/activity/'.$value['id'];
 												$listLanguage = $this->mnews_translation->checkLanguage($value['id']);
 												$userUpdate = $this->muser->getData("id,user_username","id = ".$value['user']);
 												?>
@@ -188,7 +189,7 @@
 														<?= $value['news_password'] != '' ? '<span class="label label-default" data-toggle="tooltip" data-placement="top" title="'.lang('security').'"><i class="fa fa-key"></i></span>' : '' ?>
 													</td>
 													<td class="text-center">
-														<?php foreach ($listLanguage as $key => $vallang): ?>
+														<?php foreach ($listLanguage as $vallang): ?>
 															<img src="<?= my_library::base_file().'language/flag_'.$vallang['language_code'].'.png'?>" style="max-width: 20px;height: auto;">
 														<?php endforeach ?>
 													</td>
@@ -210,7 +211,9 @@
 																			break;
 																		case 2:
 																			$linkPublish = my_library::admin_site().'news/publish/'.$value['id'].$backUrl;
+																			$linkDraft = my_library::admin_site().'news/draft/'.$value['id'].$backUrl;
 																			echo '<li><a href="'.$linkPublish.'" style="color: green;">'.lang('publish').'</a></li>';
+																			echo '<li><a href="'.$linkDraft.'">'.lang('draft').'</a></li>';
 																			break;
 																		case 3:
 																			$linkUnpublish = my_library::admin_site().'news/unpublish/'.$value['id'].$backUrl;
@@ -222,6 +225,7 @@
 																	}
 																 ?>
 																<li><a href="<?= $linkReview?>"><?= lang('reviewed')?></a></li>
+																<li><a href="<?= $linkHistory?>"><?= lang('history')?></a></li>
 																<?php if ($state != 3): ?>
 																	<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" style="color: red;"><?= lang('delete')?></a></li>
 																<?php endif ?>

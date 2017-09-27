@@ -50,5 +50,10 @@ $lang['system'] = 'System';
 $lang['lock'] = 'Lock';
 $lang['choosecate'] = 'Choose category';
 $lang['chooseuser'] = 'Choose user';
+$lang['chooseaction'] = 'Choose action';
 $lang['uncategorized'] = 'Uncategorized';
+$lang['draft'] = 'Draft';
+$lang['pending'] = 'Pending';
+$lang['publish'] = 'Publish';
+$lang['unpublished'] = 'Unpublished';
 ?>

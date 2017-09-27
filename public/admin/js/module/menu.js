@@ -8,7 +8,7 @@ $('.dd').on('change', function() {
 function showExtra(id){
 	var extra = $('#extra-'+id);
 	var status = extra.css('display');
-	if (status == 'none') {extra.show();} else {extra.hide();}
+	if (status == 'none') {extra.show('slow');} else {extra.hide('slow');}
 }
 function removeNes(id){
 	swal({

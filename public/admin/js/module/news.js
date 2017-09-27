@@ -2,7 +2,7 @@ $('.show-extra').click(function(){
 	var id = $(this).attr('data-id');
 	var extra = $('#extra-'+id);
 	var status = extra.css('display');
-	if (status == 'none') {extra.show('slow');} else {extra.hide();}
+	if (status == 'none') {extra.show('slow');} else {extra.hide('slow');}
 });
 function closeExtra(id)
 {

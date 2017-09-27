@@ -50,5 +50,10 @@ $lang['system'] = 'Hệ thống';
 $lang['lock'] = 'Khóa';
 $lang['choosecate'] = 'Chọn danh mục';
 $lang['chooseuser'] = 'Chọn nhân viên';
+$lang['chooseaction'] = 'Chọn hành động';
 $lang['uncategorized'] = 'Chưa phân loại';
+$lang['draft'] = 'Bản nháp';
+$lang['pending'] = 'Chờ duyệt';
+$lang['publish'] = 'Xuất bản';
+$lang['unpublished'] = 'Rút bài ';
 ?>
