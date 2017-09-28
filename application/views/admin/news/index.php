@@ -168,7 +168,7 @@
 												$linkReview = my_library::admin_site().'news/review/'.$value['id'].'?lang='.$flanguage['lang_code'];
 												$linkHistory = my_library::admin_site().'news/activity/'.$value['id'];
 												$listLanguage = $this->mnews_translation->checkLanguage($value['id']);
-												$userUpdate = $this->muser->getData("id,user_username","id = ".$value['user']);
+												$userUpdate = $this->muser->getData("id,user_fullname","id = ".$value['user']);
 												?>
 												<tr class="showacction">
 													<td class="a-center ">
@@ -194,7 +194,7 @@
 														<?php endforeach ?>
 													</td>
 													<td><span class="badge bg-green" id="view<?= $value['id']?>"><?= $value['news_view']?></span></td>
-													<td><?= date("Y-m-d", strtotime($value['news_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_username'].'</a>' : ''?></td>
+													<td><?= date("Y-m-d", strtotime($value['news_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_fullname'].'</a>' : ''?></td>
 													<td width="10%">
 														<div class="btn-group">
 															<button data-toggle="dropdown" class="btn btn-dark dropdown-toggle btn-sm" type="button" aria-expanded="false"><?= lang('operations')?> <span class="caret"></span>

@@ -17,7 +17,7 @@
     <script src="<?= my_library::admin_js()?>sweetalert.min.js"></script>
     <script src="<?= my_library::admin_js()?>myadmin.js"></script>
     <?php if (!empty($extraJs)): ?>
-      <?php foreach ($extraJs as $key => $value): ?>
+      <?php foreach ($extraJs as $value): ?>
         <script src="<?= my_library::admin_js().$value?>"></script>
       <?php endforeach ?>
     <?php endif ?>

@@ -6,6 +6,7 @@ class Page extends MY_Controller {
         parent::__construct();
         $this->lang->load('page',$this->_data['language']);
         $this->load->Model("admin/mpage");
+        $this->load->Model("admin/mactivity");
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
     }
 
@@ -94,6 +95,7 @@ class Page extends MY_Controller {
                 }
                 $insert = $this->mpage->add($this->_data['formData']);
                 if (is_numeric($insert)  && $insert > 0) {
+                    $this->mactivity->addActivity(19,$insert,1,$this->_data['user_active']['active_user_id']);
                     $this->_data['formDataLang']['page_id'] = $insert;
                     $insert_lang = $this->mpage_translation->add($this->_data['formDataLang']);
                     $titleinsertlang = is_numeric($insert_lang) > 0 ? ' | '.$lang : '';
@@ -209,6 +211,7 @@ class Page extends MY_Controller {
                             $this->mpage->delimage($myPage['page_picture']);
                         }
                         if ($this->mpage->edit($id,$this->_data['formData'])) {
+                            $this->mactivity->addActivity(19,$id,2,$this->_data['user_active']['active_user_id']);
                             if (!empty($myPage_lang)) {
                                 if ($this->mpage_translation->edit($myPage_lang['id'],$this->_data['formDataLang'])) {
                                     $notify = array(
@@ -282,6 +285,8 @@ class Page extends MY_Controller {
                 $this->mpage->delete($id);
                 $this->mpage_translation->deleteAnd(array('page_id' => $id));
                 $this->mpage->delimage($myPage['page_picture']);
+                $this->mactivity->deleteAnd(array('activity_component' => 19,'activity_id_com' => $id));
+                $this->mactivity->addActivity(19,$id,3,$this->_data['user_active']['active_user_id']);
                 $title = lang('success');
                 $text = lang('page').lang('deleted');
                 $type = 'success';

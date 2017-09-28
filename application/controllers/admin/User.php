@@ -449,7 +449,7 @@ class User extends MY_Controller {
 	            }
             	if ($this->muser->edit($id,array('user_avatar' => $avatarName))) {
             		if ($id == $this->_data['user_active']['active_user_id']) {
-            			$this->_data['user_active']['active_user_avatar'] = base_url().'media/user/'.$myUser['user_folder'].'/thumb_'.$avatarName;
+            			$this->_data['user_active']['active_user_avatar'] = base_url().'media/user/'.$myUser['user_folder'].'/thumb-'.$avatarName;
 	            		$this->session->unset_userdata('userActive');
 	            		$this->session->set_userdata('userActive', $this->_data['user_active']);
             		}

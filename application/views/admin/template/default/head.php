@@ -21,7 +21,7 @@
         }
     </script>
     <?php if (!empty($extraCss)): ?>
-        <?php foreach ($extraCss as $key => $value): ?>
+        <?php foreach ($extraCss as $value): ?>
             <link href="<?= my_library::admin_css().$value?>" rel="stylesheet">
         <?php endforeach ?>
     <?php endif ?>

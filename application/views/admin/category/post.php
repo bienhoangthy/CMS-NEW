@@ -30,13 +30,6 @@
                   <input id="category_name" class="form-control col-md-7 col-xs-12" name="category_name" required="required" type="text" value="<?= $formDataLang['category_name']?>">
                 </div>
               </div>
-              <!-- <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category_alias">Alias<span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12 item">
-                  <input id="category_alias" class="form-control col-md-7 col-xs-12" name="category_alias" required="required" type="text" value="<?= $formDataLang['category_alias']?>">
-                </div>
-              </div> -->
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="category_detail"><?= lang('detail')?>
                 </label>
@@ -110,7 +103,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_view_type">type<span class="required">*</span>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="category_view_type"><?= lang('type')?><span class="required">*</span>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12 item">
                   <select class="form-control" name="category_view_type">
