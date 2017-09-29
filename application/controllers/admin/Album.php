@@ -8,7 +8,8 @@ class Album extends MY_Controller {
         $this->lang->load('album',$this->_data['language']);
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/malbum");
-        //$this->load->Model("admin/mactivity");
+        $this->load->Model("admin/malbum_detail");
+        $this->load->Model("admin/mactivity");
     }
 	public function index()
 	{
@@ -39,7 +40,7 @@ class Album extends MY_Controller {
             $and .= ' or at.album_alias like "%' . $this->_data['formData']['fkeyword'] . '%")';
         }
         $and .= ' and at.language_code = "'.$this->_data['flanguage']['lang_code'].'"';
-        $orderby = 'a.id desc';
+        $orderby = 'a.album_orderby desc, a.id desc';
         $paging['per_page'] = 20;
         $paging['num_links'] = 5;
         $paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
@@ -76,12 +77,11 @@ class Album extends MY_Controller {
         );
         //Post
         if (isset($_POST['album_name'])) {
-        	$this->load->helper('alias');
         	$lang = $this->input->post('album_lang') ?? $this->_data['language'];
         	$this->_data['formData'] = array( 
 	        	'album_parent' => $this->input->post('album_parent'), 
 	        	'album_status' => $this->input->post('album_status'), 
-                'album_hot' => $this->input->post('album_hot'),
+                'album_hot' => $this->input->post('album_hot') ?? 0,
 	            'album_view' => $this->input->post('album_view'),
 	            'album_orderby' => $this->input->post('album_orderby'),
 	            'album_picture' => '',
@@ -89,6 +89,7 @@ class Album extends MY_Controller {
 	        	'album_updatedate' => date("Y-m-d H:i:s"),
 	        	'user' => $this->_data['user_active']['active_user_id']
 	        );
+            $this->load->helper('alias');
 	        $alias = to_alias($this->input->post('album_name'));
 	        $this->_data['formDataLang'] = array(
 	        	'album_id' => 0,
@@ -117,8 +118,7 @@ class Album extends MY_Controller {
             } else {
             	$insert = $this->malbum->add($this->_data['formData']);
             	if (is_numeric($insert) && $insert > 0) {
-                    //$this->mactivity->addActivity(2,$insert,1,$this->_data['user_active']['active_user_id']);
-                    //$this->mactivity->addActivity(2,$insert,$state+4,$this->_data['user_active']['active_user_id']);
+                    $this->mactivity->addActivity(10,$insert,1,$this->_data['user_active']['active_user_id']);
             		$file = $this->input->post('file');
 	                if ($file != null) {
 	                    $album_picture = $this->malbum->saveImage($file,$insert,$this->_data['formDataLang']['album_alias']);
@@ -145,7 +145,7 @@ class Album extends MY_Controller {
 		$this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['album_parent'],$this->_data['langPost']['lang_code'],'album');
         $this->_data['album_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
         $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];
-        $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js'];
+        $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/album.js'];
 		$this->my_layout->view("admin/album/post", $this->_data);
 	}
 
@@ -180,7 +180,7 @@ class Album extends MY_Controller {
                     );
                 }
                 //Post
-                if (isset($_POST['album_title'])) {
+                if (isset($_POST['album_name'])) {
                     $lang = $this->input->post('album_lang') ?? $this->_data['language'];
                     $this->_data['formData'] = array( 
                         'album_parent' => $this->input->post('album_parent'), 
@@ -231,7 +231,7 @@ class Album extends MY_Controller {
                             }
                         }
                         if ($this->malbum->edit($id,$this->_data['formData'])) {
-                            //$this->mactivity->addActivity(2,$id,2,$this->_data['user_active']['active_user_id']);
+                            $this->mactivity->addActivity(10,$id,2,$this->_data['user_active']['active_user_id']);
                             if (!empty($myAlbum_lang)) {
                                 if ($this->malbum_translation->edit($myAlbum_lang['id'],$this->_data['formDataLang'])) {
                                     $notify = array(
@@ -275,7 +275,7 @@ class Album extends MY_Controller {
                 $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['album_parent'],$this->_data['langPost']['lang_code'],'album');
                 $this->_data['album_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];
-                $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js'];
+                $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/album.js'];
                 $this->my_layout->view("admin/album/post", $this->_data);
 			} else {
 				$notify = array(
@@ -308,8 +308,8 @@ class Album extends MY_Controller {
                 $this->malbum_detail->deleteAnd(array('album_id' => $id));
                 $folderName = realpath(APPPATH . "../media/album/")."/".$id;
                 $this->malbum->delFolder($folderName);
-                //$this->mactivity->deleteAnd(array('activity_component' => 2,'activity_id_com' => $id));
-                //$this->mactivity->addActivity(2,$id,3,$this->_data['user_active']['active_user_id']);
+                $this->mactivity->deleteAnd(array('activity_component' => 10,'activity_id_com' => $id));
+                $this->mactivity->addActivity(10,$id,3,$this->_data['user_active']['active_user_id']);
                 $title = lang('success');
                 $text = lang('album').lang('deleted');
                 $type = 'success';
@@ -331,6 +331,94 @@ class Album extends MY_Controller {
         $this->session->set_userdata('notify', $notify);
         redirect(my_library::admin_site()."album/index/");
 	}
+
+    public function upload($id)
+    {
+        $this->mpermission->checkPermission("album","upload",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 0) {
+            $myAlbum = $this->malbum->getData("",array('id' => $id));
+            if ($myAlbum && $myAlbum['id'] > 0) {
+                $this->_data['id'] = $id;
+                $this->_data['token_name'] = $this->security->get_csrf_token_name();
+                $this->_data['token_value'] = $this->security->get_csrf_hash();
+                $this->_data['title'] = lang('detailphoto').' #'.$id;
+                $this->my_layout->view("admin/album/upload-detail", $this->_data);
+            } else {
+                $notify = array(
+                    'title' => lang('notfound'), 
+                    'text' => lang('album').lang('notexists'),
+                    'type' => 'warning'
+                );
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."album");
+            }
+        } else {
+            $notify = array(
+                'title' => lang('notfound'), 
+                'text' => lang('wrongid'),
+                'type' => 'warning'
+            );
+            $this->session->set_userdata('notify', $notify);
+            redirect(my_library::admin_site()."album");
+        }
+    }
+
+    public function uploadAction()
+    {
+        $this->mpermission->checkPermission("album","upload",$this->_data['user_active']['active_user_group']);
+        $id = $this->input->post("id");
+        $num = 0;
+        if ($id) {
+            $this->load->library('upload');
+            $files = $_FILES;
+            $cpt = count($_FILES['userfile']['name']);
+            for($i=0; $i<$cpt; $i++)
+            {           
+                $_FILES['userfile']['name']= $files['userfile']['name'][$i].time();
+                $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+                $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+                $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+                $_FILES['userfile']['size']= $files['userfile']['size'][$i];    
+
+                $this->upload->initialize($this->set_upload_options($id));
+                $this->upload->do_upload();
+                $dataAdd = array(
+                    'album_id' => $id,
+                    'picture' => $_FILES['userfile']['name'],
+                    'description' => ''
+                );
+                $rs = $this->malbum_detail->add($dataAdd);
+                if ($rs) {
+                    $num++;
+                }
+            }
+            if ($num > 0) {
+                $notify = array(
+                    'title' => lang('success'), 
+                    'text' => lang('upload').' '.$num.lang('photo'),
+                    'type' => 'success'
+                );
+            } else {
+                $notify = array(
+                    'title' => lang('unsuccessful'), 
+                    'text' => lang('checkinfo'),
+                    'type' => 'error'
+                );
+            }
+            $this->session->set_userdata('notify', $notify);
+        }
+        redirect(my_library::admin_site()."album/upload/".$id);
+    }
+    private function set_upload_options($id)
+    {
+        $path = realpath(APPPATH . "../media/album").'/'.$id;
+        $config = array();
+        $config['upload_path'] = $path;
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size']      = '0';
+        $config['overwrite']     = FALSE;
+        return $config;
+    }
 
 	public function deleteImage()
 	{

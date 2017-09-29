@@ -6,7 +6,7 @@ class Index extends CI_Controller {
     {
         parent::__construct();
         $this->load->library("user_agent");
-        $this->load->helper("language");
+        //$this->load->helper("language");
         $this->load->Model("admin/muser");
         $this->load->Model("admin/mhistory");
         $this->load->Model("admin/mgroup");
@@ -15,7 +15,7 @@ class Index extends CI_Controller {
 	public function login()
 	{
 		$user_active = $this->session->userdata('userActive');
-		if ($user_active) {
+		if ($user_active['logged'] == TRUE) {
 			redirect(my_library::admin_site() . "home/");
 		} else {
 			$data['title'] = 'Login CMS';
@@ -29,7 +29,7 @@ class Index extends CI_Controller {
 					$myUser = $this->muser->getData("", array("user_username" => $data['formData']['username'], "user_password" => md5($data['formData']['password'])));
 					if ($myUser && isset($myUser['id']) && is_numeric($myUser['id']) > 0) {
 						if ($myUser['user_status'] == 1) {
-							$group = $this->mgroup->getData('group_name,group_module',array('id' => $myUser['user_group'],'group_status' => 1));
+							$group = $this->mgroup->getData('group_module',array('id' => $myUser['user_group'],'group_status' => 1));
 							if (!empty($group)) {
 								if ($this->agent->is_browser())
 								{
@@ -48,16 +48,16 @@ class Index extends CI_Controller {
 								    $agent = 'Unidentified User Agent';
 								}
 								$module_view = array();
-								$group_name = $group['group_name'];
+								//$group_name = $group['group_name'];
 								if ($group['group_module'] != '') {
 									$module_view = unserialize($group['group_module']);
 								}
 								//$department_name = $this->muser->listDepartment($myUser['user_department']);
 								$dataAddHistory = array(
 									'history_username' => $myUser['user_username'],
-									'history_group' => $group_name,
+									'history_group' => $myUser['user_group'],
 									'history_department' => $myUser['user_department'],
-									'history_ip' => $_SERVER['REMOTE_ADDR'],
+									'history_ip' => $this->input->ip_address(),
 									'history_time' => date('Y-m-d H:i:s'),
 									'history_agent' => $agent,
 									'history_platform' => $this->agent->platform()

@@ -15,6 +15,39 @@
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
+					<div class="x_title">
+						<div class="">
+							<form class="form-horizontal form-label-left" method="get">
+								<div class="form-group">
+									<div class="col-md-3 col-sm-3 col-xs-6">
+										<div class="input-group">
+											<input type="text" name="fkeyword" value="<?= $formData['fkeyword']?>" placeholder="<?= lang('search')?>" class="form-control">
+											<span class="input-group-btn">
+												<button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+											</span>
+										</div>
+									</div>
+									<div class="col-md-3 col-sm-4 col-xs-6">
+										<select class="form-control" name="fstatus" onchange="this.form.submit()">
+											<?= $fstatus?>
+										</select>
+									</div>
+									<div class="col-md-3 col-sm-4 col-xs-6">
+										<select class="form-control" name="fcategory" onchange="this.form.submit()">
+											<?= $fcategory?>
+										</select>
+									</div>
+									<div class="col-md-2 col-sm-2 col-xs-6">
+										<select class="form-control" name="fuser" onchange="this.form.submit()">
+											<?= $fuser?>
+										</select>
+									</div>
+									<input type="hidden" name="page" value="<?= $page?>">  
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+					</div>
 					<div class="x_content table-responsive">
 						<table class="table table-hover">
 							<thead>
@@ -44,20 +77,21 @@
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $key => $value): ?>
 										<?php 
-											$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
-											$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['album_parent'],'language_code' => $flanguage['lang_code']));
-											$category_name = $category['category_name'] ?? '';
-											$linkEdit = my_library::admin_site().'album/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
-											$status = $this->malbum->listStatusName($value['album_status']);
-											$listLanguage = $this->malbum_translation->checkLanguage($value['id']);
-											$userUpdate = $this->muser->getData('id,user_fullname',array('id' => $value['user']));
+										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['album_parent'],'language_code' => $flanguage['lang_code']));
+										$category_name = $category['category_name'] ?? '';
+										$linkEdit = my_library::admin_site().'album/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
+										$linkDetailPhoto = my_library::admin_site().'album/upload/'.$value['id'];
+										$status = $this->malbum->listStatusName($value['album_status']);
+										$listLanguage = $this->malbum_translation->checkLanguage($value['id']);
+										$userUpdate = $this->muser->getData('id,user_fullname',array('id' => $value['user']));
 										?>
 										<tr class="showacction">
 											<td><h5 style="font-weight: bold;"><?= $value['id']?></h5></td>
 											<td><?= $value['album_name']?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" data-id="<?= $value['id']?>" class="text-danger delete"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkDetailPhoto?>" class="text-success"><?= lang('detailphoto')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>

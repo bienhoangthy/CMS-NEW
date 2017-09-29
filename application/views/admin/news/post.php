@@ -2,7 +2,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><?= $title?> <a href="<?= my_library::admin_site()?>news/index/<?= $state?>"><button type="button" class="btn btn-<?= $stateData['color']?> btn-xs"><i class="fa fa-list"></i> <?= lang('listsingle').$stateData['name']?></button></a> <a href="<?= my_library::admin_site()?>news/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('newsadd')?></button></a></h3>
+        <h3><?= $title?> <a href="<?= my_library::admin_site()?>news/index/<?= $state?>"><button type="button" class="btn btn-<?= $stateData['color']?> btn-xs"><i class="fa fa-list"></i> <?= lang('listsingle').$stateData['name']?></button></a> <?php if (isset($id)): ?><a href="<?= my_library::admin_site()?>news/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('newsadd')?></button></a><?php endif ?></h3>
       </div>
       <div class="title_right hidden-xs">
         <ol class="breadcrumb pull-right">
