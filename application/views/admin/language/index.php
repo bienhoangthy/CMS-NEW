@@ -54,7 +54,7 @@
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lang_flag">Icon </label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<img src="<?= $formData['lang_flag'] != '' ? $formData['lang_flag'] : my_library::base_public().'admin/images/user.png'?>" id="showflag" alt="icon" style="max-height: 30px;width: auto; margin-top: 10px;margin-bottom: 5px;">
-									<input type="file" id="uploadflag" name="lang_flag">
+									<input type="file" id="uploadflag" name="lang_flag" accept="image/*">
 								</div>
 							</div>
 							<div class="form-group">

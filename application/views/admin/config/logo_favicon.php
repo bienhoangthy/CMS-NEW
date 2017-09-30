@@ -31,7 +31,7 @@
               <div class="form-group">
                 <img src="<?= my_library::base_file()?>logo/logo.png" id="showlogo" alt="logo" style="max-width: 100%;height: 70px;"><br>
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 20px;">
-                  <input type="file" id="uploadlogo" name="logo" required="required">
+                  <input type="file" id="uploadlogo" name="logo" required="required" accept="image/*">
                 </div>
               </div>
               <div class="ln_solid"></div>
@@ -61,7 +61,7 @@
               <div class="form-group">
                 <img src="<?= base_url()?>favicon.ico" id="showfavicon" alt="favicon" style="max-width: 100%;height: 70px;"><br>
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 20px;">
-                  <input type="file" id="uploadfavicon" name="favicon" required="required">
+                  <input type="file" id="uploadfavicon" name="favicon" required="required" accept="image/*">
                 </div>
               </div>
               <div class="ln_solid"></div>

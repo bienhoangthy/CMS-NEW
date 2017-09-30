@@ -164,7 +164,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="user_avatar"><?= lang('avatar')?> </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <img src="<?= $formData['user_avatar'] != '' ? $formData['user_avatar'] : my_library::base_public().'admin/images/user.png'?>" id="showavatar" alt="avatar" style="max-height: 100px;width: auto; margin-top: 10px;margin-bottom: 5px;">
-                  <input type="file" id="uploadavatar" name="user_avatar">
+                  <input type="file" id="uploadavatar" name="user_avatar" accept="image/*">
                 </div>
               </div>
             </div>

@@ -184,7 +184,7 @@
       </div>
       <div class="modal-body">
         <label class="btn btn-success btn-upload btn-lg" for="inputImage" title="<?= lang('chooseimg')?>">
-          <input type="file" class="sr-only" id="inputImage" name="file">
+          <input type="file" class="sr-only" id="inputImage" name="file" accept="image/*">
           <span class="fa fa-upload"></span>
         </label>
         <div class="clearfix"></div>

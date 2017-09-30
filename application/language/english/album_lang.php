@@ -23,4 +23,5 @@ $lang['detailphoto'] = 'Detail Photos';
 $lang['of'] = ' of ';
 $lang['upload'] = 'Upload';
 $lang['photo'] = ' photos';
+$lang['listphoto'] = 'List';
  ?>

@@ -16,7 +16,7 @@ class Album extends MY_Controller {
 		$this->mpermission->checkPermission("album","index",$this->_data['user_active']['active_user_group']);
 		$this->load->library("My_paging");
         $this->_data['title'] = lang('list');
-        $obj = '';
+        $obj = 'a.id,a.album_parent,a.album_status,a.album_hot,a.album_view,a.album_picture,a.album_updatedate,a.user,at.album_name';
         $this->_data['formData'] = array(
             'fkeyword' => $_GET['fkeyword'] ?? '',
             'fstatus' => $_GET['fstatus'] ?? 0,
@@ -336,12 +336,14 @@ class Album extends MY_Controller {
     {
         $this->mpermission->checkPermission("album","upload",$this->_data['user_active']['active_user_group']);
         if (is_numeric($id) && $id > 0) {
-            $myAlbum = $this->malbum->getData("",array('id' => $id));
+            $myAlbum = $this->malbum->getData("id",array('id' => $id));
             if ($myAlbum && $myAlbum['id'] > 0) {
+            	$this->_data['listPhotos'] = $this->malbum_detail->getQuery("","album_id = ".$id,"","");
                 $this->_data['id'] = $id;
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['title'] = lang('detailphoto').' #'.$id;
+                $this->_data['extraJs'] = ['language/'.$this->_data['language'].'.js','module/album-upload.js'];
                 $this->my_layout->view("admin/album/upload-detail", $this->_data);
             } else {
                 $notify = array(
@@ -363,6 +365,21 @@ class Album extends MY_Controller {
         }
     }
 
+    public function editDescription()
+    {
+    	$rs = 0;
+    	if ($this->mpermission->permission("album_editdescription",$this->_data['user_active']['active_user_group']) == true) {
+    		$id = $this->input->get('id');
+    		$description = $this->input->get('description');
+    		if ($id != null && $description != null) {
+    			if ($this->malbum_detail->edit($id,array('description' => $description))) {
+    				$rs = 1;
+    			}
+    		}
+    	}
+    	echo $rs;
+    }
+
     public function uploadAction()
     {
         $this->mpermission->checkPermission("album","upload",$this->_data['user_active']['active_user_group']);
@@ -372,25 +389,43 @@ class Album extends MY_Controller {
             $this->load->library('upload');
             $files = $_FILES;
             $cpt = count($_FILES['userfile']['name']);
+            //Config
+            $path = realpath(APPPATH . "../media/album").'/'.$id;
+            if (!is_dir($path)) {
+	            mkdir($path, 0777, true);
+	            chmod($path, 0777);
+	        }
+	        $config = array();
+	        $config['upload_path'] = $path;
+	        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+	        $config['max_size']      = '0';
+	        $config['overwrite']     = FALSE;
             for($i=0; $i<$cpt; $i++)
-            {           
-                $_FILES['userfile']['name']= $files['userfile']['name'][$i].time();
-                $_FILES['userfile']['type']= $files['userfile']['type'][$i];
-                $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
-                $_FILES['userfile']['error']= $files['userfile']['error'][$i];
-                $_FILES['userfile']['size']= $files['userfile']['size'][$i];    
+            {         
+            	if ($files['userfile']['name'][$i] != '') {
+            		$_FILES['userfile']['name']= time().$files['userfile']['name'][$i];
+	                $_FILES['userfile']['type']= $files['userfile']['type'][$i];
+	                $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+	                $_FILES['userfile']['error']= $files['userfile']['error'][$i];
+	                $_FILES['userfile']['size']= $files['userfile']['size'][$i];    
 
-                $this->upload->initialize($this->set_upload_options($id));
-                $this->upload->do_upload();
-                $dataAdd = array(
-                    'album_id' => $id,
-                    'picture' => $_FILES['userfile']['name'],
-                    'description' => ''
-                );
-                $rs = $this->malbum_detail->add($dataAdd);
-                if ($rs) {
-                    $num++;
-                }
+	                $this->upload->initialize($config);
+	                if ($this->upload->do_upload()) {
+	                	$dataAdd = array(
+		                    'album_id' => $id,
+		                    'picture' => $_FILES['userfile']['name'],
+		                    'description' => ''
+		                );
+		                $rs = $this->malbum_detail->add($dataAdd);
+		                if ($rs) {
+		                	// $myPhoto = $this->malbum_detail->getData("picture",array('id' => $rs));
+		                	// if ($myPhoto && $myPhoto['picture'] != '') {
+		                	// 	$this->malbum->do_resize_detail($path.'/'.$myPhoto['picture'],$path);
+		                	// }
+		                    $num++;
+		                }
+	                }
+            	}
             }
             if ($num > 0) {
                 $notify = array(
@@ -409,16 +444,6 @@ class Album extends MY_Controller {
         }
         redirect(my_library::admin_site()."album/upload/".$id);
     }
-    private function set_upload_options($id)
-    {
-        $path = realpath(APPPATH . "../media/album").'/'.$id;
-        $config = array();
-        $config['upload_path'] = $path;
-        $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size']      = '0';
-        $config['overwrite']     = FALSE;
-        return $config;
-    }
 
 	public function deleteImage()
 	{
@@ -432,6 +457,23 @@ class Album extends MY_Controller {
 					if ($this->malbum->edit($id,array('album_picture' => ''))) {
 						$rs = 1;
 					}
+				}
+			}
+		}
+		echo $rs;
+	}
+
+	public function deleteImageDetail()
+	{
+		$rs = 0;
+		if ($this->mpermission->permission("album_deleteimg",$this->_data['user_active']['active_user_group']) == true) {
+			$id = $this->input->get('id');
+			if (is_numeric($id) > 0) {
+				$myPhoto = $this->malbum_detail->getData("album_id,picture",array('id' => $id));
+				if (!empty($myPhoto)) {
+					$this->malbum->delimage($myPhoto['album_id'],$myPhoto['picture']);
+					$this->malbum_detail->delete($id);
+					$rs = 1;
 				}
 			}
 		}

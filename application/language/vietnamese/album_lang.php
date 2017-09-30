@@ -20,6 +20,8 @@ $lang['description'] = 'Mô tả';
 $lang['orderby'] = 'Sắp xếp';
 $lang['hot'] = 'Nổi bật';
 $lang['detailphoto'] = 'Ảnh chi tiết';
+$lang['of'] = ' của ';
 $lang['upload'] = 'Tải lên';
 $lang['photo'] = ' ảnh';
+$lang['listphoto'] = 'Ảnh';
  ?>
