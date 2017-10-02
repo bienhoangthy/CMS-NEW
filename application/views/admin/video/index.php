@@ -2,7 +2,7 @@
 	<div class="">
 		<div class="page-title">
 			<div class="title_left">
-				<h3><?= $title?> <a href="<?= my_library::admin_site()?>album/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('albumadd')?></button></a></h3>
+				<h3><?= $title?> <a href="<?= my_library::admin_site()?>video/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('videoadd')?></button></a></h3>
 			</div>
 			<div class="title_right hidden-xs">
 				<ol class="breadcrumb pull-right">
@@ -54,60 +54,61 @@
 							<thead>
 								<tr>
 									<th width="3%">ID</th>
-									<th width="25%"><?= lang('albumname')?></th>
+									<th width="25%"><?= lang('videoname')?></th>
 									<th width="10%"></th>
 									<th width="10%"><?= lang('category')?></th>
 									<th class="text-center" width="10%"><?= lang('views')?></th>
 									<th class="text-center" width="10%"><?= lang('status')?></th>
-									<th class="text-center" width="15%">
+									<th class="text-center" width="12%">
 										<div class="btn-group">
 											<button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-xs" type="button" aria-expanded="false"><?= $flanguage['lang_name']?> <span class="caret"></span></button>
 											<ul role="menu" class="dropdown-menu">
 												<?php if (!empty($listLanguage)): ?>
-													<?php foreach ($listLanguage as $key => $value): ?>
+													<?php foreach ($listLanguage as $value): ?>
 														<li><a href="<?= current_url().'?flanguage='.$value['lang_code']?>"><?= $value['lang_name']?></a></li>
 													<?php endforeach ?>
 												<?php endif ?>
 											</ul>
 										</div>
 									</th>
-									<th class="text-center" width="17%"><?= lang('updatedate')?></th>
+									<th class="text-center" width="5%">Link</th>
+									<th class="text-center" width="15%"><?= lang('updatedate')?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php if (!empty($list)): ?>
-									<?php foreach ($list as $key => $value): ?>
+									<?php foreach ($list as $value): ?>
 										<?php 
-										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
-										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['album_parent'],'language_code' => $flanguage['lang_code']));
+										$picture = $value['video_picture'] != "" ? my_library::base_file().'video/'.$value['id'].'/thumb-'.$value['video_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['video_parent'],'language_code' => $flanguage['lang_code']));
 										$category_name = $category['category_name'] ?? '';
-										$linkEdit = my_library::admin_site().'album/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
-										$linkDetailPhoto = my_library::admin_site().'album/upload/'.$value['id'];
-										$status = $this->malbum->listStatusName($value['album_status']);
-										$listLanguage = $this->malbum_translation->checkLanguage($value['id']);
+										$linkEdit = my_library::admin_site().'video/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
+										$status = $this->mvideo->listStatusName($value['video_status']);
+										$listLanguage = $this->mvideo_translation->checkLanguage($value['id']);
 										$userUpdate = $this->muser->getData('id,user_fullname',array('id' => $value['user']));
 										?>
 										<tr class="showacction">
 											<td><h5 style="font-weight: bold;"><?= $value['id']?></h5></td>
-											<td><?= $value['album_name']?>
+											<td><?= $value['video_name']?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkDetailPhoto?>" class="text-success"><?= lang('detailphoto')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
 											<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
-											<td><a href="<?= my_library::admin_site().'category/edit/'.$value['album_parent']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
-											<td class="text-center"><span class="badge bg-green"><?= $value['album_view']?></span></td>
-											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if ($value['album_hot'] == 1): ?><br><span class="label label-danger">Hot</span><?php endif ?></td>
+											<td><a href="<?= my_library::admin_site().'category/edit/'.$value['video_parent']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
+											<td class="text-center"><span class="badge bg-green"><?= $value['video_view']?></span></td>
+											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if ($value['video_hot'] == 1): ?><br><span class="label label-danger">Hot</span><?php endif ?></td>
 											<td class="text-center">
 												<?php if (!empty($listLanguage)): ?>
-													<?php foreach ($listLanguage as $key => $vallang): ?>
+													<?php foreach ($listLanguage as $vallang): ?>
 														<img src="<?= my_library::base_file().'language/flag_'.$vallang['language_code'].'.png'?>" style="max-width: 20px;height: auto;">
 													<?php endforeach ?>
 												<?php endif ?>
 											</td>
-											<td class="text-center"><?= date("Y-m-d", strtotime($value['album_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_fullname'].'</a>' : ''?></td>
+											<td class="text-center"><a href="<?= $value['video_link']?>" target="_blank"><span class="label label-info">Link</span></a></td>
+											<td class="text-center"><?= date("Y-m-d", strtotime($value['video_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_fullname'].'</a>' : ''?></td>
 										</tr>
 									<?php endforeach ?>
 								<?php endif ?>

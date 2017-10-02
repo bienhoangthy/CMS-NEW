@@ -15,7 +15,7 @@ class Language extends MY_Controller {
             'lang_name' => '',
             'lang_code' => '',
             'lang_flag' => '',
-            'lang_staus' => 1
+            'lang_status' => 1
         );
         if (isset($_POST['lang_name'])) {
             $this->mpermission->checkPermission("language","add",$this->_data['user_active']['active_user_group']);
@@ -23,7 +23,7 @@ class Language extends MY_Controller {
                 'lang_name' => $this->input->post('lang_name'), 
                 'lang_code' => $this->input->post('lang_code'), 
                 'lang_flag' => '', 
-                'lang_staus' => $this->input->post('lang_staus')
+                'lang_status' => $this->input->post('lang_status')
             );
             $error = false;
             $checkLangname = $this->mlanguage->getData('id', array('lang_name' => $this->_data['formData']['lang_name']));
@@ -96,12 +96,12 @@ class Language extends MY_Controller {
                     'lang_name' => $myLanguage['lang_name'],
                     'lang_code' => $myLanguage['lang_code'],
                     'lang_flag' => $flag,
-                    'lang_staus' => $myLanguage['lang_staus']
+                    'lang_status' => $myLanguage['lang_status']
                 );
                 if (isset($_POST['lang_name'])) {
                     $this->_data['formData'] = array(
                         'lang_name' => $this->input->post('lang_name'),
-                        'lang_staus' => $this->input->post('lang_staus')
+                        'lang_status' => $this->input->post('lang_status')
                     );
                     $error = false;
                     $checkLangname = $this->mlanguage->getData('id', array('lang_name' => $this->_data['formData']['lang_name']));

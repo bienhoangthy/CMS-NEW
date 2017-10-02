@@ -4,6 +4,7 @@ if (session_id() == '') session_start();
 // if (!isset($_SESSION["userActive"])) {
 // 	exit();
 // }
+//var_dump($_SESSION);die();
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');

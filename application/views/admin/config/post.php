@@ -14,12 +14,19 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
-      <div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 500px;max-width: 100%;">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-        </button>
-        <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="alert alert-success alert-dismissible fade in" role="alert" style="max-width: 100%;">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+          </button>
+          <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
+        </div>
       </div>
       <form class="form-horizontal form-label-left" method="post" novalidate>
+        <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <button type="reset" class="btn btn-primary pull-right"><?= lang('reset')?></button>
+          <button type="submit" class="btn btn-success pull-right"><?= lang('save')?></button>
+        </div>
         <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
@@ -112,13 +119,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="form-group pull-right">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-            <button type="submit" class="btn btn-success"><?= lang('save')?></button>
-            <button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
           </div>
         </div>
       </form>

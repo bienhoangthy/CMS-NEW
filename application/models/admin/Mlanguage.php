@@ -10,10 +10,10 @@ class mlanguage extends MY_Model
     public function getLanguage($item = '')
     {
         if ($item === '') {
-            $listLanguage = $this->getQuery("lang_name,lang_code,lang_flag", "lang_staus = 1", "","");
+            $listLanguage = $this->getQuery("lang_name,lang_code,lang_flag", "lang_status = 1", "","");
             return $listLanguage;
         } else {
-            $language = $this->getData("lang_name,lang_code,lang_flag",array('lang_code' => $item,'lang_staus' => 1));
+            $language = $this->getData("lang_name,lang_code,lang_flag",array('lang_code' => $item,'lang_status' => 1));
             if (empty($language)) {
                 $language = array('lang_name' => 'Tiếng Việt', 'lang_code' => 'vietnamese', 'lang_flag' => 'flag_vietnamese.png');
             }

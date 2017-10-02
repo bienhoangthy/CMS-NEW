@@ -27,7 +27,11 @@ class Album extends MY_Controller {
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['formData']['flanguage']);
         $and = '1';
         if ($this->_data['formData']['fstatus'] > 0) {
-            $and .= ' and a.album_status = '. $this->_data['formData']['fstatus'];
+            if ($this->_data['formData']['fstatus'] == 10) {
+                $and .= ' and a.album_hot = 1';
+            } else {
+                $and .= ' and a.album_status = '. $this->_data['formData']['fstatus'];
+            }
         }
         if ($this->_data['formData']['fuser'] > 0) {
             $and .= ' and a.user = '. $this->_data['formData']['fuser'];
@@ -275,7 +279,7 @@ class Album extends MY_Controller {
                 $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['album_parent'],$this->_data['langPost']['lang_code'],'album');
                 $this->_data['album_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];
-                $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/album.js'];
+                $this->_data['extraJs'] = ['validator.js','icheck.min.js','language/'.$this->_data['language'].'.js','switchery.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/album-alias.js','module/album.js'];
                 $this->my_layout->view("admin/album/post", $this->_data);
 			} else {
 				$notify = array(

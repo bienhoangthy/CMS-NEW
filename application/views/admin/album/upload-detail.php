@@ -56,7 +56,11 @@
                     <tr class="showacction" id="photo<?= $value['id']?>">
                       <td width="5%"><p style="font-weight: bold;"><?= $value['id']?></p></td>
                       <td width="55%" class="text-center"><img src="<?= $picture?>" style="width: auto;height: 70px;border-radius: 2px;border: 1px solid #e6e6e6;box-shadow: 2px 0px 2px;" alt="picture"><br><code><?= $value['picture']?></code></td>
-                      <td width="35%"><span id="name<?= $value['id']?>"><?= $value['description']?></span><br><a href="javascript:;" onclick="editDescription(<?= $value['id']?>)"><button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="bottom" title="<?= lang('edit').' '.lang('description')?>"><i class="fa fa-pencil"></i></button></a></td>
+                      <td width="35%"><span id="name<?= $value['id']?>"><?= $value['description']?></span>
+            						<div class="actionhover">
+            							<a href="javascript:;" onclick="editDescription(<?= $value['id']?>)"><button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="bottom" title="<?= lang('edit').' '.lang('description')?>"><i class="fa fa-pencil"></i></button></a>
+            						</div>
+                      </td>
                       <td width="5%"><a href="javascript:;" onclick="deletePhoto(<?= $value['id']?>)"><button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></a></td>
                     </tr>
                   <?php endforeach ?>

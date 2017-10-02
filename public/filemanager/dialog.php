@@ -1,6 +1,9 @@
 <?php
 $time = time();
 $config = include 'config/config.php';
+// if (!isset($_SESSION['RF'])) {
+// 	die('Access Denied!');
+// }
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 

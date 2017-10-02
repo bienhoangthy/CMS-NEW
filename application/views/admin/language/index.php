@@ -58,12 +58,12 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lang_staus"><?= lang('status')?><span class="required">*</span>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lang_status"><?= lang('status')?><span class="required">*</span>
 								</label>
 								<div class="col-md-7 col-sm-7 col-xs-12" style="margin-top: 8px;">
 									<?= lang('active')?> 
-									<input type="radio" class="flat" name="lang_staus" id="lang_staus1" value="1" <?= $formData['lang_staus'] == 1 ? 'checked="checked"' : '';?>/> -- <?= lang('inactive')?>
-									<input type="radio" class="flat" name="lang_staus" id="lang_staus2" value="2" <?= $formData['lang_staus'] == 2 ? 'checked="checked"' : '';?>/>
+									<input type="radio" class="flat" name="lang_status" id="lang_status1" value="1" <?= $formData['lang_status'] == 1 ? 'checked="checked"' : '';?>/> -- <?= lang('inactive')?>
+									<input type="radio" class="flat" name="lang_status" id="lang_status2" value="2" <?= $formData['lang_status'] == 2 ? 'checked="checked"' : '';?>/>
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -106,7 +106,7 @@
 									<?php foreach ($list as $key => $value): ?>
 										<?php 
 										$icon = $value['lang_flag'] != "" ? my_library::base_file().'language/'.$value['lang_flag'] : my_library::base_public().'admin/images/user.png';
-										$status = $this->mlanguage->listStatusName($value['lang_staus']);
+										$status = $this->mlanguage->listStatusName($value['lang_status']);
 										$linkEdit = my_library::admin_site().'language/edit/'.$value['id'];
 										$opacity = isset($id) && $id == $value['id'] ? 'style="opacity: 0.2;"' : '';
 										?>

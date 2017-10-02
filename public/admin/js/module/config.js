@@ -24,7 +24,8 @@ function quickedit(id,name){
     type: "input",
     showCancelButton: true,
     closeOnConfirm: false,
-    animation: "slide-from-top"
+    animation: "slide-from-top",
+    inputValue: $("#value"+id).text()
   },
   function(inputValue){
     if (inputValue === false) return false;

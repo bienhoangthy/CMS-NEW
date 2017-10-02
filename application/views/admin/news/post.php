@@ -39,7 +39,7 @@
                     <label class="control-label" style="text-align: left !important;" for="news_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
                     </label><br>
                     <code><?= base_url()?></code>
-                    <input type="text" class="form-control" name="news_alias" value="<?= $formDataLang['news_alias']?>">
+                    <input type="text" width="50%" class="form-control" id="news_alias" name="news_alias" value="<?= $formDataLang['news_alias']?>" style="max-width: 100%;width: 350px;">
                     <code>-post<?= $id?>.html</code>
                   </div>
                 </div>

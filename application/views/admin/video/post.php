@@ -2,12 +2,12 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><?= $title?> <a href="<?= my_library::admin_site()?>album"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-list"></i> <?= lang('list')?></button></a> <?php if (isset($id)): ?><a href="<?= my_library::admin_site()?>album/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('albumadd')?></button></a></h3><?php endif ?>
+        <h3><?= $title?> <a href="<?= my_library::admin_site()?>video"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-list"></i> <?= lang('list')?></button></a> <?php if (isset($id)): ?><a href="<?= my_library::admin_site()?>video/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('videoadd')?></button></a></h3><?php endif ?>
       </div>
       <div class="title_right hidden-xs">
         <ol class="breadcrumb pull-right">
           <li class="breadcrumb-item"><a href="<?= my_library::admin_site()?>"><?= lang('dashboard')?></a></li>
-          <li class="breadcrumb-item"><a href="<?= my_library::admin_site()?>album"><?= lang('list')?></a></li>
+          <li class="breadcrumb-item"><a href="<?= my_library::admin_site()?>video"><?= lang('list')?></a></li>
           <li class="breadcrumb-item active"><?= $title?></li>
         </ol>
       </div>
@@ -21,7 +21,7 @@
           <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
         </div>
       </div>
-      <form class="form-horizontal form-label-left" id="formAlbum" method="post">
+      <form class="form-horizontal form-label-left" id="formVideo" method="post">
         <div class="col-md-6 col-sm-6 col-xs-12">
           <button type="reset" class="btn btn-primary pull-right"><?= lang('reset')?></button>
           <button type="submit" class="btn btn-success pull-right"><?= lang('save')?></button>
@@ -31,28 +31,35 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="album_name"><?= lang('albumname')?><span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="video_name"><?= lang('videoname')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
-                  <input id="album_name" class="form-control col-md-7 col-xs-12" maxlength="80" name="album_name" required="required" type="text" value="<?= $formDataLang['album_name']?>">
+                  <input id="video_name" class="form-control col-md-7 col-xs-12" maxlength="80" name="video_name" required="required" type="text" value="<?= $formDataLang['video_name']?>">
                 </div>
               </div>
-              <?php if (isset($formDataLang['album_alias']) && isset($id)): ?>
+              <?php if (isset($formDataLang['video_alias']) && isset($id)): ?>
                 <div class="form-inline" style="margin-left: 10px;">
                   <div class="form-group">
-                    <label class="control-label" style="text-align: left !important;" for="album_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
+                    <label class="control-label" style="text-align: left !important;" for="video_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
                     </label><br>
                     <code><?= base_url()?></code>
-                    <input type="text" class="form-control" id="album_alias" name="album_alias" value="<?= $formDataLang['album_alias']?>" style="max-width: 100%;width: 350px;">
-                    <code>-album<?= $id?>.html</code>
+                    <input type="text" class="form-control" id="video_alias" name="video_alias" value="<?= $formDataLang['video_alias']?>" style="max-width: 100%;width: 350px;">
+                    <code>-video<?= $id?>.html</code>
                   </div>
                 </div>
               <?php endif ?>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="album_description"><?= lang('description')?>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="video_description"><?= lang('description')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <textarea name="album_description" id="album_description"><?= $formDataLang['album_description']?></textarea>
+                  <textarea name="video_description" id="video_description"><?= $formDataLang['video_description']?></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="video_link">Link<span class="required">*</span>
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12 item">
+                  <input id="video_link" class="form-control col-md-7 col-xs-12" name="video_link" required="required" type="text" value="<?= $formData['video_link']?>">
                 </div>
               </div>
               <div class="ln_solid"></div>
@@ -66,43 +73,43 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_parent"><?= lang('category')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_parent"><?= lang('category')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
-                  <select class="form-control" name="album_parent">
+                  <select class="form-control" name="video_parent">
                     <?= $category?>
                   </select>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_view"><?= lang('views')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_view"><?= lang('views')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
-                  <input id="album_view" class="form-control" name="album_view" type="number" value="<?= $formData['album_view']?>">
+                  <input id="video_view" class="form-control" name="video_view" type="number" value="<?= $formData['video_view']?>">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_orderby"><?= lang('orderby')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_orderby"><?= lang('orderby')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
-                  <input id="album_orderby" class="form-control" name="album_orderby" type="number" value="<?= $formData['album_orderby']?>">
+                  <input id="video_orderby" class="form-control" name="video_orderby" type="number" value="<?= $formData['video_orderby']?>">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_hot"><?= lang('hot')?>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_hot"><?= lang('hot')?>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <label style="margin-top: 5px;">
-                    <input type="checkbox" name="album_hot" value="1" class="js-switch"<?= $formData['album_hot'] == 1 ? ' checked' : ''?>/>
+                    <input type="checkbox" name="video_hot" value="1" class="js-switch"<?= $formData['video_hot'] == 1 ? ' checked' : ''?>/>
                   </label>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_status"><?= lang('status')?><span class="required">*</span>
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_status"><?= lang('status')?><span class="required">*</span>
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12" style="margin-top: 8px;">
-                  <input type="radio" class="flat" name="album_status" id="album_status1" value="1" <?= $formData['album_status'] == 1 ? 'checked="checked"' : '';?>/> <?= lang('active')?><br>
-                  <input type="radio" class="flat" name="album_status" id="album_status2" value="2" <?= $formData['album_status'] == 2 ? 'checked="checked"' : '';?>/> <?= lang('inactive')?>
+                  <input type="radio" class="flat" name="video_status" id="video_status1" value="1" <?= $formData['video_status'] == 1 ? 'checked="checked"' : '';?>/> <?= lang('active')?><br>
+                  <input type="radio" class="flat" name="video_status" id="video_status2" value="2" <?= $formData['video_status'] == 2 ? 'checked="checked"' : '';?>/> <?= lang('inactive')?>
                 </div>
               </div>
             </div>
@@ -112,11 +119,11 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="album_lang"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" style="height: 20px; width: auto;">
+                <label class="control-label col-md-5 col-sm-5 col-xs-12" for="video_lang"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" style="height: 20px; width: auto;">
                 </label>
                 <div class="col-md-7 col-sm-7 col-xs-12">
-                  <select class="form-control" name="album_lang" onchange="alertChange('<?= $langPost['lang_code']?>');">
-                    <?= $album_lang?>
+                  <select class="form-control" name="video_lang" onchange="alertChange('<?= $langPost['lang_code']?>');">
+                    <?= $video_lang?>
                   </select>
                 </div>
               </div>
@@ -128,7 +135,7 @@
                     <?php foreach ($listLanguage as $key => $value): ?>
                       <?php if ($value['lang_code'] != $langPost['lang_code']): ?>
                         <?php 
-                        if (isset($id) && $this->malbum_translation->checkEditLang($id,$value['lang_code']) == true) {
+                        if (isset($id) && $this->mvideo_translation->checkEditLang($id,$value['lang_code']) == true) {
                           $icon = 'edit';$title = lang('edit').' '.$value['lang_name'];
                         } else {
                           $icon = 'plus-square-o';$title = lang('add').' '.$value['lang_name'];
@@ -151,14 +158,14 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <?php if ($formData['album_picture'] != ''): ?>
+              <?php if ($formData['video_picture'] != ''): ?>
                 <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
                   <?= lang('editphoto')?>
                 </button>
                 <button type="button" id="button-delimg" class="btn btn-danger btn-xs" onclick="deleteImg(<?= $id?>)">
                   <?= lang('deletephoto')?>
                 </button><br>
-                <img src="<?= my_library::base_file().'album/'.$id.'/'.$formData['album_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: 180px; margin-bottom: 10px;position: absolute;">
+                <img src="<?= my_library::base_file().'video/'.$id.'/'.$formData['video_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: 180px; margin-bottom: 10px;position: absolute;">
               <?php else: ?>
                 <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
                   <?= lang('addphoto')?>
