@@ -79,7 +79,8 @@
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $value): ?>
 										<?php 
-										$picture = $value['video_picture'] != "" ? my_library::base_file().'video/'.$value['id'].'/thumb-'.$value['video_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+										$picture_thumb = $value['video_picture'] != "" ? my_library::base_file().'video/'.$value['id'].'/thumb-'.$value['video_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+										$picture = $value['video_picture'] != "" ? my_library::base_file().'video/'.$value['id'].'/'.$value['video_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['video_parent'],'language_code' => $flanguage['lang_code']));
 										$category_name = $category['category_name'] ?? '';
 										$linkEdit = my_library::admin_site().'video/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];
@@ -96,7 +97,7 @@
 													</div>
 												</div>
 											</td>
-											<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
+											<td><a class="fancybox-picture" href="<?= $picture?>" title="<?= $value['video_name']?>"><img src="<?= $picture_thumb?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></a></td>
 											<td><a href="<?= my_library::admin_site().'category/edit/'.$value['video_parent']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
 											<td class="text-center"><span class="badge bg-green"><?= $value['video_view']?></span></td>
 											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if ($value['video_hot'] == 1): ?><br><span class="label label-danger">Hot</span><?php endif ?></td>
@@ -107,7 +108,7 @@
 													<?php endforeach ?>
 												<?php endif ?>
 											</td>
-											<td class="text-center"><a href="<?= $value['video_link']?>" target="_blank"><span class="label label-info">Link</span></a></td>
+											<td class="text-center"><a class="fancybox-media" href="<?= $value['video_link']?>"><span class="label label-info"><?= lang('view')?></span></a></td>
 											<td class="text-center"><?= date("Y-m-d", strtotime($value['video_updatedate']))?><?= !empty($userUpdate) ? '<br>'.lang('by').' <a href="'.my_library::admin_site().'user/profile/'.$userUpdate['id'].'">'.$userUpdate['user_fullname'].'</a>' : ''?></td>
 										</tr>
 									<?php endforeach ?>

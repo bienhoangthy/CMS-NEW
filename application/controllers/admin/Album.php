@@ -58,6 +58,8 @@ class Album extends MY_Controller {
         $this->_data['fstatus'] = $this->malbum->dropdownlistStatus($this->_data['formData']['fstatus']);
         $this->_data['fuser'] = $this->muser->dropdownlistUser($this->_data['formData']['fuser']);
         $this->_data['fcategory'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['fcategory'],$this->_data['formData']['flanguage'],'album');
+        $this->_data['extraCss'] = ['fancybox/jquery.fancybox.css'];
+        $this->_data['extraJs'] = ['fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox.js'];
         $this->my_layout->view("admin/album/index", $this->_data);
 	}
 

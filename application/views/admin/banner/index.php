@@ -66,7 +66,7 @@
 										$picture = my_library::base_public().'admin/images/image-not-found.jpg';
 										switch ($value['banner_type']) {
 											case 1:
-												if (isset($value['banner_picture']) && $value['banner_picture'] != '') {
+												if ($value['banner_picture'] != null) {
 													$picture = my_library::base_file().'banner/'.$value['id'].'/thumb-'.$value['banner_picture'];
 												}
 												break;

@@ -156,7 +156,7 @@ class Language extends MY_Controller {
                 $notify = array(
                     'title' => lang('unsuccessful'), 
                     'text' => lang('language').lang('notexists'),
-                    'type' => 'warning'
+                    'type' => 'error'
                 );
                 $this->session->set_userdata('notify', $notify);
                 redirect(my_library::admin_site()."language");
@@ -165,7 +165,7 @@ class Language extends MY_Controller {
             $notify = array(
                 'title' => lang('notfound'), 
                 'text' => lang('wrongid'),
-                'type' => 'warning'
+                'type' => 'error'
             );
             $this->session->set_userdata('notify', $notify);
             redirect(my_library::admin_site()."language");
@@ -178,7 +178,7 @@ class Language extends MY_Controller {
         $this->mpermission->checkPermission("language","delete",$this->_data['user_active']['active_user_group']);
         if (is_numeric($id) && $id > 2) {
             $myLanguage = $this->mlanguage->getData("",array('id' => $id));
-            if ($myLanguage && $myLanguage['id'] > 0) {
+            if ($myLanguage && $myLanguage['id'] > 2) {
                 $this->mlanguage->delete($id);
                 $this->mlanguage->delete_flag($myLanguage['lang_flag']);
                 $title = lang('success');

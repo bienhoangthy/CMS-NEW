@@ -21,7 +21,7 @@
           <cite><?= lang('editinglang').' "'.$langPost['lang_name'].'"'?></cite>
         </div>
       </div>
-      <form class="form-horizontal form-label-left" method="post">
+      <form class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
         <div class="col-md-6 col-sm-6 col-xs-12">
           <button type="reset" class="btn btn-primary pull-right"><?= lang('reset')?></button>
           <button type="submit" class="btn btn-success pull-right"><?= lang('save')?></button>
@@ -55,32 +55,44 @@
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="banner_type"><?= lang('type')?>
                 </label>
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <select class="form-control" id="banner_type" name="banner_type">
-                    <?= $type?>
-                  </select>
-                </div>
+                <?php if (!isset($id)): ?>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <select class="form-control" id="banner_type" name="banner_type">
+                      <?= $type?>
+                    </select>
+                  </div>
+                <?php endif ?>
               </div>
               <div class="content-type" style="border: dashed 1px green;margin-left: 10px;margin-right: 10px;">
-                <div class="form-group" id="type1" style="display: none;">
-                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="banner_picture"><?= lang('chooseimg')?>
+                <div class="form-group" id="type1" style="<?= $formData['banner_type'] == 1 ? '' : 'display: none;'?>">
+                  <?php if (isset($id) && $formData['banner_type'] == 1): ?>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div style="display: block;margin: auto;margin-top: 4px;width: 70%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);text-align: center;">
+                        <img src="<?= my_library::base_file().'banner/'.$id.'/'.$picture?>" style="width: 100%;height: auto;" alt="picture">
+                        <div style="padding: 5px;">
+                          <p><?= lang('currentphoto')?> (<code><?= $picture?></code>)</p>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endif ?>
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="banner_picture"><?= lang('chooseimg')?>:
                   </label>
                   <div class="col-md-10 col-sm-10 col-xs-12">
                     <input type="file" name="banner_picture" accept="image/*" style="margin-top: 6px;">
                   </div>
                 </div>
-                <div class="form-group" id="type2" style="display: none;margin-top: 10px;">
+                <div class="form-group" id="type2" style="<?= $formData['banner_type'] == 2 ? '' : 'display: none;'?>margin-top: 10px;">
                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="banner_html">Html
                   </label>
                   <div class="col-md-10 col-sm-10 col-xs-12">
-                    <textarea name="banner_html" style="width: 100%;" rows="3"></textarea>
+                    <textarea name="banner_html" style="width: 100%;" rows="3"><?= $html?></textarea>
                   </div>
                 </div>
-                <div class="form-group" id="type3" style="display: none;margin-top: 10px;">
+                <div class="form-group" id="type3" style="<?= $formData['banner_type'] == 3 ? '' : 'display: none;'?>margin-top: 10px;">
                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="banner_iframe">Iframe
                   </label>
                   <div class="col-md-10 col-sm-10 col-xs-12">
-                    <input class="form-control col-md-7 col-xs-12" name="banner_iframe" type="text" placeholder="Url...">
+                    <input class="form-control col-md-7 col-xs-12" name="banner_iframe" type="text" placeholder="Url..." value="<?= $iframe?>">
                   </div>
                 </div>
               </div>

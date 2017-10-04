@@ -109,7 +109,8 @@ class mbanner extends MY_Model
                 'new_image' => $target_path,
                 'maintain_ratio' => TRUE,
                 'create_thumb' => TRUE,
-                'width' => 320
+                'width' => 300,
+                'height' => 150
             );
             $this->load->library('image_lib', $config_resize);
             if (!$this->image_lib->resize()) {
@@ -119,33 +120,44 @@ class mbanner extends MY_Model
         }
     }
 
+    public function create_folder($id)
+    {
+        $folder = realpath(APPPATH . "../media/banner").'/'.$id;
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777);
+            chmod($folder, 0777);
+        }
+    }    
+
     public function uploadBanner($id,$filename)
     {
+        $this->load->library('upload');
         $path = realpath(APPPATH . "../media/banner/".$id."/");
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
-            chmod($path, 0777);
-        }
         $config['upload_path'] = $path;
-        $config['allowed_types'] = 'gif|jpg|png';
+        $config['allowed_types'] = 'jpg|gif|png';
+        $config['max_size']             = 2000;
         $config['file_name'] = $filename;
-        $this->load->library('upload', $config);
-        if ($this->upload->do_upload()){
-            $data = array('upload_data' => $this->upload->data());
-            $this->do_resize($path.$filename,$path);
+        $this->upload->initialize($config);
+        if ( ! $this->upload->do_upload('banner_picture'))
+        {
+            $error = array('error' => $this->upload->display_errors());
         }
-        //$this->upload->do_upload();
+        else
+        {
+            $data = $this->upload->data();
+            $this->do_resize($path.'/'.$data['file_name'],$path);
+        }
     }
 
     public function delimage($id,$image_name)
     {
         $link_image = realpath(APPPATH . "../media/banner/")."/".$id."/".$image_name;
-        //$link_image_thumb = realpath(APPPATH . "../media/banner/")."/".$id.'/thumb-'.$image_name;
+        $link_image_thumb = realpath(APPPATH . "../media/banner/")."/".$id.'/thumb-'.$image_name;
         if (file_exists($link_image)) {
             unlink($link_image);
         }
-        // if (file_exists($link_image_thumb)) {
-        //     unlink($link_image_thumb);
-        // }
+        if (file_exists($link_image_thumb)) {
+            unlink($link_image_thumb);
+        }
     }
 }

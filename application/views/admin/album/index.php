@@ -78,6 +78,8 @@
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $key => $value): ?>
 										<?php 
+										$picture_thumb = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['album_parent'],'language_code' => $flanguage['lang_code']));
 										$category_name = $category['category_name'] ?? '';
@@ -96,7 +98,7 @@
 													</div>
 												</div>
 											</td>
-											<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
+											<td><a class="fancybox-picture" href="<?= $picture?>" title="<?= $value['album_name']?>"><img src="<?= $picture_thumb?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></a></td>
 											<td><a href="<?= my_library::admin_site().'category/edit/'.$value['album_parent']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
 											<td class="text-center"><span class="badge bg-green"><?= $value['album_view']?></span></td>
 											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if ($value['album_hot'] == 1): ?><br><span class="label label-danger">Hot</span><?php endif ?></td>

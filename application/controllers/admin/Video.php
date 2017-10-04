@@ -57,6 +57,8 @@ class Video extends MY_Controller {
         $this->_data['fstatus'] = $this->mvideo->dropdownlistStatus($this->_data['formData']['fstatus']);
         $this->_data['fuser'] = $this->muser->dropdownlistUser($this->_data['formData']['fuser']);
         $this->_data['fcategory'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['fcategory'],$this->_data['formData']['flanguage'],'video');
+        $this->_data['extraCss'] = ['fancybox/jquery.fancybox.css'];
+        $this->_data['extraJs'] = ['fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox/helpers/jquery.fancybox-media.js','fancybox.js'];
         $this->my_layout->view("admin/video/index", $this->_data);
 	}
 

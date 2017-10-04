@@ -6,6 +6,7 @@ $lang['bannertitle'] = 'Tiêu đề';
 $lang['choosetype'] = 'Chọn loại';
 $lang['chooseposition'] = 'Chọn vị trí';
 $lang['banneradd'] = 'Thêm banner';
+$lang['banneredit'] = 'Chỉnh sửa banner';
 $lang['position'] = 'Vị trí';
 $lang['pagedisplay'] = 'Trang hiển thị';
 $lang['size'] = 'Kích thước';
@@ -16,4 +17,5 @@ $lang['description'] = 'Mô tả';
 $lang['orderby'] = 'Sắp xếp';
 $lang['chooseimg'] = 'Chọn hình';
 $lang['content'] = ' nội dung của ';
+$lang['currentphoto'] = 'Ảnh hiện tại';
 ?>
