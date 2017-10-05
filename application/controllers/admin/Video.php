@@ -145,7 +145,7 @@ class Video extends MY_Controller {
                         'type' => 'success'
                     );
                     $this->session->set_userdata('notify', $notify);
-                    redirect(my_library::admin_site()."video/index");
+                    redirect(my_library::admin_site()."video");
             	}
             }
         }
@@ -279,7 +279,7 @@ class Video extends MY_Controller {
                             );
                         }
                         $this->session->set_userdata('notify', $notify);
-                        redirect(my_library::admin_site()."video/index");
+                        redirect(my_library::admin_site()."video");
                     }
                 }
                 //End
@@ -343,7 +343,7 @@ class Video extends MY_Controller {
             'type' => $type
         );
         $this->session->set_userdata('notify', $notify);
-        redirect(my_library::admin_site()."video/index/");
+        redirect(my_library::admin_site()."video");
 	}
 
 	public function deleteImage()

@@ -11,6 +11,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->Model("admin/mmodule");
 		$this->load->Model("admin/mpermission");
 		$this->load->Model("admin/mlanguage");
+		$this->load->Model("admin/mmail");
 		// $this->load->Model("admin/mactivity");
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->my_layout->setLayout("admin/template/index");
@@ -19,6 +20,8 @@ class MY_Controller extends CI_Controller {
 			redirect(my_library::admin_site() . '?redirect=' . base64_encode(my_library::base_url() . ltrim($_SERVER["REQUEST_URI"],'/')));
 		}
 		$this->_data['title'] = "";
+		$this->_data['mailUnread'] = $this->mmail->countUnread();
+		$this->_data['listMailUnread'] = $this->mmail->getQuery("id,mail_fullname,mail_email,mail_title,mail_senddate","mail_status = 1","id desc","0,5");
 		if (!$this->_data['language'] = $this->session->userdata('language')) {
 			$this->_data['language'] = 'vietnamese';
 			$this->session->set_userdata('language', $this->_data['language']);

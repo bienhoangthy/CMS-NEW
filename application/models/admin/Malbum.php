@@ -87,25 +87,22 @@ class malbum extends MY_Model
         }
     }
 
-    public function do_resize_detail($source_path,$target_path)
-    {
-        if ($source_path != '' && $target_path != '') {
-            $config_resize = array(
-                'image_library' => 'gd2',
-                'source_image' => $source_path,
-                'new_image' => $target_path,
-                'maintain_ratio' => TRUE,
-                'create_thumb' => TRUE,
-                'width' => 300,
-            );
-            $this->load->library('image_lib', $config_resize);
-            $this->image_lib->resize();
-            // if (!$this->image_lib->resize()) {
-            //     echo $this->image_lib->display_errors();
-            // }
-            $this->image_lib->clear();
-        }
-    }
+    // public function do_resize_detail($source_path,$target_path)
+    // {
+    //     if ($source_path != '' && $target_path != '') {
+    //         $config_resize = array(
+    //             'image_library' => 'gd2',
+    //             'source_image' => $source_path,
+    //             'new_image' => $target_path,
+    //             'maintain_ratio' => TRUE,
+    //             'create_thumb' => TRUE,
+    //             'width' => 300
+    //         );
+    //         $this->image_lib->clear();
+    //         $this->load->library('image_lib', $config_resize);
+    //         $this->image_lib->resize();
+    //     }
+    // }
 
     public function saveImage($file,$id,$alias)
     {

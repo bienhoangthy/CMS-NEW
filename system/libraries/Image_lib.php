@@ -427,7 +427,7 @@ class CI_Image_lib {
 		$this->dynamic_output 		= FALSE;
 		$this->quality 				= 90;
 		$this->create_thumb 		= FALSE;
-		$this->thumb_marker 		= '_thumb';
+		$this->thumb_marker 		= 'thumb-';
 		$this->maintain_ratio 		= TRUE;
 		$this->master_dim 			= 'auto';
 		$this->wm_type 				= 'text';

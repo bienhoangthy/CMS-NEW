@@ -78,7 +78,8 @@
                   <?php if (!empty($list)): ?>
                     <?php foreach ($list as $key => $value): ?>
                       <?php 
-                      $avatar = $value['user_avatar'] != "" ? my_library::base_file().'user/'.$value['user_folder'].'/thumb-'.$value['user_avatar'] : my_library::base_public().'admin/images/user.png';
+                      $avatar_thumb = $value['user_avatar'] != "" ? my_library::base_file().'user/'.$value['user_folder'].'/thumb-'.$value['user_avatar'] : my_library::base_public().'admin/images/user.png';
+                      $avatar = $value['user_avatar'] != "" ? my_library::base_file().'user/'.$value['user_folder'].'/'.$value['user_avatar'] : my_library::base_public().'admin/images/user.png';
                       $group = $this->mgroup->getData("group_name","id = ".$value['user_group']);
                       $status = $this->muser->listStatusName($value['user_status']);
                       $linkEdit = my_library::admin_site().'user/edit/'.$value['id'];
@@ -92,11 +93,11 @@
                         <td><?= $value['user_fullname']?>
                           <div style="height: 20px;">
                             <div class="actionhover">
-                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkProfile?>" class="text-success">Profile</a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkProfile?>" class="text-success"><?= lang('profile')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
                             </div>
                           </div>
                         </td>
-                        <td><img src="<?= $avatar?>" class="avatar" alt="Avatar"></td>
+                        <td><a class="fancybox-picture" href="<?= $avatar?>" title="<?= $value['user_fullname']?>"><img src="<?= $avatar_thumb?>" class="avatar" alt="picture"></a></td>
                         <td><code><?= $value['user_username']?></code><br>ID: <?= $value['id']?></td>
                         <td><a href="mailto:<?= $value['user_email']?>"><?= $value['user_email']?></a><br><?= $value['user_phone']?></td>
                         <td><?= $group['group_name']?></td>

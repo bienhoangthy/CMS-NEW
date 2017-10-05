@@ -80,7 +80,6 @@
 										<?php 
 										$picture_thumb = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
-										$picture = $value['album_picture'] != "" ? my_library::base_file().'album/'.$value['id'].'/thumb-'.$value['album_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 										$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['album_parent'],'language_code' => $flanguage['lang_code']));
 										$category_name = $category['category_name'] ?? '';
 										$linkEdit = my_library::admin_site().'album/edit/'.$value['id'].'?lang='.$flanguage['lang_code'];

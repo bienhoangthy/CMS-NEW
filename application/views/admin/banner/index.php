@@ -63,18 +63,19 @@
 								<?php if (!empty($list)): ?>
 									<?php foreach ($list as $value): ?>
 										<?php 
-										$picture = my_library::base_public().'admin/images/image-not-found.jpg';
+										$picture = $picture_thumb = my_library::base_public().'admin/images/image-not-found.jpg';
 										switch ($value['banner_type']) {
 											case 1:
 												if ($value['banner_picture'] != null) {
-													$picture = my_library::base_file().'banner/'.$value['id'].'/thumb-'.$value['banner_picture'];
+													$picture = my_library::base_file().'banner/'.$value['id'].'/'.$value['banner_picture'];
+													$picture_thumb = my_library::base_file().'banner/'.$value['id'].'/thumb-'.$value['banner_picture'];
 												}
 												break;
 											case 2:
-												$picture = my_library::base_public().'admin/images/html.png';
+												$picture = $picture_thumb = my_library::base_public().'admin/images/html.png';
 												break;
 											case 3:
-												$picture = my_library::base_public().'admin/images/iframe.png';
+												$picture = $picture_thumb = my_library::base_public().'admin/images/iframe.png';
 												break;
 											default:
 												break;
@@ -102,7 +103,7 @@
 												</div>
 											</td>
 											<td><?= $position_title?></td>
-											<td><img src="<?= $picture?>" class="avatar" style="width: auto;height: 40px;max-width: 100%;" alt="picture"></td>
+											<td><a class="fancybox-picture" href="<?= $picture?>" title="<?= $banner_title?>"><img src="<?= $picture_thumb?>" class="avatar" style="width: auto;height: 40px;max-width: 100%;" alt="picture"></a></td>
 											<td class="text-center"><span class="label label-<?= $type['color']?>"><?= $type['name']?></span></td>
 											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if (isset($value['banner_link']) && $value['banner_link'] != ''): ?>
 												<br><a href="<?= $value['banner_link']?>" target="_blank"><span class="label label-info">Link</span></a>

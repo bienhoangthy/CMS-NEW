@@ -24,7 +24,7 @@
             <form method="post" enctype="multipart/form-data" action="<?= my_library::admin_site()?>album/uploadAction">
               <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
               <input type="hidden" name="id" value="<?= $id?>">
-              <input type="file" name="userfile[]" multiple accept="image/*">
+              <input type="file" name="userfile[]" multiple accept="image/*" required>
               <br>
               <button type="submit" class="btn btn-success"><i class="fa fa-cloud-upload"></i> <?= lang('upload')?></button>
             </form>
@@ -51,11 +51,12 @@
                 <tbody>
                   <?php foreach ($listPhotos as $value): ?>
                     <?php
+                      $picture_thumb = $value['picture'] != "" ? my_library::base_file().'album/'.$id.'/thumb-'.$value['picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
                       $picture = $value['picture'] != "" ? my_library::base_file().'album/'.$id.'/'.$value['picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
                      ?>
                     <tr class="showacction" id="photo<?= $value['id']?>">
                       <td width="5%"><p style="font-weight: bold;"><?= $value['id']?></p></td>
-                      <td width="55%" class="text-center"><img src="<?= $picture?>" style="width: auto;height: 70px;border-radius: 2px;border: 1px solid #e6e6e6;box-shadow: 2px 0px 2px;" alt="picture"><br><code><?= $value['picture']?></code></td>
+                      <td width="55%" class="text-center"><a class="fancybox-thumbs" data-fancybox-group="thumb" href="<?= $picture?>" title="<?= $value['description']?>"><img src="<?= $picture_thumb?>" style="width: auto;height: 70px;border-radius: 2px;border: 1px solid #e6e6e6;box-shadow: 2px 0px 2px;" alt="picture"></a><br><code><?= $value['picture']?></code></td>
                       <td width="35%"><span id="name<?= $value['id']?>"><?= $value['description']?></span>
             						<div class="actionhover">
             							<a href="javascript:;" onclick="editDescription(<?= $value['id']?>)"><button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="bottom" title="<?= lang('edit').' '.lang('description')?>"><i class="fa fa-pencil"></i></button></a>
@@ -66,9 +67,6 @@
                   <?php endforeach ?>
                 </tbody>
               </table>
-              <?php if (isset($pagination)): ?>
-                <ul class="pagination pull-right"><?= $pagination?></ul>
-              <?php endif ?>
             <?php else: ?>
               <h4 class="text-danger"><?= lang('listempty')?></h4>
             <?php endif ?>

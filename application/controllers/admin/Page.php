@@ -263,7 +263,7 @@ class Page extends MY_Controller {
                     'type' => 'warning'
                 );
                 $this->session->set_userdata('notify', $notify);
-                redirect(my_library::admin_site()."category");
+                redirect(my_library::admin_site()."page");
             }
         } else {
             $notify = array(

@@ -141,7 +141,7 @@ class Album extends MY_Controller {
                         'type' => 'success'
                     );
                     $this->session->set_userdata('notify', $notify);
-                    redirect(my_library::admin_site()."album/index");
+                    redirect(my_library::admin_site()."album");
             	}
             }
         }
@@ -270,7 +270,7 @@ class Album extends MY_Controller {
                             );
                         }
                         $this->session->set_userdata('notify', $notify);
-                        redirect(my_library::admin_site()."album/index");
+                        redirect(my_library::admin_site()."album");
                     }
                 }
                 //End
@@ -287,7 +287,7 @@ class Album extends MY_Controller {
 				$notify = array(
                     'title' => lang('notfound'), 
                     'text' => lang('album').lang('notexists'),
-                    'type' => 'warning'
+                    'type' => 'danger'
                 );
                 $this->session->set_userdata('notify', $notify);
                 redirect(my_library::admin_site()."album");
@@ -296,7 +296,7 @@ class Album extends MY_Controller {
 			$notify = array(
                 'title' => lang('notfound'), 
                 'text' => lang('wrongid'),
-                'type' => 'warning'
+                'type' => 'danger'
             );
             $this->session->set_userdata('notify', $notify);
             redirect(my_library::admin_site()."album");
@@ -335,7 +335,7 @@ class Album extends MY_Controller {
             'type' => $type
         );
         $this->session->set_userdata('notify', $notify);
-        redirect(my_library::admin_site()."album/index/");
+        redirect(my_library::admin_site()."album");
 	}
 
     public function upload($id)
@@ -349,7 +349,8 @@ class Album extends MY_Controller {
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['title'] = lang('detailphoto').' #'.$id;
-                $this->_data['extraJs'] = ['language/'.$this->_data['language'].'.js','module/album-upload.js'];
+                $this->_data['extraCss'] = ['fancybox/jquery.fancybox.css','fancybox/jquery.fancybox-thumbs.css'];
+                $this->_data['extraJs'] = ['fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox/helpers/jquery.fancybox-thumbs.js','fancybox.js','language/'.$this->_data['language'].'.js','module/album-upload.js'];
                 $this->my_layout->view("admin/album/upload-detail", $this->_data);
             } else {
                 $notify = array(
@@ -393,6 +394,7 @@ class Album extends MY_Controller {
         $num = 0;
         if ($id) {
             $this->load->library('upload');
+            $this->load->library('image_lib');
             $files = $_FILES;
             $cpt = count($_FILES['userfile']['name']);
             //Config
@@ -409,7 +411,7 @@ class Album extends MY_Controller {
             for($i=0; $i<$cpt; $i++)
             {         
             	if ($files['userfile']['name'][$i] != '') {
-            		$_FILES['userfile']['name']= time().$files['userfile']['name'][$i];
+            		$_FILES['userfile']['name']= time().'-'.$files['userfile']['name'][$i];
 	                $_FILES['userfile']['type']= $files['userfile']['type'][$i];
 	                $_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
 	                $_FILES['userfile']['error']= $files['userfile']['error'][$i];
@@ -424,10 +426,17 @@ class Album extends MY_Controller {
 		                );
 		                $rs = $this->malbum_detail->add($dataAdd);
 		                if ($rs) {
-		                	// $myPhoto = $this->malbum_detail->getData("picture",array('id' => $rs));
-		                	// if ($myPhoto && $myPhoto['picture'] != '') {
-		                	// 	$this->malbum->do_resize_detail($path.'/'.$myPhoto['picture'],$path);
-		                	// }
+		                	$config_resize = array(
+                                'image_library' => 'gd2',
+                                'source_image' => $path.'/'.$dataAdd['picture'],
+                                'new_image' => $path,
+                                'maintain_ratio' => TRUE,
+                                'create_thumb' => TRUE,
+                                'width' => 300
+                            );
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($config_resize);
+                            $this->image_lib->resize();
 		                    $num++;
 		                }
 	                }

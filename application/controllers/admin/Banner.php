@@ -54,6 +54,8 @@ class banner extends MY_Controller {
         $this->_data['ftype'] = $this->mbanner->dropdownlistType($this->_data['formData']['ftype']);
         $this->_data['fstatus'] = $this->mbanner->dropdownlistStatus($this->_data['formData']['fstatus']);
         $this->_data['fuser'] = $this->muser->dropdownlistUser($this->_data['formData']['fuser']);
+        $this->_data['extraCss'] = ['fancybox/jquery.fancybox.css'];
+        $this->_data['extraJs'] = ['fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox.js'];
         $this->my_layout->view("admin/banner/index", $this->_data);
 	}
 
@@ -162,7 +164,7 @@ class banner extends MY_Controller {
                         'type' => 'success'
                     );
                     $this->session->set_userdata('notify', $notify);
-                    redirect(my_library::admin_site()."banner/index");
+                    redirect(my_library::admin_site()."banner");
                 }
             }  
         }
@@ -322,7 +324,7 @@ class banner extends MY_Controller {
                             );
 		            	}
 		            	$this->session->set_userdata('notify', $notify);
-                        redirect(my_library::admin_site()."banner/index");
+                        redirect(my_library::admin_site()."banner");
 		            }  
 		        }
                 //End
@@ -392,6 +394,6 @@ class banner extends MY_Controller {
             'type' => $type
         );
         $this->session->set_userdata('notify', $notify);
-        redirect(my_library::admin_site()."banner/index/");
+        redirect(my_library::admin_site()."banner");
 	}
 }

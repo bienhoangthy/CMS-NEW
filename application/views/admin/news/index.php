@@ -158,7 +158,8 @@
 										<?php if (!empty($list)): ?>
 											<?php foreach ($list as $key => $value): ?>
 												<?php 
-												$picture = $value['news_picture'] != "" ? my_library::base_file().'news/'.$value['id'].'/thumb-'.$value['news_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+												$picture_thumb = $value['news_picture'] != "" ? my_library::base_file().'news/'.$value['id'].'/thumb-'.$value['news_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
+												$picture = $value['news_picture'] != "" ? my_library::base_file().'news/'.$value['id'].'/'.$value['news_picture'] : my_library::base_public().'admin/images/image-not-found.jpg';
 												$category = $this->mcategory_translation->getData("category_name",array('category_id' => $value['news_category'],'language_code' => $flanguage['lang_code']));
 												$category_name = $category['category_name'] ?? '';
 												$type = $this->mnews->listType($value['news_type']);
@@ -179,7 +180,7 @@
 														<a id="title<?= $value['id']?>" text-success" href="<?= $linkView?>" target="_blank"><?= $value['news_title']?></a> - <i class="fa <?= $type['icon']?>" data-toggle="tooltip" data-placement="top" title="<?= $type['name']?>"></i>
 														<h6><?= lang('publishdate').': '.$value['news_publicdate']?></h6>
 													</td>
-													<td><img src="<?= $picture?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></td>
+													<td><a class="fancybox-picture" href="<?= $picture?>" title="<?= $value['news_title']?>"><img src="<?= $picture_thumb?>" class="avatar" style="width: 40px;height: auto;" alt="picture"></a></td>
 													<td><a href="<?= my_library::admin_site().'category/edit/'.$value['news_category']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a></td>
 													<td class="text-center">
 														<span id="status<?= $value['id']?>">

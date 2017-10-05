@@ -18,25 +18,28 @@
         <li role="presentation" class="dropdown">
           <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-envelope-o"></i>
-            <span class="badge bg-green">1</span>
+            <span class="badge bg-green"><?= $mailUnread?></span>
           </a>
           <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-            <li>
-              <a>
-                <span class="image"><img src="<?= my_library::admin_images()?>img.jpg" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
+            <?php if (!empty($listMailUnread)): ?>
+              <?php foreach ($listMailUnread as $key => $value): ?>
+                <li>
+                  <a href="#">
+                    <span>
+                      <span><?= $value['mail_fullname']?> (<?= $value['mail_email']?>)</span>
+                    </span>
+                    <span class="message" style="font-weight: bold;">
+                      <?= $value['mail_title']?>
+                    </span>
+                    <p style="font-style: italic;font-size: 10px;"><?= $value['mail_senddate']?></p>
+                  </a>
+                </li>
+              <?php endforeach ?>
+            <?php endif ?>
             <li>
               <div class="text-center">
-                <a>
-                  <strong>See All Alerts</strong>
+                <a href="<?= my_library::admin_site()?>mail">
+                  <strong><?= lang('viewall')?></strong>
                   <i class="fa fa-angle-right"></i>
                 </a>
               </div>

@@ -76,8 +76,8 @@ class User extends MY_Controller {
 		$this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
 		$this->_data['fstatus'] = $this->muser->dropdownlistStatus($this->_data['formData']['fstatus']);
 		$this->_data['fgroup'] = $this->mgroup->dropdownlist($this->_data['formData']['fgroup']);
-		$this->_data['extraCss'] = ['iCheck/skins/flat/green.css'];
-		$this->_data['extraJs'] = ['icheck.min.js'];
+		$this->_data['extraCss'] = ['iCheck/skins/flat/green.css','fancybox/jquery.fancybox.css'];
+		$this->_data['extraJs'] = ['icheck.min.js','fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox.js'];
 		$this->_data['token_name'] = $this->security->get_csrf_token_name();
 		$this->_data['token_value'] = $this->security->get_csrf_hash();
     	$this->my_layout->view("admin/user/index", $this->_data);

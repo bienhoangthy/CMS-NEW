@@ -104,8 +104,8 @@ class News extends MY_Controller {
         $this->_data['fcategory'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['fcategory'],$this->_data['formData']['flanguage'],'news');
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
-        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css'];
-		$this->_data['extraJs'] = ['icheck.min.js','switchery.min.js','module/news.js'];
+        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','fancybox/jquery.fancybox.css'];
+		$this->_data['extraJs'] = ['icheck.min.js','switchery.min.js','module/news.js','fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','fancybox.js'];
         $this->my_layout->view("admin/news/index", $this->_data);
 	}
 
