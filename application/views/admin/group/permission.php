@@ -27,34 +27,38 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <div class="accordion" id="accordion1" role="tablist" aria-multiselectable="true">
-              <?php if (!empty($listComponent)): ?>
-                <?php $i=1; ?>
-                <?php foreach ($listComponent as $key => $value): ?>
-                  <?php $in = $i==1 ? "in" : '';$i++; ?>
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="heading<?= $value['component'].$value['id']?>" data-toggle="collapse" data-parent="#accordion1" href="#collapse<?= $value['component'].$value['id']?>" aria-expanded="false" aria-controls="collapseTwo">
-                      <h4 class="panel-title"><?= $value['component_name']?> <code><?= $value['component']?></code></h4>
-                    </a>
-                    <div id="collapse<?= $value['component'].$value['id']?>" class="panel-collapse collapse <?= $in?>" role="tabpanel" aria-labelledby="heading<?= $value['component']?>">
-                      <div class="panel-body">
-                        <?php $listAction = $this->maction->getQuery("","action_value like '".$value['component']."%'"); ?>
-                        <?php if (!empty($listAction)): ?>
-                          <?php foreach ($listAction as $key => $val): ?>
-                            <?php $checked = $this->mpermission->permission($val['action_value'],$myGroup['id']) == true ? 'checked' : '' ?>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                              <label>
-                                <input type="checkbox" class="js-switch change-check" name="<?= $val['action_name']?>" action-value="<?= $val['action_value']?>" group-id="<?= $myGroup['id']?>" <?= $checked?>/> <?= $val['action_name']?>
-                              </label>
-                            </div>
-                          <?php endforeach ?>
-                        <?php endif ?>
+            <?php if ($id == 1): ?>
+              <h3 class="text-success"><?= lang('fullpermission')?></h3>
+            <?php else: ?>
+              <div class="accordion" id="accordion1" role="tablist" aria-multiselectable="true">
+                <?php if (!empty($listComponent)): ?>
+                  <?php $i=1; ?>
+                  <?php foreach ($listComponent as $key => $value): ?>
+                    <?php $in = $i==1 ? "in" : '';$i++; ?>
+                    <div class="panel">
+                      <a class="panel-heading collapsed" role="tab" id="heading<?= $value['component'].$value['id']?>" data-toggle="collapse" data-parent="#accordion1" href="#collapse<?= $value['component'].$value['id']?>" aria-expanded="false" aria-controls="collapseTwo">
+                        <h4 class="panel-title"><?= $value['component_name']?> <code><?= $value['component']?></code></h4>
+                      </a>
+                      <div id="collapse<?= $value['component'].$value['id']?>" class="panel-collapse collapse <?= $in?>" role="tabpanel" aria-labelledby="heading<?= $value['component']?>">
+                        <div class="panel-body">
+                          <?php $listAction = $this->maction->getQuery("","action_value like '".$value['component']."%'"); ?>
+                          <?php if (!empty($listAction)): ?>
+                            <?php foreach ($listAction as $key => $val): ?>
+                              <?php $checked = $this->mpermission->permission($val['action_value'],$myGroup['id']) == true ? 'checked' : '' ?>
+                              <div class="col-md-3 col-sm-3 col-xs-12">
+                                <label>
+                                  <input type="checkbox" class="js-switch change-check" name="<?= $val['action_name']?>" action-value="<?= $val['action_value']?>" group-id="<?= $myGroup['id']?>" <?= $checked?>/> <?= $val['action_name']?>
+                                </label>
+                              </div>
+                            <?php endforeach ?>
+                          <?php endif ?>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                <?php endforeach ?>
-              <?php endif ?>
-            </div>
+                  <?php endforeach ?>
+                <?php endif ?>
+              </div>
+            <?php endif ?>
           </div>
         </div>
       </div>

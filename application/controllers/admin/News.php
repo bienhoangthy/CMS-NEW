@@ -380,7 +380,7 @@ class News extends MY_Controller {
 					$notify = array(
 	                    'title' => lang('unsuccessful'), 
 	                    'text' => lang('nonpereditpublish'),
-	                    'type' => 'warning'
+	                    'type' => 'error'
 	                );
 	                $this->session->set_userdata('notify', $notify);
 	                redirect(my_library::admin_site()."news");
@@ -785,7 +785,7 @@ class News extends MY_Controller {
 		} else {
 			$title = lang('unsuccessful');
             $text = lang('nonperpending');
-            $type = 'warning';
+            $type = 'error';
 		}
 		$notify = array(
             'title' => $title, 
@@ -864,7 +864,7 @@ class News extends MY_Controller {
 		} else {
 			$title = lang('unsuccessful');
             $text = lang('nonperpublish');
-            $type = 'warning';
+            $type = 'error';
 		}
 		$notify = array(
             'title' => $title, 
@@ -913,7 +913,7 @@ class News extends MY_Controller {
 		} else {
 			$title = lang('unsuccessful');
             $text = lang('nonperunpublish');
-            $type = 'warning';
+            $type = 'error';
 		}
 		$notify = array(
             'title' => $title, 

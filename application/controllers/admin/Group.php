@@ -105,7 +105,7 @@ class Group extends MY_Controller {
     	if (is_numeric($id) && $id > 0) {
     		$myGroup = $this->mgroup->getData("",array('id' => $id));
     		if ($myGroup && $myGroup['id'] > 0) {
-    			$this->_data['title'] = lang('editgroup')." #".$id;
+    			$this->_data['title'] = lang('editgroup')." ".$myGroup['group_name']." #".$id;
     			$this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['formData'] = array(
@@ -182,7 +182,7 @@ class Group extends MY_Controller {
         $this->mpermission->checkPermission("group","delete",$this->_data['user_active']['active_user_group']);
     	if (is_numeric($id) && $id != 1) {
     		$myGroup = $this->mgroup->getData("",array('id' => $id));
-    		if ($myGroup && $myGroup['id'] > 0) {
+    		if ($myGroup && $myGroup['id'] > 1) {
     			$this->mgroup->delete($id);
                 $this->mpermission->deleteAnd(array('group_id' => $myGroup['id']));
     			$title = lang('success');
@@ -215,7 +215,8 @@ class Group extends MY_Controller {
         if (is_numeric($id) && $id > 0) {
             $this->_data['myGroup'] = $this->mgroup->getData("",array('id' => $id));
             if ($this->_data['myGroup'] && $this->_data['myGroup']['id'] > 0) {
-                $this->_data['title'] = lang('groupper')." #".$id;
+                $this->_data['id'] = $id;
+                $this->_data['title'] = lang('groupper')." ".$this->_data['myGroup']['group_name']." #".$id;
                 $this->_data['listComponent'] = $this->mcomponent->getQuery("id,component_name,component","component_status = 1","component_orderby asc","");
                 $this->_data['extraCss'] = ['switchery.min.css'];
                 $this->_data['extraJs'] = ['switchery.min.js','language/'.$this->_data['language'].'.js','module/permission.js'];

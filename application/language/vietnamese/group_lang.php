@@ -9,4 +9,5 @@ $lang['groupper'] = 'Phân quyền nhóm';
 $lang['groupinfo'] = 'Thông tin nhóm';
 $lang['moduleview'] = 'Module hiển thị';
 $lang['clickview'] = 'Click vào từng nhóm quyền xem chi tiết';
+$lang['fullpermission'] = 'Toàn quyền';
 ?>

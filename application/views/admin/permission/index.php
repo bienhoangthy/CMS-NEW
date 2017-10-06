@@ -51,7 +51,7 @@
 									<tr>
 										<th><?= lang('role')?></th>
 										<?php foreach ($listGroup as $key => $v): ?>
-											<th class="text-center" style="width: 130px;"><a href="<?= my_library::admin_site().'group/permission/'.$v['id']?>"><?= $v['group_name']?></a></th>
+											<th class="text-center" style="width: 130px;"><a href="<?= my_library::admin_site().'group/permission/'.$v['id']?>"><?= $v['group_name']?></a><?php if ($v['id'] == 1): ?><br><small>(<?= lang('fullpermission')?>)</small><?php else: ?><br><small>(<?= lang('custom')?>)</small><?php endif ?></th>
 										<?php endforeach ?>
 									</tr>
 								</thead>
@@ -61,12 +61,16 @@
 											<tr>
 												<td><?= $value['action_name']?> / <small class="text-danger"><?= $value['action_value']?></small></td>
 												<?php foreach ($listGroup as $key => $val): ?>
-													<?php $checked = $this->mpermission->permission($value['action_value'],$val['id']) == true ? 'checked' : '' ?>
-													<td class="text-center">
-														<label>
-							                            	<input type="checkbox" class="js-switch change-check" name="<?= $value['action_name']?>" action-value="<?= $value['action_value']?>" group-id="<?= $val['id']?>" <?= $checked?>/>
-							                             </label>
-													</td>
+													<?php if ($val['id'] == 1): ?>
+														<td class="text-center"><span class="label label-success"><i class="fa fa-check"></i></span></td>
+													<?php else: ?>
+														<?php $checked = $this->mpermission->permission($value['action_value'],$val['id']) == true ? 'checked' : '' ?>
+														<td class="text-center">
+															<label>
+								                            	<input type="checkbox" class="js-switch change-check" name="<?= $value['action_name']?>" action-value="<?= $value['action_value']?>" group-id="<?= $val['id']?>" <?= $checked?>/>
+								                             </label>
+														</td>
+													<?php endif ?>
 												<?php endforeach ?>
 											</tr>
 										<?php endforeach ?>

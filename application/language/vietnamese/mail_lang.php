@@ -12,4 +12,9 @@ $lang['reload'] = 'Tải lại';
 $lang['mailimportant'] = 'Thư quan trọng';
 $lang['address'] = 'Địa chỉ';
 $lang['phone'] = 'Số điện thoại';
+$lang['readedby'] = 'Đã được đọc bởi ';
+$lang['at'] = ' vào lúc ';
+$lang['reply'] = 'Phản hồi';
+$lang['tick'] = 'Đánh dấu ';
+$lang['notpermission'] = 'Không có quyền';
 ?>

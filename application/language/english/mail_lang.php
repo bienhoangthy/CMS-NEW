@@ -12,4 +12,9 @@ $lang['reload'] = 'Reload';
 $lang['mailimportant'] = 'Important Mail';
 $lang['address'] = 'Address';
 $lang['phone'] = 'Phone';
+$lang['readedby'] = 'Readed by ';
+$lang['at'] = ' at ';
+$lang['reply'] = 'Reply';
+$lang['tick'] = 'Tick ';
+$lang['notpermission'] = 'Not Permission';
 ?>
