@@ -30,21 +30,21 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="page_title"><?= lang('titlepage')?><span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="page_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('titlepage')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
                   <input id="page_title" class="form-control col-md-7 col-xs-12" name="page_title" required="required" type="text" value="<?= $formDataLang['page_title']?>">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_detail"><?= lang('detail')?>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_detail"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('detail')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea name="page_detail"><?= $formDataLang['page_detail']?></textarea>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_title">SEO Title
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Title
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="page_seo_title" class="form-control col-md-7 col-xs-12" name="page_seo_title" type="text" value="<?= $formDataLang['page_seo_title']?>">
@@ -54,7 +54,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_description">SEO Description
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_description"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Description
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="page_seo_description" class="form-control col-md-7 col-xs-12" name="page_seo_description" type="text" value="<?= $formDataLang['page_seo_description']?>">
@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_keyword">SEO Keyword
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="page_seo_keyword"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Keyword
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="page_seo_keyword" class="form-control col-md-7 col-xs-12" name="page_seo_keyword" type="text" value="<?= $formDataLang['page_seo_keyword']?>">

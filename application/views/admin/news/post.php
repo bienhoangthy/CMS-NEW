@@ -27,7 +27,7 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_title"><?= lang('titlenews')?><span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('titlenews')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
                   <input id="news_title" class="form-control col-md-7 col-xs-12" maxlength="80" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
@@ -36,7 +36,7 @@
               <?php if (isset($formDataLang['news_alias']) && isset($id)): ?>
                 <div class="form-inline" style="margin-left: 10px;">
                   <div class="form-group">
-                    <label class="control-label" style="text-align: left !important;" for="news_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
+                    <label class="control-label" style="text-align: left !important;" for="news_alias"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
                     </label><br>
                     <code><?= base_url()?></code>
                     <input type="text" width="50%" class="form-control" id="news_alias" name="news_alias" value="<?= $formDataLang['news_alias']?>" style="max-width: 100%;width: 350px;">
@@ -45,21 +45,21 @@
                 </div>
               <?php endif ?>
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_summary"><?= lang('summary')?>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_summary"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('summary')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea id="news_summary" name="news_summary"><?= $formDataLang['news_summary']?></textarea>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_detail"><?= lang('detail')?>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_detail"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('detail')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea name="news_detail" id="news_detail"><?= $formDataLang['news_detail']?></textarea>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_title">SEO Title
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Title
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="news_seo_title" class="form-control col-md-7 col-xs-12" name="news_seo_title" type="text" value="<?= $formDataLang['news_seo_title']?>">
@@ -69,7 +69,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_description">SEO Description
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_description"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Description
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="news_seo_description" class="form-control col-md-7 col-xs-12" name="news_seo_description" type="text" value="<?= $formDataLang['news_seo_description']?>">
@@ -79,7 +79,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_keyword">SEO Keyword
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="news_seo_keyword"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> SEO Keyword
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <input id="news_seo_keyword" class="form-control col-md-7 col-xs-12" name="news_seo_keyword" type="text" value="<?= $formDataLang['news_seo_keyword']?>">

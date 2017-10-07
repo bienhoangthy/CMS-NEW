@@ -31,14 +31,14 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="banner_title"><?= lang('bannertitle')?><span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="banner_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('bannertitle')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
                   <input id="banner_title" class="form-control col-md-7 col-xs-12" maxlength="80" name="banner_title" required="required" type="text" value="<?= $formDataLang['banner_title']?>">
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="banner_description"><?= lang('description')?>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="banner_description"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('description')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea name="banner_description" style="width: 100%;" rows="5"><?= $formDataLang['banner_description']?></textarea>

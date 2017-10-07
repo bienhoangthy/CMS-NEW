@@ -12,10 +12,10 @@ class mcomponent extends MY_Model
         $html = '';
         $data = $this->getQuery("component_name,component", "component_status = 1", "", "");
         if ($data) {
-            $html .= '<option value=""> -- '.lang('choose').' component -- </option>';
+            $html .= '<option value="">'.lang('choose').' component</option>';
             foreach ($data as $key => $value) {
                 $selected = $item == $value['component'] ? 'selected' : '';
-                $html .= '<option ' . $selected . ' value="' . $value["component"] . '">' . $value["component_name"] . ' - ' . $value["component"] .'</option>';
+                $html .= '<option ' . $selected . ' value="' . $value["component"] . '">- ' . $value["component_name"] . ' - ' . $value["component"] .'</option>';
             }
         }
         return $html;

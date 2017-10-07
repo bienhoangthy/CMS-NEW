@@ -24,3 +24,8 @@ tr.showacction td {
 .news-content img {
 	max-width: 100%;
 }
+.img-input {
+	height: 12px;
+	width: auto;
+	margin-bottom: 3px;
+}

@@ -33,7 +33,7 @@
 						</div>
 						<div class="x_content">
 							<div class="form-group">
-								<label class="control-label col-md-4 col-sm-4 col-xs-12" for="link_name"><?= lang('titlelink')?><span class="required">*</span>
+								<label class="control-label col-md-4 col-sm-4 col-xs-12" for="link_name"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('titlelink')?><span class="required">*</span>
 								</label>
 								<div class="col-md-7 col-sm-7 col-xs-12 item">
 									<input id="link_name" class="form-control col-md-7 col-xs-12" name="link_name" required="required" type="text" value="<?= $formDataLang['link_name']?>">
@@ -47,7 +47,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-4 col-sm-4 col-xs-12" for="link_description"><?= lang('description')?>
+								<label class="control-label col-md-4 col-sm-4 col-xs-12" for="link_description"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('description')?>
 								</label>
 								<div class="col-md-7 col-sm-7 col-xs-12 item">
 									<textarea name="link_description" class="form-control col-md-7 col-xs-12"><?= $formDataLang['link_description']?></textarea>

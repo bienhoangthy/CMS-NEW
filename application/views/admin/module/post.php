@@ -40,7 +40,7 @@
             </div>
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="module_name"><?= lang('modulename')?><span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="module_name"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('modulename')?><span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 item">
                   <input id="module_name" class="form-control col-md-7 col-xs-12" name="module_name" required="required" type="text" value="<?= $formDataLang['module_name']?>" placeholder="Dashboard">

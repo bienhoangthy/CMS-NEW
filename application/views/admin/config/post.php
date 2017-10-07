@@ -41,7 +41,7 @@
             </div>
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="config_name"><?= lang('name')?><span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="config_name"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('name')?><span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 item">
                   <input id="config_name" class="form-control col-md-7 col-xs-12" name="config_name" required="required" type="text" value="<?= $formDataLang['config_name']?>">
@@ -59,7 +59,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="config_value"><?= lang('value')?><span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="config_value"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('value')?><span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 item">
                   <input id="config_value" class="form-control col-md-7 col-xs-12" name="config_value" required="required" type="text" value="<?= $formDataLang['config_value']?>">

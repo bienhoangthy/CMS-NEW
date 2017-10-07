@@ -31,7 +31,7 @@
           <div class="x_panel">
             <div class="x_content">
               <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="video_name"><?= lang('videoname')?><span class="required">*</span>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="video_name"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('videoname')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
                   <input id="video_name" class="form-control col-md-7 col-xs-12" maxlength="80" name="video_name" required="required" type="text" value="<?= $formDataLang['video_name']?>">
@@ -40,7 +40,7 @@
               <?php if (isset($formDataLang['video_alias']) && isset($id)): ?>
                 <div class="form-inline" style="margin-left: 10px;">
                   <div class="form-group">
-                    <label class="control-label" style="text-align: left !important;" for="video_alias"><?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
+                    <label class="control-label" style="text-align: left !important;" for="video_alias"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('staticlink')?> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<?= lang('autoinput')?>"></i>
                     </label><br>
                     <code><?= base_url()?></code>
                     <input type="text" class="form-control" id="video_alias" name="video_alias" value="<?= $formDataLang['video_alias']?>" style="max-width: 100%;width: 350px;">
@@ -49,7 +49,7 @@
                 </div>
               <?php endif ?>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="video_description"><?= lang('description')?>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left !important;" for="video_description"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('description')?>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <textarea name="video_description" id="video_description"><?= $formDataLang['video_description']?></textarea>

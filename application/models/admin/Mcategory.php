@@ -44,7 +44,7 @@ class mcategory extends MY_Model
         if ($component != '') {
             $and .= ' and c.category_component = "'.$component.'"';
         }
-        $select = 'c.id,ct.category_name';
+        $select = 'c.id,c.category_component,ct.category_name';
         $sql = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = 0 and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
@@ -54,7 +54,7 @@ class mcategory extends MY_Model
         if (!empty($list)) {
             foreach ($list as $value) {
                 $selected = $active == $value['id'] ? 'selected' : '';
-                $html .= '<option ' . $selected . ' value="' . $value['id'] . '">- ' . $value["category_name"] . '</option>';
+                $html .= '<option ' . $selected . ' value="' . $value['id'] . '">- ' . $value["category_name"] . ' ('.$value['category_component'].')' . '</option>';
                 //Sub
                 $sqlsub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$value['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
                 $querysub = $this->db->query($sqlsub);
@@ -62,7 +62,7 @@ class mcategory extends MY_Model
                 if (!empty($list_lv2)) {
                     foreach ($list_lv2 as $val) {
                         $selected = $active == $val['id'] ? 'selected' : '';
-                        $html .= '<option ' . $selected . ' value="' . $val['id'] . '">-- ' . $val["category_name"] . '</option>';
+                        $html .= '<option ' . $selected . ' value="' . $val['id'] . '">-- ' . $val["category_name"] . ' ('.$val['category_component'].')' . '</option>';
                         //Sub-sub
                         $sqlsub_sub = 'select '.$select.' from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.category_id where'.$and.' and c.category_parent = '.$val['id'].' and ct.language_code = "'.$lang.'" order by c.category_orderby asc,c.id asc';
                         $querysub_sub = $this->db->query($sqlsub_sub);
@@ -70,7 +70,7 @@ class mcategory extends MY_Model
                         if (!empty($list_lv3)) {
                             foreach ($list_lv3 as $v) {
                                 $selected = $active == $v['id'] ? 'selected' : '';
-                                $html .= '<option ' . $selected . ' value="' . $v['id'] . '">---- ' . $v["category_name"] . '</option>';
+                                $html .= '<option ' . $selected . ' value="' . $v['id'] . '">---- ' . $v["category_name"] . ' ('.$v['category_component'].')' . '</option>';
                             }
                         }
                     }
