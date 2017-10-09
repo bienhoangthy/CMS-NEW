@@ -17,4 +17,5 @@ $lang['updatedate'] = 'Update date';
 $lang['by'] = ' by ';
 $lang['description'] = 'Description';
 $lang['cachetime'] = 'Cache Time';
+$lang['listitem'] = 'List Items';
 ?>

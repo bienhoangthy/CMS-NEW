@@ -2,7 +2,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><?= $title?> <a href="<?= my_library::admin_site()?>special_content"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-list"></i> <?= lang('list')?></button></a> <?php if (isset($id)): ?><a href="<?= my_library::admin_site()?>special_content/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('specialcontentadd')?></button></a></h3><?php endif ?>
+        <h3><?= $title?> <a href="<?= my_library::admin_site()?>special_content"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-list"></i> <?= lang('list')?></button></a> <?php if (isset($id)): ?><a href="<?= my_library::admin_site()?>special_content/add"><button type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> <?= lang('specialcontentadd')?></button></a><?php endif ?></h3>
       </div>
       <div class="title_right hidden-xs">
         <ol class="breadcrumb pull-right">
@@ -98,7 +98,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sc_component">Component
                 </label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" name="sc_component">
+                  <select class="form-control" id="sc_component" name="sc_component">
                     <?= $component?>
                   </select>
                 </div>
@@ -107,8 +107,8 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sc_category"><?= lang('category')?>
                 </label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" name="sc_category">
-                    <?= $category?>
+                  <select class="form-control" id="sc_category" name="sc_category">
+                    <?= $category ?? '';?>
                   </select>
                 </div>
               </div>

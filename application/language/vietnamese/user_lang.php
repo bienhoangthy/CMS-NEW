@@ -1,5 +1,6 @@
 <?php 
 require APPPATH . '/language/vietnamese/master.php';
+$lang['user'] = 'Nhân viên';
 $lang['nondelete'] = 'Không có user nào được xóa!';
 $lang['choosegroup'] = 'Chọn nhóm';
 $lang['group'] = 'nhóm!';

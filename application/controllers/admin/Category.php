@@ -346,4 +346,14 @@ class Category extends MY_Controller {
 		}
 		echo $rs;
 	}
+
+	public function ajaxGetCategory()
+	{
+		$html = '';
+		$component = $this->input->get('component');
+		if ($component != null) {
+			$html = $this->mcategory->dropdownlistCategory('',$this->_data['language'],$component);
+		}
+		echo $html;
+	}
 }

@@ -52,7 +52,7 @@
 											<td><h3><?= $value['category_name']?></h3>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].',\''.lang('category').'\')" class="text-danger">'.lang('delete').'</a>' : '';?>
 													</div>
 												</div>
 											</td>
@@ -81,7 +81,7 @@
 													<td style="padding-left: 20px;"><h4 class="text-success"><i class="fa fa-arrow-circle-right fa-lg"></i> <?= $val['category_name']?></h4>
 														<div style="height: 20px;">
 															<div class="actionhover">
-																<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $val['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$val['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+																<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $val['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$val['id'].',\''.lang('category').'\')" class="text-danger">'.lang('delete').'</a>' : '';?>
 															</div>
 														</div>
 													</td>
@@ -110,7 +110,7 @@
 															<td style="padding-left: 40px;"><h5 class="text-primary"><i class="fa fa-arrow-circle-right fa-lg"></i> <?= $v['category_name']?></h5>
 																<div style="height: 20px;">
 																	<div class="actionhover">
-																		<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $v['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$v['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+																		<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a><?= $v['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$v['id'].',\''.lang('category').'\')" class="text-danger">'.lang('delete').'</a>' : '';?>
 																	</div>
 																</div>
 															</td>

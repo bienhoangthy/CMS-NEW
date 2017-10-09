@@ -1,5 +1,6 @@
 <?php 
 require APPPATH . '/language/english/master.php';
+$lang['user'] = 'User';
 $lang['nondelete'] = 'No user deleted!';
 $lang['choosegroup'] = 'Choose group';
 $lang['group'] = 'group!';

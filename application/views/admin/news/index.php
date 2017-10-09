@@ -228,7 +228,7 @@
 																<li><a href="<?= $linkReview?>"><?= lang('reviewed')?></a></li>
 																<li><a href="<?= $linkHistory?>"><?= lang('history')?></a></li>
 																<?php if ($state != 3): ?>
-																	<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" style="color: red;"><?= lang('delete')?></a></li>
+																	<li><a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('news')?>')" style="color: red;"><?= lang('delete')?></a></li>
 																<?php endif ?>
 															</ul>
 														</div>

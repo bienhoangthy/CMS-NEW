@@ -70,7 +70,7 @@
 											<td style="width: 300px;"><?= $value['group_name']?>
 												<div style="height: 20px;">
 						                            <div class="actionhover">
-						                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkPermission?>" class="text-success"><?= lang('groupper')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+						                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkPermission?>" class="text-success"><?= lang('groupper')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].',\''.lang('group').'\')" class="text-danger">'.lang('delete').'</a>' : '';?>
 						                            </div>
 						                        </div>
 											</td>

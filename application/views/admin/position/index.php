@@ -113,7 +113,7 @@
 											<td><h5 id="name<?= $value['id']?>"><?= $value['position_name']?></h5>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('position')?>')" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>

@@ -296,7 +296,7 @@ class Video extends MY_Controller {
 				$notify = array(
                     'title' => lang('notfound'), 
                     'text' => lang('video').lang('notexists'),
-                    'type' => 'warning'
+                    'type' => 'error'
                 );
                 $this->session->set_userdata('notify', $notify);
                 redirect(my_library::admin_site()."video");
@@ -305,7 +305,7 @@ class Video extends MY_Controller {
 			$notify = array(
                 'title' => lang('notfound'), 
                 'text' => lang('wrongid'),
-                'type' => 'warning'
+                'type' => 'error'
             );
             $this->session->set_userdata('notify', $notify);
             redirect(my_library::admin_site()."video");

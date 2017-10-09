@@ -77,7 +77,7 @@ class mcategory extends MY_Model
                 }
             }
         } else {
-            $html = '<option value="0">Data empty</option>';
+            $html = '<option value="0">'.lang('listempty').'</option>';
         }
         return $html;
     }
@@ -192,7 +192,7 @@ class mcategory extends MY_Model
                 $html .= '<option ' . $selected . ' value="' . $key . '">- ' . $value["name"] . '</option>';
             }
         } else {
-            $html .= '<option value="0">Data empty</option>';
+            $html .= '<option value="0">'.lang('listempty').'</option>';
         }
         return $html;
     }
@@ -226,7 +226,7 @@ class mcategory extends MY_Model
                 $html .= '<option ' . $selected . ' value="' . $key . '">' . $value["name"] . '</option>';
             }
         } else {
-            $html .= '<option value="0">Data empty</option>';
+            $html .= '<option value="0">'.lang('listempty').'</option>';
         }
         return $html;
     }

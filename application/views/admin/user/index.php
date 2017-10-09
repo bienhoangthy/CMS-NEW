@@ -93,7 +93,7 @@
                         <td><?= $value['user_fullname']?>
                           <div style="height: 20px;">
                             <div class="actionhover">
-                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkProfile?>" class="text-success"><?= lang('profile')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].')" class="text-danger">'.lang('delete').'</a>' : '';?>
+                              <a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkProfile?>" class="text-success"><?= lang('profile')?></a><?= $value['id'] > 1 ? ' | <a href="javascript:void(0)" onclick="confirm_delete('.$value['id'].',\''.lang('user').'\')" class="text-danger">'.lang('delete').'</a>' : '';?>
                             </div>
                           </div>
                         </td>

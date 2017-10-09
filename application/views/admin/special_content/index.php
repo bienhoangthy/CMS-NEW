@@ -20,13 +20,13 @@
 							<form class="form-horizontal form-label-left" method="get">
 								<div class="form-group">
 									<div class="col-md-3 col-sm-4 col-xs-6">
-										<select class="form-control" name="fposition" onchange="this.form.submit()">
-											
+										<select class="form-control" name="fcomponent" onchange="this.form.submit()">
+											<?= $fcomponent?>
 										</select>
 									</div>
 									<div class="col-md-3 col-sm-4 col-xs-6">
-										<select class="form-control" name="ftype" onchange="this.form.submit()">
-											
+										<select class="form-control" name="forderby" onchange="this.form.submit()">
+											<?= $forderby?>
 										</select>
 									</div>
 									<div class="col-md-3 col-sm-4 col-xs-6">
@@ -80,7 +80,7 @@
 											<td><?= $special_content_title?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a><?php if ($value['sc_orderby'] == 5): ?> | <a href="<?= my_library::admin_site().'special_content/item/'.$value['id']?>" class="text-success"><?= lang('item')?></a> <?php endif ?> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('specialcontent')?>')" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
@@ -88,7 +88,7 @@
 											<td><a href="<?= my_library::admin_site().'category/edit/'.$value['sc_category']?>" target="_blank"><h5 style="font-weight: bold;" class="text-info"><?= $category_name?></h5></a><cite><?= $component_name?></cite></td>
 											<td class="text-center"><span class="badge bg-green"><?= $value['sc_quantity']?></span></td>
 											<td class="text-center"><span class="label label-<?= $item['color']?>"><?= $item['name']?></span></td>
-											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span></td>
+											<td class="text-center"><span class="label label-<?= $status['color']?>"><?= $status['name']?></span><?php if ($value['sc_cache'] == 1): ?><br><span class="label label-danger">Cache</span><?php endif ?></td>
 											<td class="text-center">
 												<?php if (!empty($listLanguage)): ?>
 													<?php foreach ($listLanguage as $vallang): ?>

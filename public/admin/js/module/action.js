@@ -33,8 +33,9 @@ function changename(id){
 }
 $('.delete').click(function(){
   var id = $(this).attr('data-id');
-  var title = "Bạn muốn xóa "+configs.controller+" này!";
-    if (configs.lang == 'english') {title = "Do you want delete this "+configs.controller+"!"};
+  var name = $(this).attr('data-name');
+  var title = "Bạn muốn xóa "+name+" này!";
+    if (configs.lang == 'english') {title = "Do you want delete this "+name+"!"};
     swal({
       title: title,
       type: "warning",

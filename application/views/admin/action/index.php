@@ -97,7 +97,7 @@
 											<td><h5 id="name<?= $value['id']?>"><?= $value['action_name']?></h5>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="javascript:void(0)" onclick="changename('<?= $value['id']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="javascript:;" data-id="<?= $value['id']?>" class="text-danger delete"><?= lang('delete')?></a>
+														<a href="javascript:void(0)" onclick="changename('<?= $value['id']?>')" class="text-primary"><?= lang('quickedit')?></a> | <a href="javascript:;" data-id="<?= $value['id']?>" data-name="<?= lang('role')?>" class="text-danger delete"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>

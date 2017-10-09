@@ -1,6 +1,6 @@
-function confirm_delete(id){
-    var title = "Bạn muốn xóa "+configs.controller+" này!";
-    if (configs.lang == 'english') {title = "Do you want delete this "+configs.controller+"!"};
+function confirm_delete(id,name=configs.controller){
+    var title = "Bạn muốn xóa "+name+" này!";
+    if (configs.lang == 'english') {title = "Do you want delete this "+name+"!"};
     swal({
       title: title,
       type: "warning",

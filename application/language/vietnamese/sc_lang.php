@@ -17,4 +17,5 @@ $lang['updatedate'] = 'Ngày cập nhật';
 $lang['by'] = ' bởi ';
 $lang['description'] = 'Mô tả';
 $lang['cachetime'] = 'Thời gian Cache';
+$lang['listitem'] = 'Danh sách phần tử';
 ?>

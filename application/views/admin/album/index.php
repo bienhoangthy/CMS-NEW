@@ -93,7 +93,7 @@
 											<td><?= $value['album_name']?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkDetailPhoto?>" class="text-success"><?= lang('detailphoto')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkDetailPhoto?>" class="text-success"><?= lang('detailphoto')?></a> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('album')?>')" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>

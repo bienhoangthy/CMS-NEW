@@ -53,7 +53,7 @@
 											<td><h4><?= $value['page_title']?></h4>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>)" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a> | <a href="<?= $linkView?>" class="text-primary" target="_blank"><?= lang('view')?></a> | <a href="javascript:void(0)" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('page')?>')" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
