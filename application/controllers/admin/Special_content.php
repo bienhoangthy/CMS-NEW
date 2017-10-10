@@ -84,7 +84,7 @@ class Special_content extends MY_Controller {
                 'sc_status' => $this->input->post('sc_status'),
                 'sc_category' => $this->input->post('sc_category'),
                 'sc_array_item' => '',
-                'sc_cache' => $this->input->post('sc_cache'),
+                'sc_cache' => $this->input->post('sc_cache') ?? 0,
                 'sc_time_cache' => $time_cache,
                 'sc_createdate' => date("Y-m-d H:i:s"),
                 'sc_updatedate' => date("Y-m-d H:i:s"),
@@ -201,7 +201,7 @@ class Special_content extends MY_Controller {
                         'sc_status' => $this->input->post('sc_status'),
                         'sc_category' => $this->input->post('sc_category'),
                         'sc_array_item' => $mySpecial_content['sc_array_item'],
-                        'sc_cache' => $this->input->post('sc_cache'),
+                        'sc_cache' => $this->input->post('sc_cache') ?? 0,
                         'sc_time_cache' => $time_cache,
                         'sc_updatedate' => date("Y-m-d H:i:s"),
                         'user' => $this->_data['user_active']['active_user_id']
@@ -354,6 +354,97 @@ class Special_content extends MY_Controller {
         if (is_numeric($id) && $id > 0) {
             $this->_data['mySpecial_content'] = $this->mspecial_content->getData("",array('id' => $id,'sc_orderby' => 5));
             if ($this->_data['mySpecial_content'] && $this->_data['mySpecial_content']['id'] > 0) {
+                if (isset($_POST['table_records'])) {
+                    $listItem = $this->input->post('table_records');
+                    if ($listItem != null && is_array($listItem)) {
+                        if ($this->_data['mySpecial_content']['sc_array_item'] != '') {
+                            $newList = array_merge(unserialize($this->_data['mySpecial_content']['sc_array_item']),$listItem);
+                            $count = count($newList);
+                            $newList = serialize($newList);
+                        } else {
+                            $count = count($listItem);
+                            $newList = serialize($listItem);
+                        }
+                        if ($count > $this->_data['mySpecial_content']['sc_quantity']) {
+                            $notify = array(
+                                'title' => lang('unsuccessful'), 
+                                'text' => lang('overload'),
+                                'type' => 'error'
+                            );
+                        } else {
+                            if ($this->mspecial_content->edit($id,array('sc_array_item' => $newList))) {
+                                $notify = array(
+                                    'title' => lang('success'), 
+                                    'text' => lang('itemadded').' | #'.$id,
+                                    'type' => 'success'
+                                );
+                            } else {
+                                $notify = array(
+                                    'title' => lang('unsuccessful'), 
+                                    'text' => lang('checkinfo'),
+                                    'type' => 'error'
+                                );
+                            }
+                        }
+                    } else {
+                        $notify = array(
+                            'title' => lang('unsuccessful'), 
+                            'text' => lang('pleasechoose').lang('item'),
+                            'type' => 'error'
+                        );
+                    }
+                    $this->session->set_userdata('notify', $notify);
+                    redirect(my_library::admin_site()."special_content/item/".$id);
+                    exit();
+                }
+                //Paging
+                $this->load->library("My_paging");
+                $paging['per_page'] = 20;
+                $paging['num_links'] = 5;
+                $paging['page'] = $this->_data['page'] = $_GET['page'] ?? 1;
+                $paging['start'] = (($paging['page'] - 1) * $paging['per_page']);
+                $query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? str_replace("&page=" . $this->_data['page'], "", $_SERVER['QUERY_STRING']) : '';
+                $paging['base_url'] = my_library::admin_site() . 'special_content/item/'.$id.'?' . $query_string . '&page=';
+                $limit = $paging['start'] . ',' . $paging['per_page'];
+                $this->_data['listItem'] = array();
+                $this->_data['record'] = 0;
+                $this->_data['titleCom'] = '';
+                //Item
+                if ($this->_data['mySpecial_content']['sc_array_item'] != '') {
+                    $arrItem = unserialize($this->_data['mySpecial_content']['sc_array_item']);
+                    $ids = '';
+                    foreach ($arrItem as $value) {
+                        $ids .= $value.',';
+                    }
+                    $ids = rtrim($ids,',');
+                }
+                echo $ids;
+                switch ($this->_data['mySpecial_content']['sc_component']) {
+                    case 'news':
+                        $this->load->Model("admin/mnews");
+                        $this->_data['listItem'] = $this->mnews->getNews("n.id,nt.news_title as name",'n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"',"n.id desc",$limit);
+                        $this->_data['record'] = $this->mnews->countNews('n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"');
+                        $this->_data['titleCom'] = lang('news');
+                        break;
+                    case 'album':
+                        $this->load->Model("admin/malbum");
+                        $this->_data['listItem'] = $this->malbum->getAlbum("a.id,at.album_name as name",'a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"',"a.id desc",$limit);
+                        $this->_data['record'] = $this->malbum->countAlbum('a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"');
+                        $this->_data['titleCom'] = lang('album');
+                        break;
+                    case 'video':
+                        $this->load->Model("admin/mvideo");
+                        $this->_data['listItem'] = $this->mvideo->getVideo("v.id,vt.video_name as name",'v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"',"v.id desc",$limit);
+                        $this->_data['record'] = $this->mvideo->countVideo('v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"');
+                        $this->_data['titleCom'] = 'Video';
+                        break;
+                    default:
+                        $this->_data['listItem'] = array();
+                        $this->_data['record'] = 0;
+                        $this->_data['listTitle'] = '';
+                        break;
+                }
+                $this->_data["pagination"] = $this->my_paging->paging_donturl($this->_data["record"], $paging['page'], $paging['per_page'], $paging['num_links'], $paging['base_url']);
                 $this->_data['title'] = lang('listitem').' #'.$id;
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();

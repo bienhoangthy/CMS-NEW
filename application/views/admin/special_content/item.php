@@ -17,36 +17,46 @@
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <div class="">
-              <form class="form-horizontal form-label-left" method="get">
-                
-              </form>
-            </div>
+            <h2><?= lang('listCom').$titleCom?> <small><?= lang('all')?>(<?= $record?>)</small></h2>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
             <div class="table-responsive">
-              <form method="post">
+              <form class="form-horizontal form-label-left" method="post">
                 <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
                 <table class="table table-striped jambo_table bulk_action">
                   <thead>
                     <tr class="headings">
-                      <th>
+                      <th width="10%">
                         <input type="checkbox" id="check-all" class="flat">
                       </th>
-                      <th class="column-title">Tên bài viết</th>
+                      <th class="column-title" width="10%">ID </th>
+                      <th class="column-title" width="80%"><?= lang('name').$titleCom?> </th>
+                      </th>
+                      <th class="bulk-actions" colspan="7">
+                        <a class="antoo" style="color:#fff; font-weight:500;">( <span class="action-cnt"> </span> )</a>
+                        <button type="submit" class="btn btn-primary btn-xs" style="margin-bottom: 0;"><?= lang('addcontent')?></button>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="showacction">
-                      <td class="a-center ">
-                        <input type="checkbox" class="flat" value="1" name="table_records[]">
-                      </td>
-                      <td><code>Test</code></td>
-                    </tr>
+                    <?php if (!empty($listItem)): ?>
+                      <?php foreach ($listItem as $value): ?>
+                        <tr class="even pointer">
+                          <td class="a-center" width="10%">
+                            <input type="checkbox" class="flat" value="<?= $value['id']?>" name="table_records[]">
+                          </td>
+                          <td width="10%"><?= $value['id']?></td>
+                          <td width="80%"><?= $value['name']?></td>
+                        </tr>
+                      <?php endforeach ?>
+                    <?php endif ?>
                   </tbody>
                 </table>
               </form>
+              <?php if (isset($pagination)): ?>
+                <ul class="pagination pull-right"><?= $pagination?></ul>
+              <?php endif ?>
             </div>
           </div>
         </div>
@@ -54,37 +64,27 @@
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <div class="">
-              <form class="form-horizontal form-label-left" method="get">
-                
-              </form>
-            </div>
+            <h2><?= lang('selectedlist')?> <small><?= lang('all')?>(1/<?= $mySpecial_content['sc_quantity']?>)</small> <a href="#"><button type="button" class="btn btn-danger btn-xs"><?= lang('deleteall')?></button></a></h2>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <div class="table-responsive">
-              <form method="post">
-                <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-                <table class="table table-striped jambo_table bulk_action">
-                  <thead>
-                    <tr class="headings">
-                      <th>
-                        <input type="checkbox" id="check-all" class="flat">
-                      </th>
-                      <th class="column-title">Tên bài viết</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="showacction">
-                      <td class="a-center ">
-                        <input type="checkbox" class="flat" value="1" name="table_records[]">
-                      </td>
-                      <td><code>Test</code></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </div>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="10%">ID</th>
+                  <th width="80%"><?= lang('name')?></th>
+                  <th width="10%"><?= lang('delete')?></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td width="10%">1</td>
+                  <td width="80%">Mark</td>
+                  <td width="10%">Otto</td>
+                </tr>
+              </tbody>
+            </table>
+            <?= var_dump(unserialize($mySpecial_content['sc_array_item']))?>
           </div>
         </div>
       </div>

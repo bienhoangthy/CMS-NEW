@@ -18,4 +18,13 @@ $lang['by'] = ' bởi ';
 $lang['description'] = 'Mô tả';
 $lang['cachetime'] = 'Thời gian Cache';
 $lang['listitem'] = 'Danh sách phần tử';
+$lang['news'] = 'Bài viết';
+$lang['album'] = 'Bộ ảnh';
+$lang['listCom'] = 'Danh sách ';
+$lang['name'] = 'Tên ';
+$lang['addcontent'] = 'Thêm vào nội dung';
+$lang['selectedlist'] = 'Danh sách đã chọn';
+$lang['deleteall'] = 'Xóa tất cả';
+$lang['itemadded'] = 'Đã thêm phần tử';
+$lang['overload'] = 'Quá tải nội dung';
 ?>

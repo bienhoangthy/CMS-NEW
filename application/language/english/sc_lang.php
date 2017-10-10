@@ -18,4 +18,13 @@ $lang['by'] = ' by ';
 $lang['description'] = 'Description';
 $lang['cachetime'] = 'Cache Time';
 $lang['listitem'] = 'List Items';
+$lang['news'] = 'News';
+$lang['album'] = 'Album';
+$lang['listCom'] = 'List ';
+$lang['name'] = 'Name ';
+$lang['addcontent'] = 'Add to content';
+$lang['selectedlist'] = 'The selected list';
+$lang['deleteall'] = 'Delete All';
+$lang['itemadded'] = 'Item Added';
+$lang['overload'] = 'Content Overload';
 ?>
