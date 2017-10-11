@@ -25,6 +25,8 @@ $lang['name'] = 'Name ';
 $lang['addcontent'] = 'Add to content';
 $lang['selectedlist'] = 'The selected list';
 $lang['deleteall'] = 'Delete All';
-$lang['itemadded'] = 'Item Added';
+$lang['itemadded'] = 'Added ';
 $lang['overload'] = 'Content Overload';
+$lang['duplicate'] = ' duplicate';
+$lang['notpermission'] = 'Non Permission';
 ?>

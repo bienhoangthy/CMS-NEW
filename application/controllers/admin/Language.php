@@ -209,7 +209,6 @@ class Language extends MY_Controller {
         if ($language == 'vietnamese' || $language == 'english') {
         	$this->session->unset_userdata('language');
 	        $this->session->set_userdata('language', $language);
-            $this->cache->delete('module');
         }
         $redirect = $redirect != null ? base64_decode($redirect) : my_library::admin_site();
 	    redirect($redirect);

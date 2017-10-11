@@ -25,6 +25,8 @@ $lang['name'] = 'Tên ';
 $lang['addcontent'] = 'Thêm vào nội dung';
 $lang['selectedlist'] = 'Danh sách đã chọn';
 $lang['deleteall'] = 'Xóa tất cả';
-$lang['itemadded'] = 'Đã thêm phần tử';
+$lang['itemadded'] = 'Đã thêm ';
 $lang['overload'] = 'Quá tải nội dung';
+$lang['duplicate'] = ' bị trùng';
+$lang['notpermission'] = 'Không có quyền';
 ?>

@@ -12,7 +12,6 @@ class MY_Controller extends CI_Controller {
 		$this->load->Model("admin/mpermission");
 		$this->load->Model("admin/mlanguage");
 		$this->load->Model("admin/mmail");
-		// $this->load->Model("admin/mactivity");
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->my_layout->setLayout("admin/template/index");
 		$this->_data['user_active'] = $this->session->userdata('userActive');
@@ -26,10 +25,9 @@ class MY_Controller extends CI_Controller {
 			$this->_data['language'] = 'vietnamese';
 			$this->session->set_userdata('language', $this->_data['language']);
 		}
-		//$this->_data['myModule'] = $this->mmodule->getModule($this->_data['language']);
-		if (!$this->_data['myModule'] = $this->cache->get('module')) {
+		if (!$this->_data['myModule'] = $this->cache->get('module_'.$this->_data['language'])) {
 	        $this->_data['myModule'] = $this->mmodule->getModule($this->_data['language']);
-	        $this->cache->save('module', $this->_data['myModule'], 3600);
+	        $this->cache->save('module_'.$this->_data['language'], $this->_data['myModule'], 7200);
 		}
 		//$this->session->set_userdata('language', 'vietnamese');
 		$this->_data['listLanguage'] = $this->mlanguage->getLanguage();

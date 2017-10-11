@@ -24,6 +24,18 @@ class mvideo extends MY_Model
         return $query->result_array();
     }
 
+    public function whereIn($obj='',$ids='',$language='vietnamese')
+    {
+        if ($obj) {
+            $obj = $obj;
+        } else {
+            $obj = '*';
+        }
+        $sql = 'select '.$obj.' from '.$this->table.' v inner join '.$this->table_translation.' vt on v.id = vt.video_id where v.id in('.$ids.') and vt.language_code = "'.$language.'" order by v.id desc';
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function countVideo($and='')
     {
         $sql = 'select count(*) as total from '.$this->table.' v inner join '.$this->table_translation.' vt on v.id = vt.video_id where '.$and;

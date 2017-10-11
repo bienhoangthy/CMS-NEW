@@ -192,6 +192,10 @@ class Special_content extends MY_Controller {
                 //Post
                 if (isset($_POST['sc_name'])) {
                     $lang = $this->input->post('special_content_lang') ?? $this->_data['language'];
+                    $arr_item = '';
+                    if ($this->input->post('sc_orderby') == 5 && $this->input->post('sc_category') == $mySpecial_content['sc_category']) {
+                    	$arr_item = $mySpecial_content['sc_array_item'];
+                    }
                     $time_cache = $this->input->post('sc_cache') == 1 ? $this->input->post('sc_time_cache') : 0;
                     $this->_data['formData'] = array( 
                         'code_position' => $this->input->post('code_position'), 
@@ -200,7 +204,7 @@ class Special_content extends MY_Controller {
                         'sc_orderby' => $this->input->post('sc_orderby'),
                         'sc_status' => $this->input->post('sc_status'),
                         'sc_category' => $this->input->post('sc_category'),
-                        'sc_array_item' => $mySpecial_content['sc_array_item'],
+                        'sc_array_item' => $arr_item,
                         'sc_cache' => $this->input->post('sc_cache') ?? 0,
                         'sc_time_cache' => $time_cache,
                         'sc_updatedate' => date("Y-m-d H:i:s"),
@@ -357,12 +361,16 @@ class Special_content extends MY_Controller {
                 if (isset($_POST['table_records'])) {
                     $listItem = $this->input->post('table_records');
                     if ($listItem != null && is_array($listItem)) {
+                    	$countItemAdd = 0;
                         if ($this->_data['mySpecial_content']['sc_array_item'] != '') {
-                            $newList = array_merge(unserialize($this->_data['mySpecial_content']['sc_array_item']),$listItem);
+                        	$oldList = unserialize($this->_data['mySpecial_content']['sc_array_item']);
+                            $newList = array_unique(array_merge($oldList,$listItem));
                             $count = count($newList);
+                            $countItemAdd = $count - count($oldList);
                             $newList = serialize($newList);
                         } else {
                             $count = count($listItem);
+                            $countItemAdd = $count;
                             $newList = serialize($listItem);
                         }
                         if ($count > $this->_data['mySpecial_content']['sc_quantity']) {
@@ -373,11 +381,21 @@ class Special_content extends MY_Controller {
                             );
                         } else {
                             if ($this->mspecial_content->edit($id,array('sc_array_item' => $newList))) {
-                                $notify = array(
-                                    'title' => lang('success'), 
-                                    'text' => lang('itemadded').' | #'.$id,
-                                    'type' => 'success'
-                                );
+                            	$duplicate = count($listItem) - $countItemAdd;
+                            	$textDup = $duplicate > 0 ? ', '.$duplicate.lang('duplicate') : '';
+                            	if ($countItemAdd > 0) {
+                            		$notify = array(
+	                                    'title' => lang('success'), 
+	                                    'text' => lang('itemadded').$countItemAdd.' '.lang('item').$textDup.' | #'.$id,
+	                                    'type' => 'success'
+	                                );
+                            	} else {
+                            		$notify = array(
+	                                    'title' => lang('unsuccessful'), 
+	                                    'text' => lang('itemadded').$countItemAdd.' '.lang('item').$textDup.' | #'.$id,
+	                                    'type' => 'error'
+	                                );
+                            	}
                             } else {
                                 $notify = array(
                                     'title' => lang('unsuccessful'), 
@@ -407,9 +425,11 @@ class Special_content extends MY_Controller {
                 $paging['base_url'] = my_library::admin_site() . 'special_content/item/'.$id.'?' . $query_string . '&page=';
                 $limit = $paging['start'] . ',' . $paging['per_page'];
                 $this->_data['listItem'] = array();
+                $this->_data['currentItem'] = array();
                 $this->_data['record'] = 0;
                 $this->_data['titleCom'] = '';
                 //Item
+                $ids = '';
                 if ($this->_data['mySpecial_content']['sc_array_item'] != '') {
                     $arrItem = unserialize($this->_data['mySpecial_content']['sc_array_item']);
                     $ids = '';
@@ -418,28 +438,37 @@ class Special_content extends MY_Controller {
                     }
                     $ids = rtrim($ids,',');
                 }
-                echo $ids;
                 switch ($this->_data['mySpecial_content']['sc_component']) {
                     case 'news':
                         $this->load->Model("admin/mnews");
+                        if ($ids != '') {
+                        	$this->_data['currentItem'] = $this->mnews->whereIn("n.id,nt.news_title as name",$ids,$this->_data['language']);
+                        }
                         $this->_data['listItem'] = $this->mnews->getNews("n.id,nt.news_title as name",'n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"',"n.id desc",$limit);
                         $this->_data['record'] = $this->mnews->countNews('n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"');
                         $this->_data['titleCom'] = lang('news');
                         break;
                     case 'album':
                         $this->load->Model("admin/malbum");
+                        if ($ids != '') {
+                        	$this->_data['currentItem'] = $this->malbum->whereIn("a.id,at.album_name as name",$ids,$this->_data['language']);
+                        }
                         $this->_data['listItem'] = $this->malbum->getAlbum("a.id,at.album_name as name",'a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"',"a.id desc",$limit);
                         $this->_data['record'] = $this->malbum->countAlbum('a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"');
                         $this->_data['titleCom'] = lang('album');
                         break;
                     case 'video':
                         $this->load->Model("admin/mvideo");
+                        if ($ids != '') {
+                        	$this->_data['currentItem'] = $this->mvideo->whereIn("v.id,vt.video_name as name",$ids,$this->_data['language']);
+                        }
                         $this->_data['listItem'] = $this->mvideo->getVideo("v.id,vt.video_name as name",'v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"',"v.id desc",$limit);
                         $this->_data['record'] = $this->mvideo->countVideo('v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"');
                         $this->_data['titleCom'] = 'Video';
                         break;
                     default:
                         $this->_data['listItem'] = array();
+                        $this->_data['currentItem'] = array();
                         $this->_data['record'] = 0;
                         $this->_data['listTitle'] = '';
                         break;
@@ -469,5 +498,73 @@ class Special_content extends MY_Controller {
             $this->session->set_userdata('notify', $notify);
             redirect(my_library::admin_site()."special_content");
         }
+    }
+
+    public function deleteAllItem($id)
+    {
+        $this->mpermission->checkPermission("special_content","deleteItem",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 0) {
+            $mySpecial_content = $this->mspecial_content->getData("",array('id' => $id));
+            if ($mySpecial_content) {
+                if ($this->mspecial_content->edit($id,array('sc_array_item' => ''))) {
+                	$title = lang('success');
+	                $text = lang('all').' '.lang('item').lang('deleted');
+	                $type = 'success';
+                } else {
+                	$title = lang('unsuccessful');
+	                $text = lang('checkinfo');
+	                $type = 'error';
+                }
+            } else {
+                $title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('specialcontent');
+                $type = 'error';
+            }
+        } else {
+            $title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+        }
+        $notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+        $this->session->set_userdata('notify', $notify);
+        redirect(my_library::admin_site()."special_content/item/".$id);
+    }
+
+    public function deleteItem()
+    {
+    	$rs = array('status' => 0,'message' => '');
+    	if ($this->mpermission->permission("special_content_deleteItem",$this->_data['user_active']['active_user_group']) == true) {
+    		$id = $this->input->get('id');
+	    	$id_item = $this->input->get('id_item');
+	    	if ($id != null || $id_item != null) {
+	    		$mySpecial_content = $this->mspecial_content->getData("sc_array_item",array('id' => $id));
+	    		if ($mySpecial_content) {
+	    			if ($mySpecial_content['sc_array_item'] == '') {
+	    				$rs = array('status' => 0,'message' => lang('listempty'));
+	    			} else {
+	    				$listItem = unserialize($mySpecial_content['sc_array_item']);
+	    				$listItem = array_diff($listItem, array($id_item));
+	    				$countItem = count($listItem);
+	    				$serEdit = $countItem > 0 ? serialize($listItem) : '';
+    					if ($this->mspecial_content->edit($id,array('sc_array_item' => $serEdit))) {
+    						$rs = array('status' => 1,'message' => lang('item').' '.$id_item.lang('deleted'),'total' => $countItem);
+    					} else {
+    						$rs = array('status' => 0,'message' => lang('checkinfo'));
+    					}
+	    			}
+	    		} else {
+	    			$rs = array('status' => 0,'message' => lang('specialcontent').lang('notexists'));
+	    		}
+	    	} else {
+	    		$rs = array('status' => 0,'message' => lang('checkinfo'));
+	    	}
+    	} else {
+    		$rs = array('status' => 0,'message' => lang('notpermission'));
+    	}
+    	echo json_encode($rs);
     }
 }

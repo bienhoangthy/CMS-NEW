@@ -62,9 +62,9 @@
         </div>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel">
+        <div class="x_panel" data-id="<?= $mySpecial_content['id']?>" id="listItem">
           <div class="x_title">
-            <h2><?= lang('selectedlist')?> <small><?= lang('all')?>(1/<?= $mySpecial_content['sc_quantity']?>)</small> <a href="#"><button type="button" class="btn btn-danger btn-xs"><?= lang('deleteall')?></button></a></h2>
+            <h2><?= lang('selectedlist')?> <small><?= lang('all')?>(<b class="text-primary count"><?= count($currentItem)?></b>/<?= $mySpecial_content['sc_quantity']?>)</small> <button type="button" class="btn btn-danger btn-xs delete-all-item"><?= lang('deleteall')?></button></h2>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
@@ -77,14 +77,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td width="10%">1</td>
-                  <td width="80%">Mark</td>
-                  <td width="10%">Otto</td>
-                </tr>
+                <?php if (!empty($currentItem)): ?>
+                  <?php foreach ($currentItem as $val): ?>
+                    <tr id="item<?= $val['id']?>">
+                      <td width="10%"><?= $val['id']?></td>
+                      <td width="80%"><?= $val['name']?></td>
+                      <td width="10%"><button type="button" data-id-item="<?= $val['id']?>" class="btn btn-danger btn-xs delete-item"><i class="fa fa-close"></i></button></td>
+                    </tr>
+                  <?php endforeach ?>
+                <?php endif ?>
               </tbody>
             </table>
-            <?= var_dump(unserialize($mySpecial_content['sc_array_item']))?>
           </div>
         </div>
       </div>

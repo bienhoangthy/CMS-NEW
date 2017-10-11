@@ -14,7 +14,7 @@ class Module extends MY_Controller {
         $this->_data['flanguage'] = $_GET['flanguage'] ?? $this->_data['language'];
         $this->_data['flanguage'] = $this->mlanguage->getLanguage($this->_data['flanguage']);
     	$this->_data['title'] = lang('list');
-        $this->_data['list'] = $this->mmodule->getModule($this->_data['flanguage']['lang_code']);
+        $this->_data['list'] = $this->mmodule->getModule($this->_data['flanguage']['lang_code'],'all');
     	$this->my_layout->view("admin/module/index", $this->_data);
     }   
 
@@ -80,7 +80,8 @@ class Module extends MY_Controller {
                         'type' => 'success'
                     );
                     $this->session->set_userdata('notify', $notify);
-                    $this->cache->delete('module');
+                    $this->cache->delete('module_vietnamese');
+                    $this->cache->delete('module_english');
                     redirect(my_library::admin_site()."module");
                 }
             }  
@@ -182,7 +183,8 @@ class Module extends MY_Controller {
 		                		}
 		                	}
 		                    $this->session->set_userdata('notify', $notify);
-                            $this->cache->delete('module');
+                            $this->cache->delete('module_vietnamese');
+                            $this->cache->delete('module_english');
 		                    redirect(my_library::admin_site()."module");
 		                }
 		            }  
@@ -242,7 +244,8 @@ class Module extends MY_Controller {
     			$title = lang('success');
                 $text = 'Module '.$myModule['module_name'].$delChild.lang('deleted');
                 $type = 'success';
-                $this->cache->delete('module');
+                $this->cache->delete('module_vietnamese');
+                $this->cache->delete('module_english');
     		} else {
     			$title = lang('unsuccessful');
                 $text = lang('notfound').' '.lang('module');

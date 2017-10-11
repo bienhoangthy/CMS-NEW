@@ -9,13 +9,17 @@ class mmodule extends MY_Model
     protected $table = "cms_module";
     protected $table_translation = "cms_module_translation";
 
-    public function getModule($lang='vietnamese')
+    public function getModule($lang='vietnamese',$status=1)
     {
-        $sql = 'select m.id,m.module_component,m.module_action,m.module_icon,m.module_status,mt.module_name from '.$this->table.' m inner join '.$this->table_translation.' mt on m.id = mt.module_id where m.module_parent = 0 and m.module_status = 1 and mt.language_code = "'.$lang.'" order by m.module_orderby asc,m.id asc';
+        $and_status = ' and m.module_status = '.$status;
+        if ($status == 'all') {
+            $and_status = '';
+        }
+        $sql = 'select m.id,m.module_component,m.module_action,m.module_icon,m.module_status,mt.module_name from '.$this->table.' m inner join '.$this->table_translation.' mt on m.id = mt.module_id where m.module_parent = 0'.$and_status.' and mt.language_code = "'.$lang.'" order by m.module_orderby asc,m.id asc';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         foreach ($list as $key => $value) {
-            $sqlsub = 'select m.id,m.module_component,m.module_action,m.module_status,mt.module_name from '.$this->table.' m inner join '.$this->table_translation.' mt on m.id = mt.module_id where m.module_parent = '.$value['id'].' and m.module_status = 1 and mt.language_code = "'.$lang.'" order by m.module_orderby asc,m.id asc';
+            $sqlsub = 'select m.id,m.module_component,m.module_action,m.module_status,mt.module_name from '.$this->table.' m inner join '.$this->table_translation.' mt on m.id = mt.module_id where m.module_parent = '.$value['id'].$and_status.' and mt.language_code = "'.$lang.'" order by m.module_orderby asc,m.id asc';
             $querysub = $this->db->query($sqlsub);
             $list_lv2 = $querysub->result_array();
             if (!empty($list_lv2)) {

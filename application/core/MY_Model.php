@@ -192,12 +192,6 @@ class MY_Model extends CI_Model {
 		$this->db->trans_rollback();
 	}
 
-	// public function trashFile($path, $name) {
-	// 	if (file_exists($path . '/' . $name)) {
-	// 		unlink($path . '/' . $name);
-	// 	}
-	// }
-
 	public function delFolder($target)
 	{
         if(is_dir($target)){

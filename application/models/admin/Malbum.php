@@ -24,6 +24,18 @@ class malbum extends MY_Model
         return $query->result_array();
     }
 
+    public function whereIn($obj='',$ids='',$language='vietnamese')
+    {
+        if ($obj) {
+            $obj = $obj;
+        } else {
+            $obj = '*';
+        }
+        $sql = 'select '.$obj.' from '.$this->table.' a inner join '.$this->table_translation.' at on a.id = at.album_id where a.id in('.$ids.') and at.language_code = "'.$language.'" order by a.id desc';
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function countAlbum($and='')
     {
         $sql = 'select count(*) as total from '.$this->table.' a inner join '.$this->table_translation.' at on a.id = at.album_id where '.$and;
