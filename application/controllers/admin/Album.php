@@ -277,7 +277,7 @@ class Album extends MY_Controller {
                 $this->_data['id'] = $id;
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
-                $this->_data['title'] = lang('albumedit');
+                $this->_data['title'] = lang('albumedit').' #'.$id;
                 $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['album_parent'],$this->_data['langPost']['lang_code'],'album');
                 $this->_data['album_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];

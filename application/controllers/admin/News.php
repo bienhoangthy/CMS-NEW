@@ -14,9 +14,6 @@ class News extends MY_Controller {
 	{
 		$this->mpermission->checkPermission("news","index",$this->_data['user_active']['active_user_group']);
 		$state = $state < 1 || $state > 3 ? 3 : $state;
-        if (isset($_POST['fsubmit'])) {
-            var_dump($_POST);die();
-        }
 		$this->load->library("My_paging");
         $this->_data['title'] = lang('list');
         $obj = 'n.id,n.news_category,n.news_type,n.news_view,n.news_hot,n.news_status,n.news_picture,n.news_orderby,n.news_publicdate,n.news_updatedate,n.news_password,n.user,nt.id as news_lang_id,nt.news_title,nt.news_alias';

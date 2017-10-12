@@ -72,16 +72,21 @@
               <thead>
                 <tr>
                   <th width="10%">ID</th>
-                  <th width="80%"><?= lang('name')?></th>
+                  <th width="60%"><?= lang('name')?></th>
+                  <th width="20%"><?= lang('status')?></th>
                   <th width="10%"><?= lang('delete')?></th>
                 </tr>
               </thead>
               <tbody>
                 <?php if (!empty($currentItem)): ?>
+                  <?php $linkEdit = my_library::admin_site().$mySpecial_content['sc_component'].'/edit/'; ?>
                   <?php foreach ($currentItem as $val): ?>
                     <tr id="item<?= $val['id']?>">
                       <td width="10%"><?= $val['id']?></td>
-                      <td width="80%"><?= $val['name']?></td>
+                      <td width="60%"><a href="<?= $linkEdit.$val['id']?>" target="_blank"><?= $val['name']?></a></td>
+                      <td width="20%">
+                        <?= $val['status'] == 1 ? '<span class="label label-success">'.lang('active').'</span>' : '<span class="label label-danger">'.lang('inactive').'</span>'?>
+                      </td>
                       <td width="10%"><button type="button" data-id-item="<?= $val['id']?>" class="btn btn-danger btn-xs delete-item"><i class="fa fa-close"></i></button></td>
                     </tr>
                   <?php endforeach ?>

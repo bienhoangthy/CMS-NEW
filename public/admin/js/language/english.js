@@ -14,3 +14,4 @@ var retry = "Please retry!";
 var delimage = "delete photo";
 var confirm = "Are you sure?";
 var inputtag = "Please input tag!";
+var inputimg = "Please choose image!";

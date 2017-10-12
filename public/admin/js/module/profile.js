@@ -47,6 +47,9 @@ window.onload = function () {
     var token = document.getElementById('token').value;
   	var id = document.getElementById('id-user').value;
     var imageData = cropper.getCroppedCanvas();
+    if (imageData == null) {
+      swal (notcomplete,inputimg,"error");return;
+    }
     var dataURL = imageData.toDataURL();
     var url = configs.admin_site+'user/ajaxChangeAvatar/'+id;
     $.ajax({

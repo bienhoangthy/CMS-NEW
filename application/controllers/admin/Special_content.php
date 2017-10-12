@@ -43,7 +43,7 @@ class Special_content extends MY_Controller {
         $orderby = 'id desc';
         $this->_data['list'] = $this->mspecial_content->getQuery($obj, $and, $orderby, "");
         $this->_data['record'] = $this->mspecial_content->countQuery($and);
-        $this->_data['fcomponent'] = $this->mcomponent->dropdownlist($this->_data['formData']['fcomponent']);
+        $this->_data['fcomponent'] = $this->mcomponent->dropdownlist($this->_data['formData']['fcomponent'],1);
         $this->_data['forderby'] = $this->mspecial_content->dropdownlistOrderBy($this->_data['formData']['forderby']);
         $this->_data['fstatus'] = $this->mspecial_content->dropdownlistStatus($this->_data['formData']['fstatus']);
         $this->_data['fcategory'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['fcategory'],$this->_data['language']);
@@ -152,7 +152,7 @@ class Special_content extends MY_Controller {
             $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['sc_category'],$this->_data['langPost']['lang_code'],$this->_data['formData']['sc_component']);
         }
         $this->_data['special_content_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-        $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['sc_component']);
+        $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['sc_component'],1);
         $this->_data['orderby'] = $this->mspecial_content->dropdownlistOrderBy($this->_data['formData']['sc_orderby']);
         $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css'];
         $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','module/sc.js'];
@@ -295,7 +295,7 @@ class Special_content extends MY_Controller {
                     $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['sc_category'],$this->_data['langPost']['lang_code'],$this->_data['formData']['sc_component']);
                 }
                 $this->_data['special_content_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
-                $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['sc_component']);
+                $this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['sc_component'],1);
                 $this->_data['orderby'] = $this->mspecial_content->dropdownlistOrderBy($this->_data['formData']['sc_orderby']);
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css'];
                 $this->_data['extraJs'] = ['validator.js','icheck.min.js','switchery.min.js','module/sc.js'];
@@ -442,7 +442,7 @@ class Special_content extends MY_Controller {
                     case 'news':
                         $this->load->Model("admin/mnews");
                         if ($ids != '') {
-                        	$this->_data['currentItem'] = $this->mnews->whereIn("n.id,nt.news_title as name",$ids,$this->_data['language']);
+                        	$this->_data['currentItem'] = $this->mnews->whereIn("n.id,n.news_status as status,nt.news_title as name",$ids,$this->_data['language']);
                         }
                         $this->_data['listItem'] = $this->mnews->getNews("n.id,nt.news_title as name",'n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"',"n.id desc",$limit);
                         $this->_data['record'] = $this->mnews->countNews('n.news_status = 1 and n.news_state = 3 and n.news_category = '.$this->_data['mySpecial_content']['sc_category'].' and nt.language_code = "'.$this->_data['language'].'"');
@@ -451,7 +451,7 @@ class Special_content extends MY_Controller {
                     case 'album':
                         $this->load->Model("admin/malbum");
                         if ($ids != '') {
-                        	$this->_data['currentItem'] = $this->malbum->whereIn("a.id,at.album_name as name",$ids,$this->_data['language']);
+                        	$this->_data['currentItem'] = $this->malbum->whereIn("a.id,a.album_status as status,at.album_name as name",$ids,$this->_data['language']);
                         }
                         $this->_data['listItem'] = $this->malbum->getAlbum("a.id,at.album_name as name",'a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"',"a.id desc",$limit);
                         $this->_data['record'] = $this->malbum->countAlbum('a.album_status = 1 and a.album_parent = '.$this->_data['mySpecial_content']['sc_category'].' and at.language_code = "'.$this->_data['language'].'"');
@@ -460,7 +460,7 @@ class Special_content extends MY_Controller {
                     case 'video':
                         $this->load->Model("admin/mvideo");
                         if ($ids != '') {
-                        	$this->_data['currentItem'] = $this->mvideo->whereIn("v.id,vt.video_name as name",$ids,$this->_data['language']);
+                        	$this->_data['currentItem'] = $this->mvideo->whereIn("v.id,v.video_status as status,vt.video_name as name",$ids,$this->_data['language']);
                         }
                         $this->_data['listItem'] = $this->mvideo->getVideo("v.id,vt.video_name as name",'v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"',"v.id desc",$limit);
                         $this->_data['record'] = $this->mvideo->countVideo('v.video_status = 1 and v.video_parent = '.$this->_data['mySpecial_content']['sc_category'].' and vt.language_code = "'.$this->_data['language'].'"');
@@ -540,7 +540,7 @@ class Special_content extends MY_Controller {
     	if ($this->mpermission->permission("special_content_deleteItem",$this->_data['user_active']['active_user_group']) == true) {
     		$id = $this->input->get('id');
 	    	$id_item = $this->input->get('id_item');
-	    	if ($id != null || $id_item != null) {
+	    	if ($id != null && $id_item != null) {
 	    		$mySpecial_content = $this->mspecial_content->getData("sc_array_item",array('id' => $id));
 	    		if ($mySpecial_content) {
 	    			if ($mySpecial_content['sc_array_item'] == '') {

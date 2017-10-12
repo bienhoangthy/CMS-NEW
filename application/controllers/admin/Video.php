@@ -286,7 +286,7 @@ class Video extends MY_Controller {
                 $this->_data['id'] = $id;
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
-                $this->_data['title'] = lang('videoedit');
+                $this->_data['title'] = lang('videoedit').' #'.$id;
                 $this->_data['category'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['video_parent'],$this->_data['langPost']['lang_code'],'video');
                 $this->_data['video_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','cropper.min.css'];

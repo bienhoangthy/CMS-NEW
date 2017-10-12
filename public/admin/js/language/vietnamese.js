@@ -14,3 +14,4 @@ var retry = "Vui lòng thử lại!";
 var delimage = "xóa hình";
 var confirm = "Bạn có chắc muốn xóa?";
 var inputtag = "Vui lòng nhập thẻ!";
+var inputimg = "Vui lòng chọn hình!";

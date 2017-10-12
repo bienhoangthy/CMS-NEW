@@ -65,7 +65,7 @@ class mnews extends MY_Model
         } else {
             $obj = '*';
         }
-        $sql = 'select '.$obj.' from '.$this->table.' n inner join '.$this->table_translation.' nt on n.id = nt.news_id where n.id in('.$ids.') and nt.language_code = "'.$language.'" order by n.id desc';
+        $sql = 'select '.$obj.' from '.$this->table.' n inner join '.$this->table_translation.' nt on n.id = nt.news_id where n.id in('.$ids.') and n.news_state = 3 and nt.language_code = "'.$language.'" order by n.id desc';
         $query = $this->db->query($sql);
         return $query->result_array();
     }

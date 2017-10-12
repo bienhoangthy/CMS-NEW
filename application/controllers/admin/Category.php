@@ -123,7 +123,7 @@ class Category extends MY_Controller {
 		$this->_data['title'] = lang('categoryadd');
 		$this->_data['typeview'] = $this->mcategory->dropdownlistType($this->_data['formData']['category_view_type']);
 		$this->_data['parent'] = $this->mcategory->selectParent($this->_data['language'],$this->_data['formData']['category_parent']);
-		$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component']);
+		$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component'],1);
         $this->_data['category_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
         $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','cropper.min.css'];
         $this->_data['extraJs'] = ['validator.js','icheck.min.js','cropper.min.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/category.js'];
@@ -272,7 +272,7 @@ class Category extends MY_Controller {
 		        $this->_data['token_value'] = $this->security->get_csrf_hash();
 		        $this->_data['typeview'] = $this->mcategory->dropdownlistType($this->_data['formData']['category_view_type']);
 				$this->_data['parent'] = $this->mcategory->selectParent($this->_data['language'],$this->_data['formData']['category_parent']);
-				$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component']);
+				$this->_data['component'] = $this->mcomponent->dropdownlist($this->_data['formData']['category_component'],1);
 		        $this->_data['category_lang'] = $this->mlanguage->dropdownlist($this->_data['langPost']['lang_code'],$this->_data['listLanguage']);
 		        $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','cropper.min.css'];
 		        $this->_data['extraJs'] = ['validator.js','icheck.min.js','cropper.min.js','language/'.$this->_data['language'].'.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/category.js'];
