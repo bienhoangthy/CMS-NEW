@@ -1,5 +1,6 @@
 <?php 
 $lang['welcom'] = 'Xin chào';
+$lang['week'] = 'Tuần';
 $lang['dashboard'] = 'Bảng điều khiển';
 $lang['showall'] = 'Xem tất cả';
 $lang['viewwebsite'] = 'Xem website';

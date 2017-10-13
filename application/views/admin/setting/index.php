@@ -21,6 +21,7 @@
 			    <li>Giới hạn ký tự đặt tiêu đề</li>
 			    <li>Chọn tỉ lệ ảnh</li>
 			    <li>Mục hiển thị bảng điều khiển</li>
+			    <li>Xóa tất cả hoạt động</li>
 			</ul>
 		</div>
 	</div>

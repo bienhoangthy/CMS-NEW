@@ -7,7 +7,6 @@
             <a href="<?= my_library::admin_site()?>" class="site_title"> <span>Admin <span class="text-success">CMS</span></span></a>
           </div>
           <div class="clearfix"></div>
-          <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
               <img src="<?= $user_active['active_user_avatar']?>" class="img-circle profile_img">
@@ -18,12 +17,10 @@
             </div>
             <div class="clearfix"></div>
           </div>
-          <!-- /menu profile quick info -->
           <br />
-          <!-- sidebar menu -->
           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-              <h3>Admin Menu</h3>
+              <h3><?= lang('week').' '.date("W").' | '.date("Y-m-d")?></h3>
               <ul class="nav side-menu">
                 <?php if ($user_active['active_user_module'] != ''): ?>
                   <?php foreach ($myModule as $key => $value): ?>
@@ -61,6 +58,5 @@
               <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
           </div>
-          <!-- /menu footer buttons -->
         </div>
       </div>

@@ -1,5 +1,6 @@
 <?php 
 $lang['welcom'] = 'Welcome';
+$lang['week'] = 'Week';
 $lang['dashboard'] = 'Dashboard';
 $lang['showall'] = 'Show all';
 $lang['viewwebsite'] = 'View website';

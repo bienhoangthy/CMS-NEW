@@ -1,4 +1,33 @@
 <?php 
 require APPPATH . '/language/english/master.php';
-$lang['fullname'] = 'Full name';
+$lang['publishednews'] = 'Published News';
+$lang['newsthismonth'] = ' News this month';
+$lang['user'] = 'Users';
+$lang['active'] = ' Active';
+$lang['category'] = 'Categories';
+$lang['comment'] = 'Comments';
+$lang['mailcontact'] = 'Mail Contact';
+$lang['unread'] = 'Unread';
+$lang['activity'] = 'Activities';
+$lang['totay'] = 'Today';
+$lang['news'] = 'News';
+$lang['mostviewed'] = 'Most viewed';
+$lang['latestnews'] = 'Latest news';
+$lang['titlenews'] = 'News Title';
+$lang['view'] = 'Views';
+$lang['recentactivity'] = 'Recent activities';
+$lang['someone'] = 'Someone';
+$lang['yearsago'] = ' years ago';
+$lang['monthsago'] = ' months ago';
+$lang['daysago'] = ' days ago';
+$lang['hoursago'] = ' hours ago';
+$lang['minutesago'] = ' minutes ago';
+$lang['secondsago'] = ' seconds ago';
+$lang['asecondago'] = 'A second ago';
+$lang['historylogin'] = 'History login';
+$lang['user'] = 'User';
+$lang['group'] = 'Group';
+$lang['time'] = 'Time';
+$lang['browser'] = 'Browser';
+$lang['os'] = 'OS';
  ?>

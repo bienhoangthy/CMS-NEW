@@ -6,7 +6,6 @@ class Index extends CI_Controller {
     {
         parent::__construct();
         $this->load->library("user_agent");
-        //$this->load->helper("language");
         $this->load->Model("admin/muser");
         $this->load->Model("admin/mhistory");
         $this->load->Model("admin/mgroup");
@@ -54,7 +53,7 @@ class Index extends CI_Controller {
 								}
 								//$department_name = $this->muser->listDepartment($myUser['user_department']);
 								$dataAddHistory = array(
-									'history_username' => $myUser['user_username'],
+									'history_user_id' => $myUser['id'],
 									'history_group' => $myUser['user_group'],
 									'history_department' => $myUser['user_department'],
 									'history_ip' => $this->input->ip_address(),
