@@ -7,6 +7,7 @@ class Config extends MY_Controller {
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
         $this->lang->load('config',$this->_data['language']);
         $this->load->Model("admin/mconfig");
+        $this->load->Model("admin/mactivity");
     }
 
     public function index()
@@ -86,6 +87,7 @@ class Config extends MY_Controller {
             } else {
             	$insert = $this->mconfig->add($this->_data['formData']);
             	if (is_numeric($insert) > 0) {
+                    $this->mactivity->addActivity(3,$insert,1,$this->_data['user_active']['active_user_id']);
             		$this->_data['formDataLang']['config_id'] = $insert;
             		$insert_lang = $this->mconfig_translation->add($this->_data['formDataLang']);
                 	$titleinsertlang = is_numeric($insert_lang) > 0 ? ' | '.$lang : '';
@@ -170,6 +172,7 @@ class Config extends MY_Controller {
 		                $this->session->set_userdata('notify', $notify);
 		            } else {
 		            	if ($this->mconfig->edit($id,$this->_data['formData'])) {
+                            $this->mactivity->addActivity(3,$id,2,$this->_data['user_active']['active_user_id']);
 		            		if (!empty($myConfig_lang)) {
 		            			if ($this->mconfig_translation->edit($myConfig_lang['id'],$this->_data['formDataLang'])) {
 		            				$notify = array(
@@ -242,6 +245,8 @@ class Config extends MY_Controller {
     		if ($myConfig && $myConfig['id']) {
     			$this->mconfig->delete($id);
     			$this->mconfig_translation->deleteAnd(array('config_id' => $id));
+                $this->mactivity->deleteAnd(array('activity_component' => 3,'activity_id_com' => $id));
+                $this->mactivity->addActivity(3,$id,3,$this->_data['user_active']['active_user_id']);
     			$title = lang('success');
                 $text = lang('config').$myConfig['config_code'].lang('deleted');
                 $type = 'success';
@@ -318,6 +323,7 @@ class Config extends MY_Controller {
             $value = $this->input->get('value');
             if ($id != null && $value != null) {
                 if ($this->mconfig_translation->edit($id,array('config_value' => $value))) {
+                    $this->mactivity->addActivity(3,$id,4,$this->_data['user_active']['active_user_id']);
                     echo "ok";
                 }
             }

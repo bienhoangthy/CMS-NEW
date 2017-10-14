@@ -30,4 +30,5 @@ $lang['group'] = 'Group';
 $lang['time'] = 'Time';
 $lang['browser'] = 'Browser';
 $lang['os'] = 'OS';
+$lang['page'] = 'Page';
  ?>

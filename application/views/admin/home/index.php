@@ -122,21 +122,21 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="x_panel" style="height: 390px;">
         <div class="x_title">
-          <h2><i class="fa fa-tasks"></i> <?= lang('recentactivity')?></h2>
+          <h2><i class="fa fa-tasks"></i> <?= lang('recentactivity')?> <small>(<?= lang('page')?> <b class="text-success page-html">1</b>)</small></h2>
+          <input type="hidden" id="page" value="1">
           <ul class="nav navbar-right panel_toolbox">
-            <input type="hidden" id="page" value="1">
-            <li><a class="loadmore" data-load="1"><i class="fa fa-chevron-left"></i></a>
+            <li><a class="loadmore previous" data-load="1" style="display: none;"><i class="fa fa-chevron-left"></i></a>
             </li>
-            <li><a class="loadmore" data-load="2"><i class="fa fa-chevron-right"></i></a>
+            <li><a class="loadmore next" data-load="2"><i class="fa fa-chevron-right"></i></a>
             </li>
           </ul>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
           <table class="countries_list">
-            <tbody>
+            <tbody id="table-activity">
               <?php if (!empty($listActivities)): ?>
-                <?php foreach ($listActivities as $key => $value): ?>
+                <?php foreach ($listActivities as $value): ?>
                   <?php 
                     $user = $this->muser->getData("id,user_fullname,user_avatar,user_folder",array('id' => $value['activity_user']));
                     if ($user) {

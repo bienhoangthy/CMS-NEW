@@ -7,6 +7,7 @@ class Menu extends MY_Controller {
         $this->lang->load('menu',$this->_data['language']);
         $this->load->Model("admin/mmenu");
         $this->load->Model("admin/mmenu_detail");
+        $this->load->Model("admin/mactivity");
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
     }
     public function index()
@@ -40,6 +41,7 @@ class Menu extends MY_Controller {
             } else {
                 $insert = $this->mmenu->add($this->_data['formData']);
                 if (is_numeric($insert) > 0) {
+                    $this->mactivity->addActivity(20,$insert,1,$this->_data['user_active']['active_user_id']);
                     $notify = array(
                         'title' => lang('success'), 
                         'text' => lang('menu').' '.$this->_data['formData']['menu_name'].lang('added'),
@@ -79,7 +81,9 @@ class Menu extends MY_Controller {
                         'menu_updatedate' => date("Y-m-d"),
                         'user' => $this->_data['user_active']['active_user_id']
                     );
-                    $this->mmenu->edit($id,$this->_data['formData']);
+                    if ($this->mmenu->edit($id,$this->_data['formData'])) {
+                        $this->mactivity->addActivity(20,$id,2,$this->_data['user_active']['active_user_id']);
+                    }
                     $countEdit = 0;
                     $order_menu = $this->input->post('menu_order');
                     if ($order_menu != null) {
@@ -196,6 +200,8 @@ class Menu extends MY_Controller {
         	if ($myMenu && $myMenu['id'] > 1) {
         		$this->mmenu->delete($id);
         		$this->mmenu_detail->deleteAnd(array('menu_id' => $id));
+                $this->mactivity->deleteAnd(array('activity_component' => 20,'activity_id_com' => $id));
+                $this->mactivity->addActivity(3,$id,20,$this->_data['user_active']['active_user_id']);
         		$title = lang('success');
                 $text = lang('menu').lang('deleted');
                 $type = 'success';

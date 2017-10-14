@@ -8,6 +8,7 @@ class Category extends MY_Controller {
         $this->lang->load('category',$this->_data['language']);
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mcomponent");
+        $this->load->Model("admin/mactivity");
     }
 	public function index()
 	{
@@ -105,6 +106,7 @@ class Category extends MY_Controller {
 				}
 				$insert = $this->mcategory->add($this->_data['formData']);
 				if (is_numeric($insert) > 0) {
+					$this->mactivity->addActivity(4,$insert,1,$this->_data['user_active']['active_user_id']);
 					$this->_data['formDataLang']['category_id'] = $insert;
 					$insert_lang = $this->mcategory_translation->add($this->_data['formDataLang']);
 					$titleinsertlang = is_numeric($insert_lang) > 0 ? ' | '.$lang : '';
@@ -231,6 +233,7 @@ class Category extends MY_Controller {
 							$this->mcategory->delimage($myCategory['category_picture']);
 						}
 						if ($this->mcategory->edit($id,$this->_data['formData'])) {
+							$this->mactivity->addActivity(4,$id,2,$this->_data['user_active']['active_user_id']);
 							if (!empty($myCategory_lang)) {
 								if ($this->mcategory_translation->edit($myCategory_lang['id'],$this->_data['formDataLang'])) {
 									$notify = array(
@@ -307,6 +310,8 @@ class Category extends MY_Controller {
 				$this->mcategory_translation->deleteAnd(array('category_id' => $id));
 				$this->mcategory->delimage($myCategory['category_picture']);
 				$this->mcategory->editAnd("category_parent = ".$id, array('category_parent' => 1));
+				$this->mactivity->deleteAnd(array('activity_component' => 4,'activity_id_com' => $id));
+                $this->mactivity->addActivity(4,$id,3,$this->_data['user_active']['active_user_id']);
 				$title = lang('success');
                 $text = lang('category').lang('deleted');
                 $type = 'success';

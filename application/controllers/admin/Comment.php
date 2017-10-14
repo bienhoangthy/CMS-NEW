@@ -7,6 +7,7 @@ class Comment extends MY_Controller {
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
         $this->lang->load('comment',$this->_data['language']);
         $this->load->Model("admin/mcomment");
+        $this->load->Model("admin/mactivity");
     }
 	public function index()
 	{
@@ -51,6 +52,9 @@ class Comment extends MY_Controller {
                     case 5:
                         $this->mpermission->checkPermission("comment","delete",$this->_data['user_active']['active_user_group']);
                         $this->mcomment->delete($listComment);
+                        foreach ($listComment as $value) {
+                            $this->mactivity->addActivity(25,$value,3,$this->_data['user_active']['active_user_id']);
+                        }
                         $notify = array(
                             'title' => lang('success'), 
                             'text' => count($listComment).' '.lang('comment').lang('deleted'),
@@ -164,6 +168,7 @@ class Comment extends MY_Controller {
         if ($id != null) {
             if ($this->mpermission->permission("comment_delete",$this->_data['user_active']['active_user_group']) == true) {
                 $this->mcomment->delete($id);
+                $this->mactivity->addActivity(25,$id,3,$this->_data['user_active']['active_user_id']);
                 $rs = array('status' => 1,'message' => lang('comment').' #'.$id.lang('deleted'));
             } else {
                 $rs = array('status' => 0,'message' => lang('notpermission'));

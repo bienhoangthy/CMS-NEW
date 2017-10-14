@@ -443,6 +443,7 @@ class Album extends MY_Controller {
             	}
             }
             if ($num > 0) {
+                $this->mactivity->addActivity(10,$id,2,$this->_data['user_active']['active_user_id']);
                 $notify = array(
                     'title' => lang('success'), 
                     'text' => lang('upload').' '.$num.lang('photo'),

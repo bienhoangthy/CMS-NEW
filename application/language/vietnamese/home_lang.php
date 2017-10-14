@@ -30,4 +30,5 @@ $lang['group'] = 'Nhóm';
 $lang['time'] = 'Thời gian';
 $lang['browser'] = 'Trình duyệt';
 $lang['os'] = 'Hệ điều hành';
+$lang['page'] = 'Trang';
  ?>

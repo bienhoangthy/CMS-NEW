@@ -14,7 +14,7 @@
 		<div class="clearfix"></div>
 		<div class="row">
 			<ul>
-			    <li>Các mục cần ghi log</li>
+			    <li>Các mục cần ghi log: Bài viết, Trang, Thông tin doanh nghiệp, Trình đơn, Danh mục, Nhân viên, Banner, Album, Video, Bình luận, Thư liên hệ</li>
 			    <li>Cho phép xuất bản từ bản nháp</li>
 			    <li>Số lần khóa khi nhập sai mật khẩu</li>
 			    <li>Cho phép reset lại mật khẩu</li>

@@ -7,6 +7,7 @@ class User extends MY_Controller {
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
         $this->lang->load('user',$this->_data['language']);
         $this->load->Model("admin/mgroup");
+        $this->load->Model("admin/mactivity");
     }
     public function index()
     {
@@ -21,6 +22,8 @@ class User extends MY_Controller {
                     if ($myUser && $myUser['id'] > 1) {
                         $this->muser->delete($myUser['id']);
                         $this->muser->delavatar($myUser['user_folder']);
+                        $this->mactivity->deleteAnd(array('activity_component' => 6,'activity_id_com' => $myUser['id']));
+                        $this->mactivity->addActivity(6,$myUser['id'],3,$this->_data['user_active']['active_user_id']);
                         $countDel++;
                     }
                 }
@@ -169,6 +172,7 @@ class User extends MY_Controller {
                 $this->_data['formData']['user'] = $this->_data['user_active']['active_user_id'];
                 $insert = $this->muser->add($this->_data['formData']);
                 if (is_numeric($insert) > 0) {
+                    $this->mactivity->addActivity(6,$insert,1,$this->_data['user_active']['active_user_id']);
                     $folder_name = $insert.$username;
                     $this->muser->create_folder($folder_name);
                     $upload_avatar = $this->muser->do_upload($folder_name);
@@ -295,7 +299,8 @@ class User extends MY_Controller {
                             'user' => $this->_data['user_active']['active_user_id']
                         );
                         if ($this->muser->edit($id,$dataEdit)) {
-                                $notify = array(
+                            $this->mactivity->addActivity(6,$id,2,$this->_data['user_active']['active_user_id']);
+                            $notify = array(
                                 'title' => lang('success'), 
                                 'text' => $myUser['user_username'].lang('edited'),
                                 'type' => 'success'
@@ -408,6 +413,8 @@ class User extends MY_Controller {
             if ($myUser && $myUser['id'] > 0) {
                 $this->muser->delete($id);
                 $this->muser->delavatar($myUser['user_folder']);
+                $this->mactivity->deleteAnd(array('activity_component' => 6,'activity_id_com' => $id));
+                $this->mactivity->addActivity(6,$id,3,$this->_data['user_active']['active_user_id']);
                 $title = lang('success');
                 $text = $myUser['user_username'].lang('deleted');
                 $type = 'success';

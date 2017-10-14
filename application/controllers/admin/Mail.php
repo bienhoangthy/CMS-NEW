@@ -6,6 +6,7 @@ class Mail extends MY_Controller {
         parent::__construct();
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
         $this->lang->load('mail',$this->_data['language']);
+        $this->load->Model("admin/mactivity");
     }
 	public function index($id=0)
 	{
@@ -138,6 +139,7 @@ class Mail extends MY_Controller {
 			$id = $this->input->get('id');
 			if ($id != null) {
 				$this->mmail->delete($id);
+                $this->mactivity->addActivity(13,$id,3,$this->_data['user_active']['active_user_id']);
 				$rs = array('success' => 1,'html' => lang('mail').lang('deleted'));
 			} else {
 				$rs = array('success' => 0,'html' => lang('checkinfo'));
