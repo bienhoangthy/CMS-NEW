@@ -6,4 +6,9 @@ class mhistory extends MY_Model
         parent::__construct();
     }
     protected $table = "cms_history";
+    
+    public function clear()
+    {
+    	$this->db->empty_table($this->table);
+    }
 }

@@ -13,16 +13,97 @@
 		</div>
 		<div class="clearfix"></div>
 		<div class="row">
-			<ul>
-			    <li>Các mục cần ghi log: Bài viết, Trang, Thông tin doanh nghiệp, Trình đơn, Danh mục, Nhân viên, Banner, Album, Video, Bình luận, Thư liên hệ</li>
-			    <li>Cho phép xuất bản từ bản nháp</li>
-			    <li>Số lần khóa khi nhập sai mật khẩu</li>
-			    <li>Cho phép reset lại mật khẩu</li>
-			    <li>Giới hạn ký tự đặt tiêu đề</li>
-			    <li>Chọn tỉ lệ ảnh</li>
-			    <li>Mục hiển thị bảng điều khiển</li>
-			    <li>Xóa tất cả hoạt động</li>
-			</ul>
+			<form class="form-horizontal form-label-left" method="post">
+				<input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+				<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+					<div class="x_panel">
+						<div class="x_title">
+							<h2><i class="fa fa-th-large"></i> <?= lang('settingforsystem')?></h2>
+							<div class="navbar-right">
+								<button type="submit" class="btn btn-success"><?= lang('save')?></button>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="x_content">
+							<div class="" role="tabpanel" data-example-id="togglable-tabs">
+								<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+									<li role="presentation" class="active"><a href="#activity" id="activity-tab" role="tab" data-toggle="tab" aria-expanded="true"><?= lang('activity')?></a>
+									</li>
+									<li role="presentation" class=""><a href="#charactertitle" role="tab" id="charactertitle-tab" data-toggle="tab" aria-expanded="false"><?= lang('charactertitle')?></a>
+									</li>
+									<li role="presentation" class=""><a href="#imageratio" role="tab" id="imageratio-tab" data-toggle="tab" aria-expanded="false"><?= lang('imageratio')?></a>
+									</li>
+								</ul>
+								<div id="myTabContent" class="tab-content">
+									<div role="tabpanel" class="tab-pane fade active in" id="activity" aria-labelledby="activity-tab">
+										<div class="form-group">
+											<div class="col-md-6 col-sm-6 col-xs-6">
+												<label>
+													<?= lang('record').' '.lang('activity')?> <input type="checkbox" name="write_log" class="js-switch" value="1" <?= $formData['write_log'] == 1 ? 'checked' : ''?>/>
+												</label>
+											</div>
+											<div class="col-md-6 col-sm-6 col-xs-6">
+												<label>Component:</label>
+												<br />
+												<?php foreach ($listComponent as $value): ?>
+													<input type="checkbox" name="component[]" value="<?= $value['id']?>" class="flat" /> <?= $language == 'english' ? ucfirst($value['component']) : $value['component_name']?>
+													<br />
+												<?php endforeach ?>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="charactertitle" aria-labelledby="charactertitle-tab">
+										<label for="limit_title"><?= lang('limit')?>:</label>
+										<input type="number" class="form-control" value="<?= $formData['limit_title']?>" name="limit_title" required="required">
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="imageratio" aria-labelledby="imageratio-tab">
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('news')?></label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<select class="form-control" name="ratio_news">
+													<option <?= $formData['ratio_news'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
+													<option <?= $formData['ratio_news'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
+													<option <?= $formData['ratio_news'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('album')?></label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<select class="form-control" name="ratio_album">
+													<option <?= $formData['ratio_album'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
+													<option <?= $formData['ratio_album'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
+													<option <?= $formData['ratio_album'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('video')?></label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<select class="form-control" name="ratio_video">
+													<option <?= $formData['ratio_video'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
+													<option <?= $formData['ratio_video'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
+													<option <?= $formData['ratio_video'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('product')?></label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<select class="form-control" name="ratio_product">
+													<option <?= $formData['ratio_product'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
+													<option <?= $formData['ratio_product'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
+													<option <?= $formData['ratio_product'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

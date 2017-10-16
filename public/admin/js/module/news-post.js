@@ -155,7 +155,8 @@ $('#add-tag').click(function(){
 	var tag = $('#tags').val();
 	if (tag != '') {
 		news_tag.val(news_tag.val()+tag+',');
-		$('#tags').val('');
+    $('#tags').val('');
+		$('#tags').focus();
 		var html = '<span class="label label-info">'+tag+'<i class="fa fa-close fa-lg delete-tag"></i></span> ';
         $('#tag-post').append(html);
 	} else {

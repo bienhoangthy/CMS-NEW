@@ -205,7 +205,7 @@
                     $avatar_user = $user && $user['user_avatar'] != '' ? base_url().'media/user/'.$user['user_folder'].'/thumb-'.$user['user_avatar'] : my_library::base_public().'admin/images/user.png';
                     $fullname = $user['user_fullname'] ?? lang('someone');
                     $group = $this->mgroup->getData("group_name",array('id' => $value['history_group']));
-                    $group_name = $group['group_name'] ?? '';;
+                    $group_name = $group['group_name'] ?? '';
                    ?>
                   <tr class="showacction">
                     <th><img src="<?= $avatar_user?>" class="avatar" style="width: 35px;height: auto;" alt="avatar"></th>

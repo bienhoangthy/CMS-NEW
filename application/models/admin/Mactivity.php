@@ -21,6 +21,11 @@ class mactivity extends MY_Model
         $this->add($dataAdd);
     }
 
+    public function clear()
+    {
+    	$this->db->empty_table($this->table);
+    }
+
     public function listAction($item = "")
     {
         $arr = array(
