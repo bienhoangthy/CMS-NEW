@@ -1,24 +1,30 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class mactivity extends MY_Model
 {
-
     public function __construct()
     {
         parent::__construct();
+        $this->load->Model("admin/msetting");
     }
     protected $table = "cms_activity";
 
     public function addActivity($component,$id_com,$active,$user_id)
     {
-        $dataAdd = array(
-            'activity_component' => $component,
-            'activity_id_com' => $id_com,
-            'activity_action' => $active,
-            'activity_user' => $user_id,
-            'activity_ip' => $this->input->ip_address(),
-            'activity_datetime' => date("Y-m-d H:i:s") 
-        );
-        $this->add($dataAdd);
+        $mySetting = $this->msetting->getSetting("component_log");
+        if ($mySetting['component_log'] != '') {
+            $allow_log = unserialize($mySetting['component_log']);
+            if (in_array($component, $allow_log)) {
+                $dataAdd = array(
+                    'activity_component' => $component,
+                    'activity_id_com' => $id_com,
+                    'activity_action' => $active,
+                    'activity_user' => $user_id,
+                    'activity_ip' => $this->input->ip_address(),
+                    'activity_datetime' => date("Y-m-d H:i:s")
+                );
+                $this->add($dataAdd);
+            }
+        }
     }
 
     public function clear()

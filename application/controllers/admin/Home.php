@@ -43,15 +43,22 @@ class Home extends MY_Controller {
         $this->_data['mail'] = $this->mmail->countQuery('');
         $this->_data['mail_unread'] = $this->mmail->countQuery('mail_status = 1');
 
+        //Setting Display
+        $this->load->Model("admin/msetting");
+        $this->_data['mySetting'] = $this->msetting->getSetting("write_log,write_history_login");
+        if ($this->_data['mySetting']['write_log'] == 1) {
+            $this->_data['listActivities'] = $this->mactivity->getQuery("","","id desc","0,10");
+        }
         //Activity
         $this->_data['activities'] = $this->mactivity->countQuery('');
         $this->_data['activities_today'] = $this->mactivity->countQuery('date(activity_datetime) = "'.date("Y-m-d").'"');
-        $this->_data['listActivities'] = $this->mactivity->getQuery("","","id desc","0,10");
 
         //History login
-        $this->load->Model("admin/mhistory");
-        $this->load->Model("admin/mgroup");
-        $this->_data['listLogin'] = $this->mhistory->getQuery("","","id desc","0,10");
+        if ($this->_data['mySetting']['write_history_login'] == 1) {
+            $this->load->Model("admin/mhistory");
+            $this->load->Model("admin/mgroup");
+            $this->_data['listLogin'] = $this->mhistory->getQuery("","","id desc","0,10");
+        }
 
         $this->_data['extraJs'] = ['module/home.js'];
     	$this->my_layout->view("admin/home/index", $this->_data);

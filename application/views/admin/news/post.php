@@ -30,7 +30,7 @@
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left !important;" for="news_title"><img src="<?= my_library::base_file().'language/flag_'.$langPost['lang_code'].'.png'?>" class="img-input"> <?= lang('titlenews')?><span class="required">*</span>
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12 item">
-                  <input id="news_title" class="form-control col-md-7 col-xs-12" maxlength="80" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
+                  <input id="news_title" class="form-control col-md-7 col-xs-12" maxlength="<?= $mySetting['limit_title']?>" name="news_title" required="required" type="text" value="<?= $formDataLang['news_title']?>">
                 </div>
               </div>
               <?php if (isset($formDataLang['news_alias']) && isset($id)): ?>
@@ -338,14 +338,14 @@
                 <button type="button" id="button-delimg" class="btn btn-danger btn-xs" onclick="deleteImg(<?= $id?>)">
                   <?= lang('deletephoto')?>
                 </button><br>
-                <img src="<?= my_library::base_file().'news/'.$id.'/'.$formData['news_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: 180px; margin-bottom: 10px;position: absolute;">
+                <img src="<?= my_library::base_file().'news/'.$id.'/'.$formData['news_picture']?>" id="current-image" alt="<?= lang('typicalphoto')?>" style="width: 320px;height: auto;margin-left: 3px; margin-bottom: 10px;position: absolute;">
               <?php else: ?>
                 <button type="button" class="btn btn-success btn-xs" data-target="#modal" data-toggle="modal">
                   <?= lang('addphoto')?>
                 </button>
               <?php endif ?>
               <div class="docs-preview clearfix">
-                <div class="img-preview preview-lg" style="width: 320px;height: 180px;overflow: hidden;"></div>
+                <div class="img-preview preview-lg center-block" style="width: 320px;height: <?= $ratio['height']?>px;overflow: hidden;"></div>
               </div>
             </div>
           </div>
@@ -358,6 +358,8 @@
 <!-- Image modal -->
 <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" tabindex="-1" style="z-index: 9999999;">
   <div class="modal-dialog modal-lg" role="document">
+    <input type="hidden" id="w" value="<?= $ratio['w']?>">
+    <input type="hidden" id="h" value="<?= $ratio['h']?>">
     <div class="modal-content" style="width: 1000px;">
       <div class="modal-header" style="background-color: #27ae60;">
         <h5 class="modal-title" style="color: #fff;font-weight: bold;"><i class="fa fa-picture-o fa-lg"></i> <?= lang('image')?></h5>
@@ -378,9 +380,9 @@
           </div>
           <div class="col-md-3 col-sm-3 col-xs-12">
             <div class="docs-preview clearfix">
-              <div class="img-preview preview-lg" style="width: 192px;height: 108px;overflow: hidden;background-color: #DDDDDD;margin-bottom: 5px;"></div>
-              <div class="img-preview preview-md" style="width: 160px;height: 90px;overflow: hidden;background-color: #DDDDDD;margin-bottom: 5px;"></div>
-              <div class="img-preview preview-sm" style="width: 80px;height: 45px;overflow: hidden;background-color: #DDDDDD;margin-bottom: 5px;"></div>
+              <div class="img-preview preview-lg" style="width: 192px;height: 108px;overflow: hidden;margin-bottom: 5px;"></div>
+              <div class="img-preview preview-md" style="width: 160px;height: 90px;overflow: hidden;margin-bottom: 5px;"></div>
+              <div class="img-preview preview-sm" style="width: 80px;height: 45px;overflow: hidden;margin-bottom: 5px;"></div>
             </div>
             <div class="docs-data" style="margin-top: 23px;">
               <div class="input-group input-group-sm">

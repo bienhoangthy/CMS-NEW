@@ -9,6 +9,7 @@ class News extends MY_Controller {
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mnews");
         $this->load->Model("admin/mactivity");
+        $this->load->Model("admin/msetting");
     }
 	public function index($state=3)
 	{
@@ -99,6 +100,7 @@ class News extends MY_Controller {
         $this->_data['ftype'] = $this->mnews->dropdownlistType($this->_data['formData']['ftype']);
         $this->_data['fuser'] = $this->muser->dropdownlistUser($this->_data['formData']['fuser']);
         $this->_data['fcategory'] = $this->mcategory->dropdownlistCategory($this->_data['formData']['fcategory'],$this->_data['formData']['flanguage'],'news');
+        $this->_data['mySetting'] = $this->msetting->getSetting("limit_title");
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
         $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','switchery.min.css','fancybox/jquery.fancybox.css'];
@@ -355,6 +357,8 @@ class News extends MY_Controller {
         $this->_data['state'] = 1;
         $this->_data['stateOperations'] = $this->mnews->stateOperations($this->_data['state']);
         $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
+        $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_news");
+        $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_news']);
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
 		$this->_data['title'] = lang('newsadd');
@@ -604,6 +608,8 @@ class News extends MY_Controller {
 			        $this->_data['stateOperations'] = $this->mnews->stateOperations($this->_data['state']);
 			        $this->_data['stateData'] = $this->mnews->listState($this->_data['state']);
                     $this->_data['tags'] = explode(",", $this->_data['formData']['news_tag']);
+                    $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_news");
+                    $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_news']);
 			        $this->_data['token_name'] = $this->security->get_csrf_token_name();
 			        $this->_data['token_value'] = $this->security->get_csrf_hash();
 					$this->_data['title'] = lang('newsedit')." #".$id;

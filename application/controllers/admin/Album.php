@@ -10,6 +10,7 @@ class Album extends MY_Controller {
         $this->load->Model("admin/malbum");
         $this->load->Model("admin/malbum_detail");
         $this->load->Model("admin/mactivity");
+        $this->load->Model("admin/msetting");
     }
 	public function index()
 	{
@@ -145,6 +146,8 @@ class Album extends MY_Controller {
             	}
             }
         }
+        $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_album");
+        $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_album']);
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
 		$this->_data['title'] = lang('albumadd');
@@ -275,6 +278,8 @@ class Album extends MY_Controller {
                 }
                 //End
                 $this->_data['id'] = $id;
+                $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_album");
+                $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_album']);
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['title'] = lang('albumedit').' #'.$id;

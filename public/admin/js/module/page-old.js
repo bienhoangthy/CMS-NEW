@@ -2,12 +2,10 @@ window.onload = function () {
   var Cropper = window.Cropper;
   var dataX = document.getElementById('dataX');
   var dataY = document.getElementById('dataY');
-  var w = document.getElementById('w').value;
-  var h = document.getElementById('h').value;
   var dataHeight = document.getElementById('dataHeight');
   var dataWidth = document.getElementById('dataWidth');
   var options = {
-        aspectRatio: w / h,
+        aspectRatio: 16 / 9,
         preview: '.img-preview',
         crop: function (e) {
           dataX.value = Math.round(e.detail.x);
@@ -47,7 +45,7 @@ window.onload = function () {
     if (cropBefore) {cropBefore.remove();}
     var imageData = cropper.getCroppedCanvas();
     var dataURL = imageData.toDataURL('image/jpeg');
-    var form = document.getElementById('formNews');
+    var form = document.getElementById('formPage');
     var input = document.createElement('input');
     input.type = 'hidden';
     input.id = 'file-image';
@@ -79,7 +77,7 @@ function deleteImg(id)
     closeOnConfirm: false
   },
   function(){
-    var url = configs.admin_site+configs.controller+'/deleteImage';
+    var url = configs.admin_site+configs .controller+'/deleteImage';
     $.ajax({
       url: url,
       data: {"id":id},
@@ -99,82 +97,49 @@ function deleteImg(id)
   });
 }
 
-$('#time').timepicker({ 'timeFormat': 'H:i:s' });
-$('#now').on('ifUnchecked', function () {$(".datetimepublish").prop('disabled', false);});
-$('#now').on('ifChecked', function () {$(".datetimepublish").prop('disabled', true);});
-tinymce.init({
-  selector: 'textarea#news_summary',
-  height: 100,
-  menubar: false,
-  plugins: [
-    'advlist charmap preview anchor textcolor',
-    'searchreplace visualblocks fullscreen',
-    'insertdatetime contextmenu paste'
-  ],
-  toolbar: 'undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | outdent indent | removeformat'
-});
-
-tinymce.init({selector: 'textarea#news_detail',height: 300,theme: 'modern',plugins: [
+tinymce.init({selector: 'textarea',height: 300,theme: 'modern',plugins: [
     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
     'searchreplace wordcount visualblocks visualchars code fullscreen',
     'insertdatetime media nonbreaking save table contextmenu directionality',
     'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help responsivefilemanager'
-  ],toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',image_caption: true,image_advtab: true,relative_urls:false,external_filemanager_path:"/public/filemanager/",filemanager_title:"Quản lý file",filemanager_access_key: "e807f1fcf82d132f9bb018ca6738a19f",external_plugins: { "filemanager" : "/public/filemanager/plugin.min.js"}});
+  ],toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',image_caption: true,image_advtab: true,relative_urls:false,file_picker_callback : elFinderBrowser});
 
-//Tags
+function elFinderBrowser (callback, value, meta) {
+  tinymce.activeEditor.windowManager.open({
+    file: '/public/elfinder/elfinder.html',// use an absolute path!
+    title: 'elFinder 2.0',
+    width: 900,  
+    height: 450,
+    resizable: 'yes'
+  }, {
+    oninsert: function (file, elf) {
+      var url, reg, info;
 
-var news_tag = $('#news_tag');
+      // URL normalization
+      url = file.url;
+      reg = /\/[^/]+?\/\.\.\//;
+      while(url.match(reg)) {
+        url = url.replace(reg, '/');
+      }
+      
+      // Make file info
+      info = file.name + ' (' + elf.formatSize(file.size) + ')';
 
-$('#tags').autocomplete({             
-    source: function( request, response ) {
-        $.ajax({
-            url:configs.admin_site+'tag/aj_autoCompleteTag',
-            dataType: "json",
-            data: {
-               key: request.term,                           
-            },
-             success: function( data ) {                    
-                response( $.map( data, function( item ) {
-                    return {
-                        label: item.name                            
-                    }                  
-                }));
-            }
-        });
-    },
-    autoFocus: true,
-    minLength: 2,
-    select: function( event, ui ) {
-    	news_tag.val(news_tag.val()+ui.item.label+',');
-        var html = '<span class="label label-info">'+ui.item.label+'<i class="fa fa-close fa-lg delete-tag"></i></span> ';
-        $('#tag-post').append(html);
-        this.value = '';
-      	return false;
-    }       
-});
+      // Provide file and text for the link dialog
+      if (meta.filetype == 'file') {
+        callback(url, {text: info, title: info});
+      }
 
-$('#add-tag').click(function(){
-	var tag = $('#tags').val();
-	if (tag != '') {
-		news_tag.val(news_tag.val()+tag+',');
-    $('#tags').val('');
-		$('#tags').focus();
-		var html = '<span class="label label-info">'+tag+'<i class="fa fa-close fa-lg delete-tag"></i></span> ';
-        $('#tag-post').append(html);
-	} else {
-		new PNotify({
-      title: notcomplete,
-      text: inputtag,
-      type: 'error',
-      styling: 'bootstrap3'
-    });
-	}
-});
+      // Provide image and alt text for the image dialog
+      if (meta.filetype == 'image') {
+        callback(url, {alt: info});
+      }
 
-$('#tag-post').on('click', '.delete-tag', function(){
-	var str = $(this).parent().text()+",";
-	var old = news_tag.val();
-	var new_value = old.replace(str,"");
-	news_tag.val(new_value);
-	$(this).parent().remove();
-});
+      // Provide alternative source and posted for the media dialog
+      if (meta.filetype == 'media') {
+        callback(url);
+      }
+    }
+  });
+  return false;
+}

@@ -33,37 +33,46 @@
 									</li>
 									<li role="presentation" class=""><a href="#imageratio" role="tab" id="imageratio-tab" data-toggle="tab" aria-expanded="false"><?= lang('imageratio')?></a>
 									</li>
+									<li role="presentation" class=""><a href="#smtp" role="tab" id="smtp-tab" data-toggle="tab" aria-expanded="false">SMTP</a>
+									</li>
+									<li role="presentation" class=""><a href="#ga" role="tab" id="ga-tab" data-toggle="tab" aria-expanded="false">Google Analytics</a>
+									</li>
 								</ul>
 								<div id="myTabContent" class="tab-content">
 									<div role="tabpanel" class="tab-pane fade active in" id="activity" aria-labelledby="activity-tab">
 										<div class="form-group">
 											<div class="col-md-6 col-sm-6 col-xs-6">
+												
 												<label>
 													<?= lang('record').' '.lang('activity')?> <input type="checkbox" name="write_log" class="js-switch" value="1" <?= $formData['write_log'] == 1 ? 'checked' : ''?>/>
 												</label>
-											</div>
-											<div class="col-md-6 col-sm-6 col-xs-6">
+												<br />
 												<label>Component:</label>
 												<br />
 												<?php foreach ($listComponent as $value): ?>
-													<input type="checkbox" name="component[]" value="<?= $value['id']?>" class="flat" /> <?= $language == 'english' ? ucfirst($value['component']) : $value['component_name']?>
+													<?php $checked = in_array($value['id'], $listOldComponent) ? 'checked' : ''; ?>
+													<input type="checkbox" <?= $checked?> name="component[]" value="<?= $value['id']?>" class="flat" /> <?= $language == 'english' ? ucfirst($value['component']) : $value['component_name']?>
 													<br />
 												<?php endforeach ?>
+											</div>
+											<div class="col-md-6 col-sm-6 col-xs-6">
+												<label>
+													<?= lang('record').' '.lang('historylogin')?> <input type="checkbox" name="write_history_login" class="js-switch" value="1" <?= $formData['write_history_login'] == 1 ? 'checked' : ''?>/>
+												</label>
 											</div>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="charactertitle" aria-labelledby="charactertitle-tab">
 										<label for="limit_title"><?= lang('limit')?>:</label>
 										<input type="number" class="form-control" value="<?= $formData['limit_title']?>" name="limit_title" required="required">
+										<code><cite>(<?= lang('news').', '.lang('album').', '.lang('video').', '.lang('product')?>)</cite></code>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="imageratio" aria-labelledby="imageratio-tab">
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('news')?></label>
 											<div class="col-md-9 col-sm-9 col-xs-12">
 												<select class="form-control" name="ratio_news">
-													<option <?= $formData['ratio_news'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
-													<option <?= $formData['ratio_news'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
-													<option <?= $formData['ratio_news'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+													<?= $ratio_news?>
 												</select>
 											</div>
 										</div>
@@ -71,9 +80,7 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('album')?></label>
 											<div class="col-md-9 col-sm-9 col-xs-12">
 												<select class="form-control" name="ratio_album">
-													<option <?= $formData['ratio_album'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
-													<option <?= $formData['ratio_album'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
-													<option <?= $formData['ratio_album'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+													<?= $ratio_album?>
 												</select>
 											</div>
 										</div>
@@ -81,9 +88,7 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('video')?></label>
 											<div class="col-md-9 col-sm-9 col-xs-12">
 												<select class="form-control" name="ratio_video">
-													<option <?= $formData['ratio_video'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
-													<option <?= $formData['ratio_video'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
-													<option <?= $formData['ratio_video'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+													<?= $ratio_video?>
 												</select>
 											</div>
 										</div>
@@ -91,12 +96,16 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12"><?= lang('product')?></label>
 											<div class="col-md-9 col-sm-9 col-xs-12">
 												<select class="form-control" name="ratio_product">
-													<option <?= $formData['ratio_product'] == '16:9' ? 'selected' : ''?> value="16:9">16:9</option>
-													<option <?= $formData['ratio_product'] == '4:3' ? 'selected' : ''?> value="4:3">4:3</option>
-													<option <?= $formData['ratio_product'] == '1:1' ? 'selected' : ''?> value="1:1">1:1</option>
+													<?= $ratio_product?>
 												</select>
 											</div>
 										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="smtp" aria-labelledby="smtp-tab">
+										
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="ga" aria-labelledby="ga-tab">
+										
 									</div>
 								</div>
 							</div>

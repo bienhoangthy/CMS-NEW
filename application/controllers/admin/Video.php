@@ -9,6 +9,7 @@ class Video extends MY_Controller {
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mvideo");
         $this->load->Model("admin/mactivity");
+        $this->load->Model("admin/msetting");
     }
 	public function index()
 	{
@@ -149,6 +150,8 @@ class Video extends MY_Controller {
             	}
             }
         }
+        $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_video");
+        $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_video']);
         $this->_data['token_name'] = $this->security->get_csrf_token_name();
         $this->_data['token_value'] = $this->security->get_csrf_hash();
 		$this->_data['title'] = lang('videoadd');
@@ -284,6 +287,8 @@ class Video extends MY_Controller {
                 }
                 //End
                 $this->_data['id'] = $id;
+                $this->_data['mySetting'] = $this->msetting->getSetting("limit_title,ratio_video");
+                $this->_data['ratio'] = $this->msetting->listRatio($this->_data['mySetting']['ratio_video']);
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['title'] = lang('videoedit').' #'.$id;

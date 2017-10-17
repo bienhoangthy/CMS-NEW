@@ -244,14 +244,14 @@
 																<div class="form-group">
 											                        <label class="control-label col-md-4 col-sm-4"><?= lang('title')?></label>
 											                        <div class="col-md-8 col-sm-8">
-											                          <input type="text" id="news_title<?= $value['id']?>" class="form-control" value="<?= $value['news_title']?>">
+											                          <input type="text" id="news_title<?= $value['id']?>" class="form-control" value="<?= $value['news_title']?>" maxlength="<?= $mySetting['limit_title']?>">
 											                        </div>
 											                    </div>
 											                    <div class="clearfix"></div>
 											                    <div class="form-group" style="margin-top: 5px;">
 											                        <label class="control-label col-md-4 col-sm-4">Alias</label>
 											                        <div class="col-md-8 col-sm-8">
-											                          <input type="text" id="news_alias<?= $value['id']?>" class="form-control" value="<?= $value['news_alias']?>">
+											                          <input type="text" id="news_alias<?= $value['id']?>" class="form-control" value="<?= $value['news_alias']?>" maxlength="<?= $mySetting['limit_title']?>">
 											                        </div>
 											                    </div>
 															</div>

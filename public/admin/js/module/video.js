@@ -2,10 +2,12 @@ window.onload = function () {
   var Cropper = window.Cropper;
   var dataX = document.getElementById('dataX');
   var dataY = document.getElementById('dataY');
+  var w = document.getElementById('w').value;
+  var h = document.getElementById('h').value;
   var dataHeight = document.getElementById('dataHeight');
   var dataWidth = document.getElementById('dataWidth');
   var options = {
-        aspectRatio: 16 / 9,
+        aspectRatio: w / h,
         preview: '.img-preview',
         crop: function (e) {
           dataX.value = Math.round(e.detail.x);

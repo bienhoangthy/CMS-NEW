@@ -9,6 +9,7 @@ class Index extends CI_Controller {
         $this->load->Model("admin/muser");
         $this->load->Model("admin/mhistory");
         $this->load->Model("admin/mgroup");
+        $this->load->Model("admin/msetting");
     }
 
 	public function login()
@@ -30,38 +31,41 @@ class Index extends CI_Controller {
 						if ($myUser['user_status'] == 1) {
 							$group = $this->mgroup->getData('group_module',array('id' => $myUser['user_group'],'group_status' => 1));
 							if (!empty($group)) {
-								if ($this->agent->is_browser())
-								{
-								    $agent = $this->agent->browser().' '.$this->agent->version();
+								//History Login
+								$mySetting = $this->msetting->getSetting("write_history_login");
+								if ($mySetting['write_history_login'] == 1) {
+									if ($this->agent->is_browser())
+									{
+									    $agent = $this->agent->browser().' '.$this->agent->version();
+									}
+									elseif ($this->agent->is_robot())
+									{
+									    $agent = $this->agent->robot();
+									}
+									elseif ($this->agent->is_mobile())
+									{
+									    $agent = $this->agent->mobile();
+									}
+									else
+									{
+									    $agent = 'Unidentified User Agent';
+									}
+									$dataAddHistory = array(
+										'history_user_id' => $myUser['id'],
+										'history_group' => $myUser['user_group'],
+										'history_department' => $myUser['user_department'],
+										'history_ip' => $this->input->ip_address(),
+										'history_time' => date('Y-m-d H:i:s'),
+										'history_agent' => $agent,
+										'history_platform' => $this->agent->platform()
+									);
+									$this->mhistory->add($dataAddHistory);
 								}
-								elseif ($this->agent->is_robot())
-								{
-								    $agent = $this->agent->robot();
-								}
-								elseif ($this->agent->is_mobile())
-								{
-								    $agent = $this->agent->mobile();
-								}
-								else
-								{
-								    $agent = 'Unidentified User Agent';
-								}
+								//End
 								$module_view = array();
-								//$group_name = $group['group_name'];
 								if ($group['group_module'] != '') {
 									$module_view = unserialize($group['group_module']);
 								}
-								//$department_name = $this->muser->listDepartment($myUser['user_department']);
-								$dataAddHistory = array(
-									'history_user_id' => $myUser['id'],
-									'history_group' => $myUser['user_group'],
-									'history_department' => $myUser['user_department'],
-									'history_ip' => $this->input->ip_address(),
-									'history_time' => date('Y-m-d H:i:s'),
-									'history_agent' => $agent,
-									'history_platform' => $this->agent->platform()
-								);
-								$this->mhistory->add($dataAddHistory);
 								$avatar = $myUser['user_avatar'] != '' ? base_url().'media/user/'.$myUser['user_folder'].'/thumb-'.$myUser['user_avatar'] : my_library::base_public().'admin/images/user.png';
 								$dataUserActive = array(
 									'active_user_id' => $myUser['id'],
