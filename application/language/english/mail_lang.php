@@ -17,4 +17,11 @@ $lang['at'] = ' at ';
 $lang['reply'] = 'Reply';
 $lang['tick'] = 'Tick ';
 $lang['notpermission'] = 'Not Permission';
+$lang['sendmail'] = 'Send mail';
+$lang['send'] = 'Send';
+$lang['to'] = 'To';
+$lang['subject'] = 'Subject';
+$lang['separated'] = 'Separated by ","';
+$lang['receiver'] = 'receiver';
+$lang['content'] = 'content';
 ?>

@@ -22,7 +22,14 @@ class Setting extends MY_Controller {
             'ratio_news' => $mySetting['ratio_news'], 
             'ratio_album' => $mySetting['ratio_album'], 
             'ratio_video' => $mySetting['ratio_video'], 
-            'ratio_product' => $mySetting['ratio_product'] 
+            'ratio_product' => $mySetting['ratio_product'],
+            'email' => $mySetting['email'],
+            'alias' => $mySetting['alias'],
+            'smtp_user' => $mySetting['smtp_user'],
+            'smtp_server' => $mySetting['smtp_server'],
+            'smtp_password' => $mySetting['smtp_password'],
+            'smtp_port' => $mySetting['smtp_port'],
+            'smtp_use_ssl' => $mySetting['smtp_use_ssl'] 
         );
         if (isset($_POST['limit_title'])) {
             $write = $this->input->post('write_log') ?? 0;
@@ -41,7 +48,14 @@ class Setting extends MY_Controller {
                 'ratio_news' => $this->input->post('ratio_news'), 
                 'ratio_album' => $this->input->post('ratio_album'), 
                 'ratio_video' => $this->input->post('ratio_video'), 
-                'ratio_product' => $this->input->post('ratio_product') 
+                'ratio_product' => $this->input->post('ratio_product'),
+                'email' => $this->input->post('email'),
+                'alias' => $this->input->post('alias'),
+	            'smtp_user' => $this->input->post('smtp_user'),
+	            'smtp_server' => $this->input->post('smtp_server'),
+	            'smtp_password' => $this->input->post('smtp_password'),
+	            'smtp_port' => $this->input->post('smtp_port'),
+	            'smtp_use_ssl' => $this->input->post('smtp_use_ssl') ?? 0 
             );
             $error = false;
             do {

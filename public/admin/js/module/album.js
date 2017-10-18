@@ -4,7 +4,6 @@ window.onload = function () {
   var dataY = document.getElementById('dataY');
   var w = document.getElementById('w').value;
   var h = document.getElementById('h').value;
-  var dataY = document.getElementById('dataY');
   var dataHeight = document.getElementById('dataHeight');
   var dataWidth = document.getElementById('dataWidth');
   var options = {

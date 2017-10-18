@@ -44,17 +44,17 @@
                 <?php if (!empty($list)): ?>
                   <?php foreach ($list as $key => $value): ?>
                     <?php 
-                      $name = $value['mail_fullname'] ?? $value['mail_email'];
-                      $type = $this->mmail->listType($value['mail_type']);
-                      $linkView = my_library::admin_site().'mail/index/'.$value['id'].$query;
-                      $style_div = "";
-                      $style_p = "";
-                      if ($value['mail_status'] == 1) {
-                        $style_div = 'border-left: solid green;';
-                        $style_p = 'class="text-primary" style="font-weight: bold;"';
-                      }
-                      $style_div .= $id == $value['id'] ? 'background-color: gainsboro;' : '';
-                     ?>
+                    $name = $value['mail_fullname'] ?? $value['mail_email'];
+                    $type = $this->mmail->listType($value['mail_type']);
+                    $linkView = my_library::admin_site().'mail/index/'.$value['id'].$query;
+                    $style_div = "";
+                    $style_p = "";
+                    if ($value['mail_status'] == 1) {
+                      $style_div = 'border-left: solid green;';
+                      $style_p = 'class="text-primary" style="font-weight: bold;"';
+                    }
+                    $style_div .= $id == $value['id'] ? 'background-color: gainsboro;' : '';
+                    ?>
                     <a href="<?= $linkView?>" id="mail<?= $value['id']?>">
                       <div class="mail_list" style="<?= $style_div?>">
                         <div class="left" style="margin-left: 3px;margin-top: 3px;">
@@ -85,13 +85,12 @@
                 <div class="inbox-body">
                   <?php if (!empty($myMail)): ?>
                     <?php
-                      //$myMailStatus = $this->mmail->listStatusName($myMail['mail_status']);
-                      $myMailType = $this->mmail->listType($myMail['mail_type']);
+                    $myMailType = $this->mmail->listType($myMail['mail_type']);
                     ?>
                     <div class="mail_heading row">
                       <div class="col-md-8">
                         <div class="btn-group">
-                          <a href="mailto:<?= $myMail['mail_email']?>?subject=<?= lang('reply').': '.$myMail['mail_title']?>"><button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> <?= lang('reply')?></button></a>
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-reply"></i> <?= lang('reply')?></button>
                           <span id="mailimp">
                             <?php if ($myMail['mail_important'] == 1): ?>
                               <a href="javascript:;" class="mailimportant" data-id="<?= $myMail['id']?>" data-imp="0" data-placement="top" data-toggle="tooltip" data-original-title="<?= lang('cancel').' '.lang('tick').lang('mailimportant')?>"><button class="btn btn-sm btn-default" type="button"><i class="fa fa-star-o"></i></button></a>
@@ -113,7 +112,7 @@
                       <div class="row">
                         <div class="col-md-12">
                           <strong><?= $myMail['mail_fullname']?></strong>
-                          <span>(<?= $myMail['mail_email']?>)</span>
+                          <span>(<a href="mailto:<?= $myMail['mail_email']?>?subject=<?= lang('reply').': '.$myMail['mail_title']?>"><?= $myMail['mail_email']?></a>)</span>
                         </div>
                       </div>
                     </div>
@@ -130,8 +129,8 @@
                       <p>
                         <?php if ($myMail['mail_status'] == 2): ?>
                           <?php 
-                            $userRead = $this->muser->getData('id,user_fullname',array('id' => $myMail['user_read']));
-                            echo lang('readedby').'<a href="'.my_library::admin_site().'user/profile/'.$userRead['id'].'">'.$userRead['user_fullname'].'</a>'.lang('at').date("H:i:s - Y/m/d", strtotime($myMail['readdate']));
+                          $userRead = $this->muser->getData('id,user_fullname',array('id' => $myMail['user_read']));
+                          echo lang('readedby').'<a href="'.my_library::admin_site().'user/profile/'.$userRead['id'].'">'.$userRead['user_fullname'].'</a>'.lang('at').date("H:i:s - Y/m/d", strtotime($myMail['readdate']));
                           ?>
                         <?php endif ?>
                       </p>
@@ -143,6 +142,35 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<!-- Sendmail -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="post">
+        <input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel"><i class="fa fa-envelope-o"></i> <?= lang('sendmail')?></h4>
+        </div>
+        <div class="modal-body">
+          <label for="to"><?= lang('to')?> * </label>
+          <input type="email" class="form-control" name="to" value="<?= $myMail['mail_email']?>" required/>
+          <label for="cc">Cc (<cite><?= lang('separated')?></cite>)</label>
+          <input type="text" class="form-control" name="cc"/>
+          <label for="subject"><?= lang('subject')?> * </label>
+          <input type="text" class="form-control" name="subject" value="<?= lang('reply').': '.$myMail['mail_title']?>" required/>
+          <br>
+          <textarea id="content-mail" name="content" class="form-control"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> <?= lang('send')?></button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"><?= lang('close')?></button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -10,6 +10,49 @@ class Mail extends MY_Controller {
     }
 	public function index($id=0)
 	{
+        if (isset($_POST['to'])) {
+            $to = $this->input->post('to');
+            $cc = $this->input->post('cc') ?? '';
+            $subject = $this->input->post('subject');
+            $content = $this->input->post('content');
+            $error = false;
+            do {
+                if ($to == null || $to == '') {
+                    $text = lang('pleaseinput').lang('receiver');$error = true;break;
+                }
+                if ($subject == null || $subject == '') {
+                    $text = lang('pleaseinput').lang('subject');$error = true;break;
+                }
+                if ($content == null || $content == '') {
+                    $text = lang('pleaseinput').lang('content');$error = true;break;
+                }
+            } while (0);
+            if ($error == true) {
+                $notify = array(
+                    'title' => lang('unsuccessful'), 
+                    'text' => $text,
+                    'type' => 'error'
+                );
+                $this->session->set_userdata('notify', $notify);
+            } else {
+                $rs = $this->sendmail($to,$cc,$subject,$content);
+                if ($rs == true) {
+                    $notify = array(
+                        'title' => lang('success'), 
+                        'text' => lang('sendmail').' '.$to.' '.lang('success'),
+                        'type' => 'success'
+                    );
+                } else {
+                    $notify = array(
+                        'title' => lang('unsuccessful'), 
+                        'text' => lang('sendmail').' '.lang('unsuccessful'),
+                        'type' => 'error'
+                    );
+                }
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."mail");
+            }
+        }
 		$this->mpermission->checkPermission("mail","index",$this->_data['user_active']['active_user_group']);
         if (is_numeric($id)) {
             $orderby = 'id desc';
@@ -91,8 +134,10 @@ class Mail extends MY_Controller {
             $this->_data['fstatus'] = $this->mmail->dropdownlistStatus($this->_data['formData']['fstatus']);
             $this->_data['ftype'] = $this->mmail->dropdownlistType($this->_data['formData']['ftype']);
             $this->_data['fimportant'] = $this->_data['formData']['ftype'];
+            $this->_data['token_name'] = $this->security->get_csrf_token_name();
+            $this->_data['token_value'] = $this->security->get_csrf_hash();
             //$this->_data['extraCss'] = ['fancybox/jquery.fancybox.css'];
-            $this->_data['extraJs'] = ['language/'.$this->_data['language'].'.js','module/mail.js'];
+            $this->_data['extraJs'] = ['language/'.$this->_data['language'].'.js','tinymce/jquery.tinymce.min.js','tinymce/tinymce.min.js','module/mail.js'];
             $this->my_layout->view("admin/mail/index", $this->_data);
         } else {
             $notify = array(
@@ -149,4 +194,32 @@ class Mail extends MY_Controller {
 		}
 		echo json_encode($rs);
 	}
+
+    public function sendmail($to,$cc,$subject,$content)
+    {
+        $this->load->Model("admin/msetting");
+        $mySetting = $this->msetting->getSetting("email,alias,smtp_user,smtp_server,smtp_password,smtp_port,smtp_use_ssl");
+        $configMail = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => $mySetting['smtp_server'],
+            'smtp_port' => $mySetting['smtp_port'],
+            'smtp_user' => $mySetting['smtp_user'],
+            'smtp_pass' => $mySetting['smtp_password'],
+            'mailtype'  => 'html', 
+            'charset'   => 'utf-8'
+        );
+        $this->load->library('email', $configMail);
+        $this->email->set_newline("\r\n");
+
+        $this->email->from($mySetting['email'], $mySetting['alias']);
+        $this->email->to($to);
+        if ($cc != '') {
+            $this->email->cc($cc);
+        }
+        $this->email->subject($subject);
+        $this->email->message($content);
+
+        $result = $this->email->send();
+        return $result;
+    }
 }

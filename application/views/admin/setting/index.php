@@ -21,6 +21,7 @@
 							<h2><i class="fa fa-th-large"></i> <?= lang('settingforsystem')?></h2>
 							<div class="navbar-right">
 								<button type="submit" class="btn btn-success"><?= lang('save')?></button>
+								<button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -42,7 +43,6 @@
 									<div role="tabpanel" class="tab-pane fade active in" id="activity" aria-labelledby="activity-tab">
 										<div class="form-group">
 											<div class="col-md-6 col-sm-6 col-xs-6">
-												
 												<label>
 													<?= lang('record').' '.lang('activity')?> <input type="checkbox" name="write_log" class="js-switch" value="1" <?= $formData['write_log'] == 1 ? 'checked' : ''?>/>
 												</label>
@@ -102,10 +102,58 @@
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="smtp" aria-labelledby="smtp-tab">
-										
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="email" name="email" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['email']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="alias">Alias <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="text" name="alias" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['alias']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_user">SMTP User <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="text" name="smtp_user" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['smtp_user']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_server">SMTP Server <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="text" name="smtp_server" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['smtp_server']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_password">SMTP Password <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="password" name="smtp_password" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['smtp_password']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_port">SMTP Port <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="number" name="smtp_port" required="required" class="form-control col-md-7 col-xs-12" value="<?= $formData['smtp_port']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_use_ssl">SMTP Use SSL <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12 item">
+												<input type="checkbox" name="smtp_use_ssl" class="js-switch" value="1" <?= $formData['smtp_use_ssl'] == 1 ? 'checked' : ''?>/>
+											</div>
+										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="ga" aria-labelledby="ga-tab">
-										
+										<h2>Cấu hình Google Analytics</h2>
 									</div>
 								</div>
 							</div>
