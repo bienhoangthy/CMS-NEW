@@ -4,7 +4,7 @@
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;text-align: center;">
-            <a href="<?= my_library::admin_site()?>" class="site_title"> <span>Admin <span class="text-success">CMS</span></span></a>
+            <a href="<?= my_library::admin_site()?>" class="site_title"><i class="fa fa-github"></i> <span>Admin <span class="text-success">CMS</span></span></a>
           </div>
           <div class="clearfix"></div>
           <div class="profile clearfix">

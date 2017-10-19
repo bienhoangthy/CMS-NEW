@@ -1,6 +1,6 @@
         <footer>
           <div class="pull-right">
-            CMS Admin
+            CMS Admin by <cite><a href="http://itsgroup.vn" target="_blank">ITS Group</a></cite>
           </div>
           <div class="clearfix"></div>
         </footer>

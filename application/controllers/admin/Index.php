@@ -15,10 +15,10 @@ class Index extends CI_Controller {
 	public function login()
 	{
 		$user_active = $this->session->userdata('userActive');
-		if ($user_active['logged'] == TRUE) {
+		if ($user_active) {
 			redirect(my_library::admin_site() . "home/");
 		} else {
-			$data['title'] = 'Login CMS';
+			$data['title'] = 'Đăng nhập CMS';
 			$data['token_name'] = $this->security->get_csrf_token_name();
 			$data['token_value'] = $this->security->get_csrf_hash();
 			$data['formData'] = array('username' => "",'password' => "");
@@ -114,8 +114,165 @@ class Index extends CI_Controller {
         redirect(my_library::admin_site());
 	}
 
+	public function lock()
+	{
+		$user_active = $data['user_active'] = $this->session->userdata('userActive');
+		if ($user_active) {
+			if ($user_active['logged'] == TRUE) {
+				$user_active['logged'] = FALSE;
+				$this->session->unset_userdata("userActive");
+				$this->session->set_userdata('userActive', $user_active);
+				redirect(my_library::admin_site() . "index/lock");
+			} else {
+				if (isset($_POST['password'])) {
+					$password = $this->input->post('password');
+					if ($password != null) {
+						$myUser = $this->muser->getData("id,user_password,user_status", array("id" => $user_active['active_user_id']));
+						if ($myUser && isset($myUser['id']) && is_numeric($myUser['id']) > 0) {
+							if ($myUser['user_status'] == 1) {
+								if ($myUser['user_password'] == md5($password)) {
+									$user_active['logged'] = TRUE;
+									$this->session->unset_userdata("userActive");
+									$this->session->set_userdata('userActive', $user_active);
+									$notify = array(
+										'title' => 'Thành công', 
+										'text' => 'Chào mừng quay trở lại '.$user_active['active_user_fullname'].'!',
+										'type' => 'success'
+									);
+									$this->session->set_userdata('notify', $notify);
+									redirect(my_library::admin_site() . "home/");
+								} else {
+									$data['error'] = "Mật khẩu không chính xác!";
+								}
+							} else {
+								$data['error'] = "Tài khoản đã bị khóa!";
+							}
+						} else {
+							$data['error'] = "Tài khoản không tồn tại!";
+						}
+					} else {
+						$data['error'] = "Vui lòng nhập mật khẩu!";
+					}
+				}
+				$data['title'] = 'Khóa CMS';
+				$data['token_name'] = $this->security->get_csrf_token_name();
+				$data['token_value'] = $this->security->get_csrf_hash();
+				$this->load->view("admin/index/lock", $data);
+			}
+		} else {
+			redirect(my_library::admin_site());
+		}
+	}
+
 	public function forgot()
 	{
-		echo "This is Forgot";
+		$user_active = $this->session->userdata('userActive');
+		if ($user_active) {
+			redirect(my_library::admin_site() . "home/");
+		} else {
+			$data['title'] = 'Quên mật khẩu CMS';
+			$data['formData'] = array(
+				'email' => ''
+			);
+			if (isset($_POST['fsend'])) {
+				$email = $this->input->post('email');
+				if ($email == null || $email == '') {
+					$data['error'] = "Vui lòng nhập email!";
+				} else {
+					$myUser = $data['myUser'] = $this->muser->getData("",array('user_email' => $email));
+					if ($myUser && isset($myUser['id']) && is_numeric($myUser['id']) > 0) {
+						if ($myUser['user_status'] == 1) {
+							$tempPass = md5(uniqid());
+							$content = '<p>Dear '.$myUser['user_fullname'].',</p><p>Tài khoản '.$myUser['user_username'].' của bạn yêu cầu đổi mật khẩu.</p><p>Vui lòng <a href="'.my_library::admin_site().'index/reset_password/'.$myUser['id'].'/'.$tempPass.'">nhấn vào đây</a> để đổi mật khẩu mới!</p><p>Cảm ơn bạn đã sử dụng CMS</p><p>ITS Group</p>';
+							if ($this->sendmail($email,"","Đổi mật khẩu tài khoản CMS ITS Group",$content) == TRUE) {
+								if ($this->muser->edit($myUser['id'],array('user_reset_pass' => $tempPass))) {
+									$data['success'] = "Thành công, vui lòng kiểm tra email!";
+								} else {
+									$data['error'] = "Không cập nhật được tài khoản!";
+								}
+							} else {
+								$data['error'] = "Hệ thống không thể gửi email!";
+							}
+						} else {
+							$data['error'] = "Tài khoản đang bị khóa!";
+						}
+					} else {
+						$data['error'] = "Tài khoản không tồn tại!";
+					}
+				}
+			}
+			$data['token_name'] = $this->security->get_csrf_token_name();
+			$data['token_value'] = $this->security->get_csrf_hash();
+			$this->load->view("admin/index/forgot", $data);
+		}
 	}
+
+	public function reset_password($id,$reset_pass)
+	{
+		if ($id != null && $reset_pass != null) {
+			$myUser = $data['myUser'] = $this->muser->getData("",array('id' => $id));
+			if ($myUser) {
+				if (isset($myUser['user_reset_pass']) && $myUser['user_reset_pass'] == $reset_pass) {
+					if (isset($_POST['fchange'])) {
+						$newpass = $this->input->post('password');
+						$re_newpass = $this->input->post('re-password');
+						$error = false;
+						do {
+							if ($newpass == null) {
+								$data['error'] = "Vui lòng nhập mật khẩu mới!";$error = true;break;
+							}
+							if ($re_newpass == null) {
+								$data['error'] = "Vui lòng nhập lại mật khẩu!";$error = true;break;
+							}
+							if ($newpass != $re_newpass) {
+								$data['error'] = "Mật khẩu không trùng khớp!";$error = true;break;
+							}
+							if (md5($newpass) == $myUser['user_password']) {
+								$data['error'] = "Hãy đặt mật khẩu mới khác mật khẫu cũ!";$error = true;break;
+							}
+						} while (0);
+						if ($error == false) {
+							if ($this->muser->edit($id,array('user_password' => md5($newpass),'user_reset_pass' => null))) {
+								redirect(my_library::admin_site() . "index/login");
+							} else {
+								$data['error'] = "Không thể đổi mật khẩu!";
+							}
+						}
+					}
+					$data['title'] = 'Đổi mật khẩu mới CMS';
+					$data['token_name'] = $this->security->get_csrf_token_name();
+					$data['token_value'] = $this->security->get_csrf_hash();
+					$this->load->view("admin/index/changpass", $data);
+				}
+			}
+		}
+	}
+
+	public function sendmail($to,$cc,$subject,$content)
+    {
+        $this->load->Model("admin/msetting");
+        $mySetting = $this->msetting->getSetting("email,alias,smtp_user,smtp_server,smtp_password,smtp_port,smtp_use_ssl");
+        $configMail = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => $mySetting['smtp_server'],
+            'smtp_port' => $mySetting['smtp_port'],
+            'smtp_user' => $mySetting['smtp_user'],
+            'smtp_pass' => $mySetting['smtp_password'],
+            'mailtype'  => 'html', 
+            'charset'   => 'utf-8'
+        );
+        $this->load->library('email', $configMail);
+        $this->email->set_newline("\r\n");
+
+        $this->email->from($mySetting['email'], $mySetting['alias']);
+        $this->email->to($to);
+        if ($cc != '') {
+            $this->email->cc($cc);
+        }
+        $this->email->subject($subject);
+        $this->email->message($content);
+
+        $result = $this->email->send();
+        return $result;
+    }
 }

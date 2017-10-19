@@ -9,6 +9,7 @@ class System extends MY_Controller {
     }
     public function index()
     {
+        $this->mpermission->checkPermission("system","index",$this->_data['user_active']['active_user_group']);
         $this->_data['title'] = lang('title');
         $this->my_layout->view("admin/system/index", $this->_data);
     }

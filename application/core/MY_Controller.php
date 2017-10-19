@@ -18,6 +18,9 @@ class MY_Controller extends CI_Controller {
 		if ($this->uri->segment(2) != "" && $this->_data['user_active'] == NULL) {
 			redirect(my_library::admin_site() . '?redirect=' . base64_encode(my_library::base_url() . ltrim($_SERVER["REQUEST_URI"],'/')));
 		}
+		if ($this->_data['user_active']['logged'] == false) {
+			redirect(my_library::admin_site() . "index/lock");
+		}
 		$this->_data['title'] = "";
 		$this->_data['mailUnread'] = $this->mmail->countUnread();
 		$this->_data['listMailUnread'] = $this->mmail->getQuery("id,mail_fullname,mail_email,mail_title,mail_senddate","mail_status = 1","id desc","0,5");

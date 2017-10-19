@@ -12,6 +12,7 @@
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">
             <li><a href="<?= my_library::admin_site().'user/profile/'.$user_active['active_user_id']?>"> <?= lang('profile')?><i class="fa fa-user pull-right"></i> </a></li>
+            <li><a href="<?= my_library::admin_site()?>index/lock"><i class="fa fa-lock pull-right"></i> <?= lang('lock')?></a></li>
             <li><a href="<?= my_library::admin_site()?>index/logout"><i class="fa fa-sign-out pull-right"></i> <?= lang('logout')?></a></li>
           </ul>
         </li>
@@ -26,7 +27,7 @@
             <?php if (!empty($listMailUnread)): ?>
               <?php foreach ($listMailUnread as $key => $value): ?>
                 <li>
-                  <a href="#">
+                  <a href="<?= my_library::admin_site().'mail/index/'.$value['id']?>">
                     <span>
                       <span><?= $value['mail_fullname']?> (<?= $value['mail_email']?>)</span>
                     </span>

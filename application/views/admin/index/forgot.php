@@ -88,12 +88,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="form">
 			<form class="login-form" method="post">
 				<img src="<?= base_url()?>media/logo/logo.png" style="max-width: 200px;padding-bottom: 10px;">
-				<input type="text" name="username" value="<?= $formData['username']?>" required="required" placeholder="Tên đăng nhập"/>
-				<input type="password" name="password" value="<?= $formData['password']?>" required="required" placeholder="Mật khẩu"/>
+				<h2 style="color: #95a5a6;">Quên mật khẩu</h2>
+				<input type="email" name="email" value="<?= $formData['email']?>" required="required" placeholder="Nhập email của tài khoản"/>
 				<input type="hidden" name="<?= $token_name?>" value="<?= $token_value?>">
-				<button type="submit" name="flogin">Đăng nhập</button>
-				<p class="message"><a href="<?= my_library::admin_site()?>index/forgot">Quên mật khẩu?</a></p>
+				<button type="submit" name="fsend">Gửi</button>
+				<p class="message"><a href="<?= my_library::admin_site()?>index/login">Đăng nhập</a></p>
 				<p class="message">Đơn vị thực hiện <a target="_blank" href="http://itsgroup.vn/">ITS Group</a></p>
+				<?php if (isset($success) && $success != ''): ?>
+					<p class="message" style="color: green;"><?= $success?></p>
+				<?php endif ?>
 				<?php if (isset($error) && $error != ''): ?>
 					<p class="message" style="color: #c0392b;"><?= $error?></p>
 				<?php endif ?>
