@@ -9,8 +9,9 @@ class Media extends MY_Controller {
     }
     public function index()
     {
+    	// echo str_replace('\\','\\',dirname(dirname(__FILE__)));die();
         $this->mpermission->checkPermission("media","index",$this->_data['user_active']['active_user_group']);
-    	$this->_data['title'] = lang('title');
-    	$this->my_layout->view("admin/media/index", $this->_data);
+        $this->_data['title'] = lang('title');
+        $this->my_layout->view("admin/media/index", $this->_data);
     }
 }

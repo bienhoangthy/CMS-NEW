@@ -98,14 +98,40 @@ function deleteImg(id)
     });
   });
 }
-tinymce.init({
-  selector: 'textarea#album_description',
-  height: 300,
-  menubar: false,
-  plugins: [
-    'advlist charmap preview anchor textcolor',
-    'searchreplace visualblocks fullscreen',
-    'insertdatetime contextmenu paste'
-  ],
-  toolbar: 'undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | outdent indent | removeformat'
-});
+
+tinymce.init({selector: 'textarea#album_description',height: 300,theme: 'modern',plugins: [
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help responsivefilemanager'
+  ],toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',toolbar2: 'responsivefilemanager | print preview media | forecolor backcolor emoticons | codesample help',image_caption: true,image_advtab: true,relative_urls:false,file_picker_callback : elFinderBrowser});
+
+function elFinderBrowser (callback, value, meta) {
+  tinymce.activeEditor.windowManager.open({
+    file: configs.base_url+'public/elfinder/elfinder-tinymce.html',
+    title: 'CMS Media',
+    width: 900,  
+    height: 450,
+    resizable: 'yes'
+  }, {
+    oninsert: function (file, elf) {
+      var url, reg, info;
+      url = file.url;
+      reg = /\/[^/]+?\/\.\.\//;
+      while(url.match(reg)) {
+        url = url.replace(reg, '/');
+      }
+      info = file.name + ' (' + elf.formatSize(file.size) + ')';
+      if (meta.filetype == 'file') {
+        callback(url, {text: info, title: info});
+      }
+      if (meta.filetype == 'image') {
+        callback(url, {alt: info});
+      }
+      if (meta.filetype == 'media') {
+        callback(url);
+      }
+    }
+  });
+  return false;
+}

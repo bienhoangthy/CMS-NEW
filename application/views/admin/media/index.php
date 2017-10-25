@@ -13,9 +13,7 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
-      <iframe  width="100%" height="650" frameborder="0"
-        src="<?= my_library::base_public()?>filemanager/dialog.php?type=0&akey=e807f1fcf82d132f9bb018ca6738a19f">
-      </iframe>
+      <iframe src="<?= my_library::base_public()?>elfinder/elfinder.html" style="width: 100%; height: 500px;border: none;"></iframe>
     </div>
   </div>
 </div>

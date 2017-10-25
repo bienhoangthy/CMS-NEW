@@ -6,22 +6,17 @@ class my_library
         $url = 'http://' . $_SERVER['SERVER_NAME'] . '/';
         return $url;
     }
-    public static function cdn_url()
-    {
-        $url = 'http://cdn.' . $_SERVER['SERVER_NAME'] . '/';
-        return $url;
-    }
+    // public static function cdn_url()
+    // {
+    //     $url = 'http://cdn.' . $_SERVER['SERVER_NAME'] . '/';
+    //     return $url;
+    // }
     public static function admin_site()
     {
         $url = self::base_url() . 'admin/';
         return $url;
     }
     
-    public static function lang()
-    {
-        $lang = 'vn';
-        return $lang;
-    }
     public static function base_file()
     {
         $url = self::base_url() . 'media/';
