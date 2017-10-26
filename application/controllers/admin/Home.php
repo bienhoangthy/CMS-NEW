@@ -13,6 +13,12 @@ class Home extends MY_Controller {
     public function index()
     {
         $this->mpermission->checkPermission("home","index",$this->_data['user_active']['active_user_group']);
+        // $this->load->library("My_google");
+        // $client = new Google_Client();
+        // $client->setApplicationName("CMS");
+        // $client->setDeveloperKey("AIzaSyCcc5Oo3bhB_k6rMGMBDY2Bm8QIF75XvIw");
+        
+
         $this->_data['title'] = lang('dashboard');
         //Total news publish
         $this->load->Model("admin/mnews");

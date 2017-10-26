@@ -29,4 +29,5 @@ $lang['itemadded'] = 'Added ';
 $lang['overload'] = 'Content Overload';
 $lang['duplicate'] = ' duplicate';
 $lang['notpermission'] = 'Non Permission';
+$lang['code'] = 'Code ';
 ?>

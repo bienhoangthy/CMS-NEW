@@ -567,4 +567,55 @@ class Special_content extends MY_Controller {
     	}
     	echo json_encode($rs);
     }
+
+    public function code($id)
+    {
+        $this->mpermission->checkPermission("special_content","code",$this->_data['user_active']['active_user_group']);
+        if (is_numeric($id) && $id > 0) {
+            $this->_data['mySpecial_content'] = $this->mspecial_content->getData("",array('id' => $id,'sc_orderby' => 6));
+            if ($this->_data['mySpecial_content'] && $this->_data['mySpecial_content']['id'] > 0) {
+                $this->_data['formData'] = array('sc_array_item' => $this->_data['mySpecial_content']['sc_array_item']);
+                if (isset($_POST['code'])) {
+                    $this->_data['formData']['sc_array_item'] = $this->input->post('code');
+                    if ($this->mspecial_content->edit($id,array('sc_array_item' => $this->_data['formData']['sc_array_item']))) {
+                        $notify = array(
+                            'title' => lang('success'), 
+                            'text' => lang('specialcontent').' #'.$id.lang('edited'),
+                            'type' => 'success'
+                        );
+                    } else {
+                        $notify = array(
+                            'title' => lang('unsuccessful'), 
+                            'text' => lang('checkinfo'),
+                            'type' => 'error'
+                        );
+                    }
+                    $this->session->set_userdata('notify', $notify);
+                    redirect(my_library::admin_site()."special_content");
+                }
+                $this->_data['title'] = lang('code').'html #'.$id;
+                $this->_data['token_name'] = $this->security->get_csrf_token_name();
+                $this->_data['token_value'] = $this->security->get_csrf_hash();
+                $this->_data['extraCss'] = ['codemirror.css'];
+                $this->_data['extraJs'] = ['codemirror.js','htmlmixed.js','module/sc.js'];
+                $this->my_layout->view("admin/special_content/code", $this->_data);
+            } else {
+                $notify = array(
+                    'title' => lang('notfound'), 
+                    'text' => lang('specialcontent').lang('notexists'),
+                    'type' => 'error'
+                );
+                $this->session->set_userdata('notify', $notify);
+                redirect(my_library::admin_site()."special_content");
+            }
+        } else {
+            $notify = array(
+                'title' => lang('notfound'), 
+                'text' => lang('wrongid'),
+                'type' => 'error'
+            );
+            $this->session->set_userdata('notify', $notify);
+            redirect(my_library::admin_site()."special_content");
+        }
+    }
 }

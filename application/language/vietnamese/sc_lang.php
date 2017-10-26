@@ -29,4 +29,5 @@ $lang['itemadded'] = 'Đã thêm ';
 $lang['overload'] = 'Quá tải nội dung';
 $lang['duplicate'] = ' bị trùng';
 $lang['notpermission'] = 'Không có quyền';
+$lang['code'] = 'Mã ';
 ?>

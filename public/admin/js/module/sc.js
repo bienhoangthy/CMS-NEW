@@ -73,3 +73,8 @@ $(document).ready(function(){
 		}
 	});
 });
+var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    mode: "text/html",
+    lineNumbers: true,
+    lineWrapping: true
+ });

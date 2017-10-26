@@ -66,6 +66,10 @@ class mspecial_content extends MY_Model
             5 => array(
                 'name'  => lang('chooseitem'),
                 'color' => 'warning'
+            ),
+            6 => array(
+                'name'  => lang('code').'html',
+                'color' => 'info'
             )
         );
         if (is_numeric($item)) {

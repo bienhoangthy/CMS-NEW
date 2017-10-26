@@ -80,7 +80,7 @@
 											<td><?= $special_content_title?>
 												<div style="height: 20px;">
 													<div class="actionhover">
-														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a><?php if ($value['sc_orderby'] == 5): ?> | <a href="<?= my_library::admin_site().'special_content/item/'.$value['id']?>" class="text-success"><?= lang('item')?></a> <?php endif ?> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('specialcontent')?>')" class="text-danger"><?= lang('delete')?></a>
+														<a href="<?= $linkEdit?>" class="text-primary"><?= lang('edit')?></a><?php if ($value['sc_orderby'] == 6): ?> | <a href="<?= my_library::admin_site().'special_content/code/'.$value['id']?>" class="text-info"><?= lang('code')?></a> <?php endif ?><?php if ($value['sc_orderby'] == 5): ?> | <a href="<?= my_library::admin_site().'special_content/item/'.$value['id']?>" class="text-success"><?= lang('item')?></a> <?php endif ?> | <a href="javascript:;" onclick="confirm_delete(<?= $value['id']?>,'<?= lang('specialcontent')?>')" class="text-danger"><?= lang('delete')?></a>
 													</div>
 												</div>
 											</td>
