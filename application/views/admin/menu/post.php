@@ -24,6 +24,7 @@
 							<ul class="nav navbar-right panel_toolbox">
 								<button type="submit" class="btn btn-success"><?= lang('save')?></button>
 								<button type="reset" class="btn btn-primary"><?= lang('reset')?></button>
+								<a href="<?= my_library::admin_site()?>menu/deleteCache/<?= $id?>"><button type="button" class="btn btn-danger"><?= lang('delete')?> cache</button></a>
 							</ul>
 							<div class="clearfix"></div>
 						</div>

@@ -223,4 +223,34 @@ class Menu extends MY_Controller {
 		$this->session->set_userdata('notify', $notify);
         redirect(my_library::admin_site()."menu");
     }
+
+    public function deleteCache($id)
+    {
+        if (is_numeric($id) && $id > 0) {
+            $myMenu = $this->mmenu->getData("",array('id' => $id));
+            if ($myMenu && $myMenu['id'] > 0) {
+                foreach ($this->_data['listLanguage'] as $value) {
+                    $this->cache->delete('menu'.$id.'_'.$value['lang_code']);
+                }
+                $title = lang('success');
+                $text = 'Cache '.lang('menu').' #'.$id.lang('deleted');
+                $type = 'success';
+            } else {
+                $title = lang('unsuccessful');
+                $text = lang('notfound').' '.lang('menu');
+                $type = 'error';
+            }
+        } else {
+            $title = lang('unsuccessful');
+            $text = lang('wrongid');
+            $type = 'error';
+        }
+        $notify = array(
+            'title' => $title, 
+            'text' => $text,
+            'type' => $type
+        );
+        $this->session->set_userdata('notify', $notify);
+        redirect(my_library::admin_site()."menu/edit/".$id);
+    }
 }
