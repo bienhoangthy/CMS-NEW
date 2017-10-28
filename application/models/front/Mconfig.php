@@ -10,7 +10,7 @@ class mconfig extends CI_Model
 
     public function getConfig($lang='vietnamese')
     {
-        $sql = 'select c.config_code,ct.config_name,ct.config_value from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where c.config_status = 1 and ct.language_code = "'.$lang.'"';
+        $sql = 'select c.config_code,ct.config_value from '.$this->table.' c inner join '.$this->table_translation.' ct on c.id = ct.config_id where c.config_status = 1 and ct.language_code = "'.$lang.'"';
         $query = $this->db->query($sql);
         $list = $query->result_array();
         return $list;

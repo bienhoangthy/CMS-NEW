@@ -597,7 +597,7 @@ class Special_content extends MY_Controller {
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['codemirror.css'];
-                $this->_data['extraJs'] = ['codemirror.js','htmlmixed.js','module/sc.js'];
+                $this->_data['extraJs'] = ['codemirror.js','htmlmixed.js','module/codemirror.js'];
                 $this->my_layout->view("admin/special_content/code", $this->_data);
             } else {
                 $notify = array(

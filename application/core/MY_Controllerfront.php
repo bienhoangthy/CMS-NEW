@@ -34,7 +34,9 @@ class MY_Controllerfront extends CI_Controller {
 
 		// $this->_data['user_active'] = $this->session->userdata('userActive');
 
-		$this->_data['title'] = "";
+		$this->_data['title'] = $this->_data['config'][5]['config_value'];
+		$this->_data['description'] = $this->_data['config'][6]['config_value'];
+		$this->_data['keyword'] = $this->_data['config'][7]['config_value'];
 		$this->_data['extraCss'] = array();
 		$this->_data['extraJs'] = array();
 		var_dump($this->_data);die();
