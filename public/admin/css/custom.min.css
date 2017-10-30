@@ -29,3 +29,35 @@ tr.showacction td {
 	width: auto;
 	margin-bottom: 3px;
 }
+
+.info-box-icon {
+    font-size: 30px;
+    height: 53px;
+    width: 50px;
+    line-height: 50px;
+    color: #fff;
+    display: block;
+    float: left;
+    text-align: center;
+    background-color: #d2d6de;
+}
+.info-box-content {
+    padding: 4px 10px;
+    margin-left: 50px;
+}
+.info-box-text {
+    font-size: 13px;
+}
+.info-box-number {
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+}
+.info-box {
+    display: block;
+    min-height: 50px;
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    margin-bottom: 15px;
+}
