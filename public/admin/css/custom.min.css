@@ -29,7 +29,11 @@ tr.showacction td {
 	width: auto;
 	margin-bottom: 3px;
 }
-
+@media (max-width: 720px) {
+	.x_content{
+		overflow: auto;
+	}
+}
 .info-box-icon {
     font-size: 30px;
     height: 53px;

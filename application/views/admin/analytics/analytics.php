@@ -5,6 +5,17 @@
     <div class="page-title">
       <div class="title_left">
         <h3><?= $title?></h3>
+        <form method="get" class="form-inline">
+          <div class="form-group">
+            <label for="since"><?= lang('since')?></label>
+            <input type="text" id="since" class="form-control" data-provide="datepicker" data-date-format="yyyy-mm-dd" name="since" class="form-control" style="width: 100px;" value="<?= $since?>">
+          </div>
+          <div class="form-group">
+            <label for="to"><?= lang('to')?></label>
+            <input type="text" id="to" class="form-control" data-provide="datepicker" data-date-format="yyyy-mm-dd" name="to" class="form-control" style="width: 100px;" value="<?= $to?>">
+          </div>
+          <button type="submit" class="btn btn-default" style="margin-top: 5px;"><i class="fa fa-search"></i></button>
+        </form>
       </div>
       <div class="title_right hidden-xs">
         <ol class="breadcrumb pull-right">
@@ -14,7 +25,7 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <div class="row">
+    <div class="row" style="margin-top: 10px;">
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="info-box">
             <div class="info-box-icon bg-blue font-white">
@@ -50,7 +61,7 @@
       </div>
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="info-box">
-            <div class="info-box-icon bg-red">
+            <div class="info-box-icon">
                 <i class="fa fa-users"></i>
             </div>
             <div class="info-box-content">
@@ -61,7 +72,7 @@
       </div>
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="info-box">
-            <div class="info-box-icon bg-red">
+            <div class="info-box-icon bg-orange">
                 <i class="fa fa-pie-chart"></i>
             </div>
             <div class="info-box-content">
@@ -81,12 +92,34 @@
             </div>
         </div>
       </div>
+      <div class="col-md-3 col-sm-3 col-xs-3">
+        <div class="info-box">
+            <div class="info-box-icon" style="background-color: #2c3e50;">
+                <i class="fa fa-clock-o"></i>
+            </div>
+            <div class="info-box-content">
+                <span class="info-box-text"><?= lang('avgsessionduration')?></span>
+                <span class="info-box-number"><?= $avgSessionDuration?></span>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-3">
+        <div class="info-box">
+            <div class="info-box-icon" style="background-color: #1abc9c;">
+                <i class="fa fa-adjust"></i>
+            </div>
+            <div class="info-box-content">
+                <span class="info-box-text"><?= lang('percentnewsessions')?></span>
+                <span class="info-box-number"><?= $percentNewSessions?></span>
+            </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-8 col-sm-8 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2><i class="fa fa-line-chart"></i> <?= lang('visits').' & '.lang('pageviews')?> (30<?= lang('days')?>)</h2>
+            <h2><i class="fa fa-line-chart"></i> <?= lang('visits').' & '.lang('pageviews')?></h2>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
@@ -114,7 +147,7 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-8 col-sm-8 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
             <h2><i class="fa fa fa-globe"></i> <?= lang('country')?></h2>
@@ -136,6 +169,35 @@
               </div>
               <div id="regions_div" class="col-md-9 col-sm-12 col-xs-12" style="height:230px;"></div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2><i class="fa fa fa-sort-amount-desc"></i> <?= lang('topmostvisitpages')?></h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="10%">#</th>
+                  <th width="60%">URL</th>
+                  <th width="30%"><?= lang('views')?></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $base_url = rtrim(base_url(),'/'); ?>
+                <?php foreach ($tmvp as $key => $value): ?>
+                  <tr>
+                    <th scope="row" width="10%"><?= $key+1?></th>
+                    <td width="60%"><a target="_blank" href="<?= $base_url.$value['0']?>"><?= $value['0']?></a></td>
+                    <td class="text-center" width="30%"><span class="badge bg-green"><?= $value['1']?></span></td>
+                  </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
