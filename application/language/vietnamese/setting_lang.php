@@ -14,4 +14,6 @@ $lang['video'] = 'Video';
 $lang['product'] = 'Sản phẩm';
 $lang['chooseratio'] = 'Chọn tỉ lệ';
 $lang['ratio'] = 'tỉ lệ ';
+$lang['activated'] = 'Kích hoạt';
+$lang['authorizeemail'] = 'Cấp quyền cho email này trong Google Analytics: ';
  ?>

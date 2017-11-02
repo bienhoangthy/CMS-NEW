@@ -9,7 +9,7 @@ class News extends MY_Controller {
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mnews");
         $this->load->Model("admin/mactivity");
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
     }
 	public function index($state=3)
 	{
@@ -661,6 +661,7 @@ class News extends MY_Controller {
                 $this->_data['user'] = $this->muser->getData("user_fullname","id = ".$this->_data['myNews']['user']);
                 $this->_data['user_fullname'] = $this->_data['user']['user_fullname'] ?? '';
                 $this->_data['listActivity'] = $this->mactivity->getQuery("", "activity_component = 2 and activity_id_com = ".$id, "id desc","");
+                $this->_data['extraCss'] = ['review_css.css'];
                 $this->my_layout->view("admin/news/review", $this->_data);
             } else {
                 $notify = array(

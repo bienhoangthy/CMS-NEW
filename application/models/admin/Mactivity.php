@@ -4,7 +4,7 @@ class mactivity extends MY_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
     }
     protected $table = "cms_activity";
 

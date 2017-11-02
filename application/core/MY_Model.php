@@ -99,8 +99,8 @@ class MY_Model extends CI_Model {
 			$this->db->where_in('id', $id);
 		}
 		$this->db->delete($this->table);
-		$this->db->query('ANALYZE TABLE ' . $this->table);
-		$this->db->query('OPTIMIZE TABLE ' . $this->table);
+		// $this->db->query('ANALYZE TABLE ' . $this->table);
+		// $this->db->query('OPTIMIZE TABLE ' . $this->table);
 		return;
 	}
 

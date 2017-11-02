@@ -326,7 +326,8 @@ class Config extends MY_Controller {
             $value = $this->input->get('value');
             if ($id != null && $value != null) {
                 if ($this->mconfig_translation->edit($id,array('config_value' => $value))) {
-                    $this->mactivity->addActivity(3,$id,4,$this->_data['user_active']['active_user_id']);
+                    $parent = $this->mconfig_translation->getData('config_id',array('id' => $id));
+                    $this->mactivity->addActivity(3,$parent['config_id'],4,$this->_data['user_active']['active_user_id']);
                     $this->deleteCache();
                     echo "ok";
                 }

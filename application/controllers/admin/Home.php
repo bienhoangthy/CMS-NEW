@@ -13,12 +13,6 @@ class Home extends MY_Controller {
     public function index()
     {
         $this->mpermission->checkPermission("home","index",$this->_data['user_active']['active_user_group']);
-        // $this->load->library("My_google");
-        // $client = new Google_Client();
-        // $client->setApplicationName("CMS");
-        // $client->setDeveloperKey("AIzaSyCcc5Oo3bhB_k6rMGMBDY2Bm8QIF75XvIw");
-        
-
         $this->_data['title'] = lang('dashboard');
         //Total news publish
         $this->load->Model("admin/mnews");
@@ -50,7 +44,7 @@ class Home extends MY_Controller {
         $this->_data['mail_unread'] = $this->mmail->countQuery('mail_status = 1');
 
         //Setting Display
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
         $this->_data['mySetting'] = $this->msetting->getSetting("write_log,write_history_login");
         if ($this->_data['mySetting']['write_log'] == 1) {
             $this->_data['listActivities'] = $this->mactivity->getQuery("","","id desc","0,10");
@@ -65,8 +59,8 @@ class Home extends MY_Controller {
             $this->load->Model("admin/mgroup");
             $this->_data['listLogin'] = $this->mhistory->getQuery("","","id desc","0,10");
         }
-
-        $this->_data['extraJs'] = ['module/home.js'];
+        $this->_data['extraCss'] = ['fancybox/jquery.fancybox.css'];
+        $this->_data['extraJs'] = ['chart.min.js','fancybox/jquery.mousewheel.pack.js','fancybox/jquery.fancybox.pack.js','module/home.js'];
     	$this->my_layout->view("admin/home/index", $this->_data);
     }
 

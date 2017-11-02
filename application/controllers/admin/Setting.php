@@ -7,7 +7,7 @@ class Setting extends MY_Controller {
         $this->lang->load('setting',$this->_data['language']);
         $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
         $this->load->Model("admin/mcomponent");
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
     }
     public function index()
     {
@@ -29,7 +29,10 @@ class Setting extends MY_Controller {
             'smtp_server' => $mySetting['smtp_server'],
             'smtp_password' => $mySetting['smtp_password'],
             'smtp_port' => $mySetting['smtp_port'],
-            'smtp_use_ssl' => $mySetting['smtp_use_ssl'] 
+            'smtp_use_ssl' => $mySetting['smtp_use_ssl'],
+            'use_ga' => $mySetting['use_ga'],
+            'ga_id' => $mySetting['ga_id'],
+            'ga_profile_id' => $mySetting['ga_profile_id']
         );
         if (isset($_POST['limit_title'])) {
             $write = $this->input->post('write_log') ?? 0;
@@ -55,7 +58,10 @@ class Setting extends MY_Controller {
 	            'smtp_server' => $this->input->post('smtp_server'),
 	            'smtp_password' => $this->input->post('smtp_password'),
 	            'smtp_port' => $this->input->post('smtp_port'),
-	            'smtp_use_ssl' => $this->input->post('smtp_use_ssl') ?? 0 
+                'smtp_use_ssl' => $this->input->post('smtp_use_ssl') ?? 0,
+                'use_ga' => $this->input->post('use_ga') ?? 0,
+                'ga_id' => $this->input->post('ga_id'),
+	            'ga_profile_id' => $this->input->post('ga_profile_id')
             );
             $error = false;
             do {
@@ -73,6 +79,14 @@ class Setting extends MY_Controller {
                 }
                 if ($this->_data['formData']['ratio_product'] < 11) {
                     $text = lang('pleasechoose').lang('ratio').lang('product');$error = true;break;
+                }
+                if ($this->_data['formData']['use_ga'] == 1) {
+                    if ($this->_data['formData']['ga_id'] == '') {
+                        $text = lang('pleaseinput').' GA ID';$error = true;break;
+                    }
+                    if ($this->_data['formData']['ga_profile_id'] == '') {
+                        $text = lang('pleaseinput').' GA Profile ID';$error = true;break;
+                    }
                 }
             } while (0);
             if ($error == true) {

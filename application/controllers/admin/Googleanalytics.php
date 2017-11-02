@@ -4,10 +4,13 @@ class Googleanalytics extends MY_Controller {
   public function __construct()
   {
     parent::__construct();
-    $this->lang->load('ga',$this->_data['language']);
-    $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
   }
   public function index() {
+    if ($this->_data['setting']['use_ga'] != 1) {
+      redirect(base_url() . 'not-found');
+    }
+  	$this->lang->load('ga',$this->_data['language']);
+    $this->mpermission->checkPermissionModule($this->uri->segment(2),$this->_data['user_active']['active_user_module']);
   	$this->mpermission->checkPermission("googleanalytics","index",$this->_data['user_active']['active_user_group']);
     $this->load->library("My_google");
     $client_id = '370f1c259af738164bb1329b5ef36fce76fb06c2'; 
@@ -36,7 +39,7 @@ class Googleanalytics extends MY_Controller {
     }
     $_SESSION['service_token'] = $client->getAccessToken();
 
-    $profileId = "ga:163480877";
+    $profileId = "ga:".$this->_data['setting']['ga_profile_id'];
 
     $startDate = $this->_data['since'] = $_GET['since'] ?? date("Y-m-d",strtotime('-30 days'));
     $endDate = $this->_data['to'] = $_GET['to'] ?? date("Y-m-d");
@@ -65,7 +68,7 @@ class Googleanalytics extends MY_Controller {
     $this->_data['visits'] = '';
     $this->_data['pageviews'] = '';
     foreach ($rs_vp as $value) {
-      $this->_data['days'] .= '"'.date('m-d',strtotime($value[0])).'",';
+      $this->_data['days'] .= '"'.date('d-m',strtotime($value[0])).'",';
       $this->_data['visits'] .= $value[1].',';
       $this->_data['pageviews'] .= $value[2].',';
     }
@@ -78,8 +81,8 @@ class Googleanalytics extends MY_Controller {
     $optParams_d = array("dimensions" => "ga:deviceCategory");
     $rs_d = $analytics->data_ga->get($profileId, $startDate, $endDate, $metrics_d, $optParams_d);
     $rs_d = $rs_d['rows'];
-    $this->_data['desktop'] = (int)$rs_d[0][1];
-    $this->_data['mobile'] = (int)$rs_d[1][1];
+    $this->_data['desktop'] = isset($rs_d[0][1]) ? (int)$rs_d[0][1] : 0;
+    $this->_data['mobile'] = isset($rs_d[1][1]) ? (int)$rs_d[1][1] : 0;
     $this->_data['per_desktop'] = ($this->_data['desktop'] * 100)/($this->_data['desktop'] + $this->_data['mobile']);
     $this->_data['per_mobile'] = ($this->_data['mobile'] * 100)/($this->_data['desktop'] + $this->_data['mobile']);
     $this->_data['per_desktop'] = round($this->_data['per_desktop'],1);
@@ -99,4 +102,71 @@ class Googleanalytics extends MY_Controller {
     $this->my_layout->view("admin/analytics/analytics", $this->_data);
   }
 
+  public function ajaxAnalyticsHome($ajaxHome = true)
+  {
+    $rs = array("status" => 0);
+    if ($this->_data['setting']['use_ga'] == 1) {
+      $date = $this->input->get('date');
+      $date = $date ?? 'today';
+      $this->load->library("My_google");
+      $client_id = '370f1c259af738164bb1329b5ef36fce76fb06c2'; 
+      $service_account_name = 'thycmsga@formal-being-184008.iam.gserviceaccount.com'; 
+      $key_file_location = BASEPATH.'../application/third_party/google-api-php-client/CMS-Google-Analytics-370f1c259af7.p12';
+
+      $client = new Google_Client();
+      $client->setApplicationName("Admin CMS");
+      $analytics = new Google_Service_Analytics($client);
+
+      if (isset($_SESSION['service_token'])) {
+        $client->setAccessToken($_SESSION['service_token']);
+      }
+      $key = file_get_contents($key_file_location);
+      $cred = new Google_Auth_AssertionCredentials(
+        $service_account_name,
+        array(
+          'https://www.googleapis.com/auth/analytics',
+        ),
+        $key,
+        'notasecret'
+      );
+      $client->setAssertionCredentials($cred);
+      if($client->getAuth()->isAccessTokenExpired()) {
+        $client->getAuth()->refreshTokenWithAssertion($cred);
+      }
+      $_SESSION['service_token'] = $client->getAccessToken();
+      $profileId = "ga:".$this->_data['setting']['ga_profile_id'];
+      $total = $analytics->data_ga->get($profileId, $date, $date, 'ga:sessions,ga:users');
+      $total = $total['rows'];
+
+      //Visits & Pageviews
+      $total_visits = 0;
+      $total_pageviews = 0;
+      $vp = $analytics->data_ga->get($profileId, $date, $date, 'ga:visits,ga:pageviews', array("dimensions" => "ga:hour"));
+    }
+    if ($ajaxHome == true) {
+    	foreach ($vp['rows'] as $value) {
+	        $total_visits += $value[1];$total_pageviews += $value[2];
+	      }
+	      $rs = array("status" => 1,"total_sessions" => $total[0][0],"total_users" => $total[0][1],"total_visits" => $total_visits,"total_pageviews" => $total_pageviews,"vp" => $vp['rows']);
+    	echo json_encode($rs);
+    } else {
+    	$visits = '';$pageviews = '';
+    	foreach ($vp['rows'] as $value) {
+    		$visits .= $value[1].',';$pageviews .= $value[2].',';
+    		$total_visits += $value[1];$total_pageviews += $value[2];
+    	}
+    	$visits = rtrim($visits,',');$pageviews = rtrim($pageviews,',');
+    	$rs = array("total_sessions" => $total[0][0],"total_users" => $total[0][1],"total_visits" => $total_visits,"total_pageviews" => $total_pageviews,"visits" => $visits,"pageviews" => $pageviews);
+    	return $rs;
+    }
+  }
+
+  public function analyticsbydate()
+  {
+  	$this->lang->load('ga',$this->_data['language']);
+  	$rs = $this->ajaxAnalyticsHome(false);
+  	$date = $this->input->get('date') ?? date("Y-m-d");
+  	$data = array('title' => lang('title'),'rs' => $rs,'date' => $date);
+  	$this->load->view("admin/analytics/date", $data);
+  }
 }

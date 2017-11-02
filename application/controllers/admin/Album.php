@@ -10,7 +10,7 @@ class Album extends MY_Controller {
         $this->load->Model("admin/malbum");
         $this->load->Model("admin/malbum_detail");
         $this->load->Model("admin/mactivity");
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
     }
 	public function index()
 	{

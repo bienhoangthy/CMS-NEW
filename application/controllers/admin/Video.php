@@ -9,7 +9,7 @@ class Video extends MY_Controller {
         $this->load->Model("admin/mcategory");
         $this->load->Model("admin/mvideo");
         $this->load->Model("admin/mactivity");
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
     }
 	public function index()
 	{

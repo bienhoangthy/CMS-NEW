@@ -17,4 +17,5 @@ $lang['topmostvisitpages'] = 'Trang được xem nhiều nhất';
 $lang['views'] = 'Lượt xem';
 $lang['since'] = 'Từ ngày';
 $lang['to'] = 'Đến';
+$lang['bydate'] = 'Theo ngày';
  ?>

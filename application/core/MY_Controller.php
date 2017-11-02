@@ -12,6 +12,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->Model("admin/mpermission");
 		$this->load->Model("admin/mlanguage");
 		$this->load->Model("admin/mmail");
+		$this->load->Model("admin/msetting");
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->my_layout->setLayout("admin/template/index");
 		$this->_data['user_active'] = $this->session->userdata('userActive');
@@ -24,6 +25,7 @@ class MY_Controller extends CI_Controller {
 		$this->_data['title'] = "";
 		$this->_data['mailUnread'] = $this->mmail->countUnread();
 		$this->_data['listMailUnread'] = $this->mmail->getQuery("id,mail_fullname,mail_email,mail_title,mail_senddate","mail_status = 1","id desc","0,5");
+		$this->_data['setting'] = $this->msetting->getSetting("use_ga,ga_id,ga_profile_id");
 		if (!$this->_data['language'] = $this->session->userdata('language')) {
 			$this->_data['language'] = 'vietnamese';
 			$this->session->set_userdata('language', $this->_data['language']);

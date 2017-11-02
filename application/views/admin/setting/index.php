@@ -147,13 +147,34 @@
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="smtp_use_ssl">SMTP Use SSL <span class="required">*</span>
 											</label>
-											<div class="col-md-6 col-sm-6 col-xs-12 item">
+											<div class="col-md-6 col-sm-6 col-xs-12">
 												<input type="checkbox" name="smtp_use_ssl" class="js-switch" value="1" <?= $formData['smtp_use_ssl'] == 1 ? 'checked' : ''?>/>
 											</div>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="ga" aria-labelledby="ga-tab">
-										<h2>Cấu hình Google Analytics</h2>
+										<div class="form-group">
+											<label class="control-label col-md-5 col-sm-5 col-xs-12" for="use_ga"><?= lang('activated')?> Google Analytics
+											</label>
+											<div class="col-md-7 col-sm-7 col-xs-12">
+												<input type="checkbox" name="use_ga" class="js-switch" value="1" <?= $formData['use_ga'] == 1 ? 'checked' : ''?>/>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ga_id">ID
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input type="text" name="ga_id" class="form-control col-md-7 col-xs-12" value="<?= $formData['ga_id']?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ga_profile_id">Profile ID
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input type="text" name="ga_profile_id" class="form-control col-md-7 col-xs-12" value="<?= $formData['ga_profile_id']?>">
+											</div>
+										</div>
+										<cite class="text-danger"><?= lang('authorizeemail')?>"thycmsga@formal-being-184008.iam.gserviceaccount.com"</cite>
 									</div>
 								</div>
 							</div>

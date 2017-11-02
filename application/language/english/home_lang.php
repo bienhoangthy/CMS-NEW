@@ -33,4 +33,11 @@ $lang['time'] = 'Time';
 $lang['browser'] = 'Browser';
 $lang['os'] = 'OS';
 $lang['page'] = 'Page';
+$lang['siteanalytics'] = 'Site Analytics';
+$lang['sessions'] = 'Session';
+$lang['visits'] = 'Visits';
+$lang['pageview'] = 'Pageview';
+$lang['users'] = 'Users';
+$lang['yesterday'] = 'Yesterday';
+$lang['today'] = 'Today';
  ?>

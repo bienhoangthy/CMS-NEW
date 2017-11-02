@@ -16,7 +16,7 @@ class Index extends CI_Controller {
 	{
 		$user_active = $this->session->userdata('userActive');
 		if ($user_active) {
-			redirect(my_library::admin_site() . "home/");
+			redirect(my_library::admin_site() . "home");
 		} else {
 			$data['title'] = 'Đăng nhập CMS';
 			$data['token_name'] = $this->security->get_csrf_token_name();
@@ -89,7 +89,7 @@ class Index extends CI_Controller {
 								if ($this->input->get('redirect')) {
 									redirect(base64_decode($this->input->get('redirect')));
 								} else {
-									redirect(my_library::admin_site() . "home/");
+									redirect(my_library::admin_site() . "home");
 								}
 							} else {
 								$data['error'] = "Tài khoản này đã khóa!";
@@ -140,7 +140,7 @@ class Index extends CI_Controller {
 										'type' => 'success'
 									);
 									$this->session->set_userdata('notify', $notify);
-									redirect(my_library::admin_site() . "home/");
+									redirect(my_library::admin_site() . "home");
 								} else {
 									$data['error'] = "Mật khẩu không chính xác!";
 								}
@@ -168,7 +168,7 @@ class Index extends CI_Controller {
 	{
 		$user_active = $this->session->userdata('userActive');
 		if ($user_active) {
-			redirect(my_library::admin_site() . "home/");
+			redirect(my_library::admin_site() . "home");
 		} else {
 			$data['title'] = 'Quên mật khẩu CMS';
 			$data['formData'] = array(

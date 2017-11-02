@@ -4,7 +4,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><?= $title?></h3>
+        <h3><?= $title?> <a href="<?= my_library::admin_site()?>googleanalytics/analyticsbydate"><button type="button" class="btn btn-success btn-xs"><?= lang('bydate')?></button></a></h3>
         <form method="get" class="form-inline">
           <div class="form-group">
             <label for="since"><?= lang('since')?></label>
@@ -213,12 +213,12 @@
           datasets: [{
               label: "<?= lang('visits')?>",
               borderColor: 'rgb(22, 160, 133)',
-              data: [<?= $visits?>],fill: false,
+              data: [<?= $visits?>],fill: false
           },
           {
               label: "<?= lang('pageviews')?>",
               borderColor: 'rgb(41, 128, 185)',
-              data: [<?= $pageviews?>],fill: false,
+              data: [<?= $pageviews?>],fill: false
           }]
       },
       options: {

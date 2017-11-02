@@ -33,4 +33,11 @@ $lang['time'] = 'Thời gian';
 $lang['browser'] = 'Trình duyệt';
 $lang['os'] = 'Hệ điều hành';
 $lang['page'] = 'Trang';
+$lang['siteanalytics'] = 'Thống kê truy cập';
+$lang['sessions'] = 'Phiên';
+$lang['visits'] = 'Lượt ghé thăm';
+$lang['pageview'] = 'Xem trang';
+$lang['users'] = 'Người dùng';
+$lang['yesterday'] = 'Hôm qua';
+$lang['today'] = 'hôm nay';
  ?>

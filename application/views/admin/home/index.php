@@ -31,18 +31,67 @@
       <span class="count_bottom"><i class="green"><?= $activities_today?> </i> <?= lang('totay')?></span>
     </div>
   </div>
+  <?php if ($setting['use_ga'] == 1): ?>
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="dashboard_graph">
-        <div class="row x_title">
-          <div class="col-md-6">
-            <h3>Analytics</h3>
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><i class="fa fa-line-chart"></i> <?= lang('siteanalytics').' '.lang('today')?><small>(<a href="javascript:;" id="yesterday" data-url="<?= my_library::admin_site()?>googleanalytics/analyticsbydate?date=<?= date('Y-m-d',strtotime("-1 days"))?>"><?= lang('yesterday')?></a>)</small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content" id="ga-home" style="display: none;">
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <canvas id="lineChart" height="98"></canvas>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-12">
+            <div class="info-box">
+              <div class="info-box-icon bg-blue font-white">
+                <i class="fa fa-laptop"></i>
+              </div>
+              <div class="info-box-content">
+                <span class="info-box-text"><?= lang('sessions')?></span>
+                <span class="info-box-number" id="ga-sessions">-</span>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-box-icon bg-green font-white">
+                <i class="fa fa-exchange"></i>
+              </div>
+              <div class="info-box-content">
+                <span class="info-box-text"><?= lang('visits')?></span>
+                <span class="info-box-number" id="ga-visits">-</span>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-box-icon bg-purple font-white">
+                <i class="fa fa-eye"></i>
+              </div>
+              <div class="info-box-content">
+                <span class="info-box-text"><?= lang('pageview')?></span>
+                <span class="info-box-number" id="ga-pageview">-</span>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-box-icon bg-red font-white">
+                <i class="fa fa-users"></i>
+              </div>
+              <div class="info-box-content">
+                <span class="info-box-text"><?= lang('users')?></span>
+                <span class="info-box-number" id="ga-users">-</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="clearfix"></div>
       </div>
     </div>
   </div>
+  <?php endif ?>
   <div class="clearfix"></div>
   <div class="row" style="margin-top: 10px;">
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -90,7 +139,7 @@
                   </tbody>
                 </table>
               </div>
-              <div role="tabpanel" class="tab-pane fade" id="new" aria-labelledby="new-tab" style="height: 253px;overflow: auto;">
+              <div role="tabpanel" class="tab-pane fade table-responsive" id="new" aria-labelledby="new-tab" style="height: 253px;overflow: auto;">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -139,27 +188,27 @@
                 <?php if (!empty($listActivities)): ?>
                   <?php foreach ($listActivities as $value): ?>
                     <?php 
-                      $user = $this->muser->getData("id,user_fullname,user_avatar,user_folder",array('id' => $value['activity_user']));
-                      if ($user) {
-                        if ($user['user_avatar'] != '') {
-                          $avatar_user = base_url().'media/user/'.$user['user_folder'].'/thumb-'.$user['user_avatar'];
-                        } else {
-                          $avatar_user = my_library::base_public().'admin/images/user.png';
-                        }
-                        $myUser = '<img src="'.$avatar_user.'" class="avatar" style="width: 30px;height: auto;" alt="avatar">&nbsp;<a href="'.my_library::admin_site().'user/profile/'.$user['id'].'" target="_blank">'.$user['user_fullname'].'</a>';
+                    $user = $this->muser->getData("id,user_fullname,user_avatar,user_folder",array('id' => $value['activity_user']));
+                    if ($user) {
+                      if ($user['user_avatar'] != '') {
+                        $avatar_user = base_url().'media/user/'.$user['user_folder'].'/thumb-'.$user['user_avatar'];
                       } else {
-                        $myUser = lang('someone');
+                        $avatar_user = my_library::base_public().'admin/images/user.png';
                       }
-                      $action = $this->mactivity->listAction($value['activity_action']);
-                      $comname = '';
-                      if ($language == 'english') {
-                        $com = $this->mcomponent->getData("component",array('id' => $value['activity_component']));
-                        $comname = ucfirst($com['component']);
-                      } else {
-                        $com = $this->mcomponent->getData("component,component_name",array('id' => $value['activity_component']));
-                        $comname = $com['component_name'];
-                      }
-                     ?> 
+                      $myUser = '<img src="'.$avatar_user.'" class="avatar" style="width: 30px;height: auto;" alt="avatar">&nbsp;<a href="'.my_library::admin_site().'user/profile/'.$user['id'].'" target="_blank">'.$user['user_fullname'].'</a>';
+                    } else {
+                      $myUser = lang('someone');
+                    }
+                    $action = $this->mactivity->listAction($value['activity_action']);
+                    $comname = '';
+                    if ($language == 'english') {
+                      $com = $this->mcomponent->getData("component",array('id' => $value['activity_component']));
+                      $comname = ucfirst($com['component']);
+                    } else {
+                      $com = $this->mcomponent->getData("component,component_name",array('id' => $value['activity_component']));
+                      $comname = $com['component_name'];
+                    }
+                    ?> 
                     <tr>
                       <td><?= $myUser?> <i class="text-<?= $action['color']?>"><?= $action['name']?></i> <?= $comname?> "<a href="<?= my_library::admin_site().$com['component'].'/edit/'.$value['activity_id_com']?>" target="_blank">#<?= $value['activity_id_com']?></a>"</td>
                       <td class="text-right"><i><?= time_elapsed_string($value['activity_datetime'])?></i> <code class="hidden-xs">(<?= $value['activity_ip']?>)</code></td>
@@ -204,12 +253,12 @@
                 <?php if (!empty($listLogin)): ?>
                   <?php foreach ($listLogin as $key => $value): ?>
                     <?php 
-                      $user = $this->muser->getData("id,user_fullname,user_avatar,user_folder",array('id' => $value['history_user_id']));
-                      $avatar_user = $user && $user['user_avatar'] != '' ? base_url().'media/user/'.$user['user_folder'].'/thumb-'.$user['user_avatar'] : my_library::base_public().'admin/images/user.png';
-                      $fullname = $user['user_fullname'] ?? lang('someone');
-                      $group = $this->mgroup->getData("group_name",array('id' => $value['history_group']));
-                      $group_name = $group['group_name'] ?? '';
-                     ?>
+                    $user = $this->muser->getData("id,user_fullname,user_avatar,user_folder",array('id' => $value['history_user_id']));
+                    $avatar_user = $user && $user['user_avatar'] != '' ? base_url().'media/user/'.$user['user_folder'].'/thumb-'.$user['user_avatar'] : my_library::base_public().'admin/images/user.png';
+                    $fullname = $user['user_fullname'] ?? lang('someone');
+                    $group = $this->mgroup->getData("group_name",array('id' => $value['history_group']));
+                    $group_name = $group['group_name'] ?? '';
+                    ?>
                     <tr class="showacction">
                       <th><img src="<?= $avatar_user?>" class="avatar" style="width: 35px;height: auto;" alt="avatar"></th>
                       <td><a href="<?= my_library::admin_site().'user/profile/'.$user['id']?>" target="_blank"><?= $fullname?></a></td>

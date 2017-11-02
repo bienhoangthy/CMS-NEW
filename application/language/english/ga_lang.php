@@ -17,4 +17,5 @@ $lang['topmostvisitpages'] = 'Top most visit page';
 $lang['views'] = 'Views';
 $lang['since'] = 'Since';
 $lang['to'] = 'To';
+$lang['bydate'] = 'By date';
  ?>

@@ -14,4 +14,6 @@ $lang['video'] = 'Video';
 $lang['product'] = 'Product';
 $lang['chooseratio'] = 'Choose Ratio';
 $lang['ratio'] = 'ratio ';
+$lang['activated'] = 'Activated';
+$lang['authorizeemail'] = 'Authorize this email in Google Analytics: ';
  ?>

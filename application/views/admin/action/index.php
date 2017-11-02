@@ -67,7 +67,7 @@
 						<div class="">
 							<form class="form-horizontal form-label-left" method="get">
 								<div class="form-group">
-									<div class="col-md-5 col-sm-5 col-xs-6">
+									<div class="col-md-12 col-sm-12 col-xs-12">
 										<div class="input-group">
 										<input type="text" name="fkeyword" value="<?= $formSearch['fkeyword']?>" placeholder="<?= lang('search')?>" class="form-control">
 											<span class="input-group-btn">

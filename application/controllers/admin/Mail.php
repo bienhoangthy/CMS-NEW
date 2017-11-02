@@ -197,7 +197,7 @@ class Mail extends MY_Controller {
 
     public function sendmail($to,$cc,$subject,$content)
     {
-        $this->load->Model("admin/msetting");
+        // $this->load->Model("admin/msetting");
         $mySetting = $this->msetting->getSetting("email,alias,smtp_user,smtp_server,smtp_password,smtp_port,smtp_use_ssl");
         $configMail = Array(
             'protocol' => 'smtp',
