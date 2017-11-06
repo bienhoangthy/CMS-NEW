@@ -26,7 +26,8 @@
 	                            <?php foreach ($files as $value): ?>
 	                            	<?php $ext = explode('.',$value); ?>
 	                            	<?php if ($ext[1] == 'php'): ?>
-	                            		<option <?= $filename == $ext[0] ? 'selected' : ''?> value="<?= $ext[0]?>"><?= $ext[0]?></option>
+	                            		<?php $title_file = explode('_', $ext[0]);$title_file = ucfirst($title_file['0']); ?>
+	                            		<option <?= $filename == $ext[0] ? 'selected' : ''?> value="<?= $ext[0]?>"><?= $title_file?></option>
 	                            	<?php endif ?>
 	                            <?php endforeach ?>
 	                          </select>
@@ -36,6 +37,7 @@
 			</div>
 			<?php if (isset($filename) && $filename != ''): ?>
 				<div class="col-md-12 col-sm-12 col-xs-12">
+					<input type="hidden" name="filename" value="<?= $filename?>" id="filename">
 	                <div class="x_panel">
 	                  <div class="x_title">
 	                    <h2><i class="fa fa-edit"></i> <?= lang('element')?> <small><?= lang('clickedit')?></small></h2>
@@ -53,7 +55,7 @@
 	                        <tr>
 	                          <th width="20%"><?= lang('variable')?></th>
 	                          <th width="40%"><img src="<?= my_library::admin_images()?>flag_vietnamese.png" style="height: 15px;" alt="vietnamese"> Việt Nam</th>
-	                          <th width="40%"><img src="<?= my_library::admin_images()?>flag_english.png" style="height: 15px;" alt="vietnamese"> English</th>
+	                          <th width="40%"><img src="<?= my_library::admin_images()?>flag_english.png" style="height: 15px;" alt="english"> English</th>
 	                        </tr>
 	                      </thead>
 	                      <tbody>
@@ -66,8 +68,8 @@
 	                      		 ?>
 	                      		 <tr>
 		                          <td><code><?= $line_vn[0]?></code></td>
-		                          <td><a href="#"><?= $textvn?></a></td>
-		                          <td><a href="#"><?= $texten?></a></td>
+		                          <td><a href="javascript:;" class="translation" data-lang="vietnamese" data-content="<?= $textvn?>"><?= $textvn?></a></td>
+		                          <td><a href="javascript:;" class="translation" data-lang="english" data-content="<?= $texten?>"><?= $texten?></a></td>
 		                        </tr>
 	                      	<?php endforeach ?>
 	                      </tbody>

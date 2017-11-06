@@ -29,21 +29,31 @@ class Translation extends MY_Controller {
             array_pop($this->_data['arrContent']);
         }
         $this->_data['title'] = lang('title');
+        $this->_data['extraJs'] = ['module/translation.js'];
         $this->my_layout->view("admin/translation/index", $this->_data);
     }
 
-    public function edit($filename)
+    public function edit()
     {
-        $this->load->helper('file');
-        $filePath = APPPATH . '/language/english/'.$filename.'.php';
-        $content = read_file($filePath);
-        $arrContent = explode(';', $content);
-        array_shift($arrContent);
-        array_pop($arrContent);
-        foreach ($arrContent as $value) {
-            $line = explode(" = ", $value);
-            $text = trim($line[1],"'");
-            var_dump($text);
-        }
+    	$rs = array("status" => 0,"title" => lang('unsuccessful'),"message" => lang('nonpermission'));
+    	if ($this->mpermission->permission("translation_edit",$this->_data['user_active']['active_user_group']) == true) {
+    		$lang = $this->input->get('lang');
+	    	$filename = $this->input->get('filename');
+	    	$content = $this->input->get('content');
+	    	$newcontent = $this->input->get('newcontent');
+	    	if ($lang && $filename && $content) {
+	    		$filePath = APPPATH . '/language/'.$lang.'/'.$filename.'.php';
+	    		$file_contents = file_get_contents($filePath);
+	    		$file_contents = str_replace($content, $newcontent, $file_contents);
+	    		if (file_put_contents($filePath, $file_contents)) {
+	    			$rs = array("status" => 1,"title" => lang('success'),"message" => lang('editsuccess'));
+	    		} else {
+	    			$rs = array("status" => 0,"title" => lang('unsuccessful'),"message" => lang('editunsuccess'));
+	    		}
+	    	} else {
+	    		$rs = array("status" => 0,"title" => lang('unsuccessful'),"message" => lang('checkinfo'));
+	    	}
+    	}
+    	echo json_encode($rs);
     }
 }
