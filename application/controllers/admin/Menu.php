@@ -97,6 +97,13 @@ class Menu extends MY_Controller {
                                     if ($this->mmenu_detail->edit($val['id'],array('parent' => $value['id'],'icon' => $this->input->post('icon'.$val['id']),'click_allow' => $this->input->post('allow'.$val['id']),'target' => $this->input->post('target'.$val['id']),'order_by' => $k))) {
                                         $countEdit++;
                                     }
+                                    if (isset($val['children'])) {
+                                    	foreach ($val['children'] as $e => $v) {
+                                    		if ($this->mmenu_detail->edit($v['id'],array('parent' => $val['id'],'icon' => $this->input->post('icon'.$v['id']),'click_allow' => $this->input->post('allow'.$v['id']),'target' => $this->input->post('target'.$v['id']),'order_by' => $e))) {
+                                    			$countEdit++;
+                                    		}
+                                    	}
+                                    }
                                 }
                             }
                         }
@@ -124,6 +131,7 @@ class Menu extends MY_Controller {
                 $this->_data['listPage'] = $this->mpage->getPage($this->_data['language'],1);
                 $this->_data['listLink'] = $this->mlink->getLink($this->_data['language'],1);
                 $this->_data['menuDetail'] = $this->mmenu_detail->getMenuDetail($id);
+                // var_dump($this->_data['menuDetail']);die();
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','nestable.css'];

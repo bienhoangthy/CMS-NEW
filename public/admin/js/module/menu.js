@@ -1,4 +1,4 @@
-$('.dd').nestable({maxDepth:2});
+$('.dd').nestable({maxDepth:3});
 $('.dd').on('change', function() {
 	event.preventDefault();
     var rs = $('.dd').nestable('serialize');

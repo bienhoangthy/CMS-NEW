@@ -264,6 +264,74 @@
 																	</label>
 																	<button type="button" onclick="removeNes('<?= $val['id']?>')" class="btn btn-danger"><?= lang('remove')?></button>
 																</div>
+																<?php if (isset($val['subchild'])): ?>
+																	<ol class="dd-list">
+																		<?php foreach ($val['subchild'] as $v): ?>
+																			<?php 
+																			$name = '';
+																			$alias = '';
+																			switch ($v['ingredient']) {
+																				case 1:
+																				$ingredient = $this->mcategory_translation->getData("category_name,category_alias",array('category_id' => $v['ingredient_id'],'language_code' => $language));
+																				if (!empty($ingredient)) {
+																					$name = $ingredient['category_name'];
+																					$alias = $ingredient['category_alias'];
+																				}
+																				break;
+																				case 2:
+																				$ingredient = $this->mpage_translation->getData("page_title,page_alias",array('page_id' => $v['ingredient_id'],'language_code' => $language));
+																				if (!empty($ingredient)) {
+																					$name = $ingredient['page_title'];
+																					$alias = $ingredient['page_alias'];
+																				}
+																				break;
+																				case 3:
+																				$ingredient_link = $this->mlink->getData("link",array('id' => $v['ingredient_id']));
+																				$ingredient_link_name = $this->mlink_translation->getData("link_name",array('link_id' => $v['ingredient_id'],'language_code' => $language));
+																				if (!empty($ingredient_link)) {
+																					$alias = $ingredient_link['link'];
+																				}
+																				if (!empty($ingredient_link_name)) {
+																					$name = $ingredient_link_name['link_name'];
+																				}
+																				break;
+																			}
+																			$type = $this->mmenu_detail->listIngredient($v['ingredient']);
+																			$checked = $v['click_allow'] == 1 ? 'checked="checked"' : '';
+																			?>
+																			<li class="dd-item dd3-item" id="nes-<?= $v['id']?>" data-id="<?= $v['id']?>">
+																				<div class="dd-handle dd3-handle">Drag</div>
+																				<div class="dd3-content" onclick="showExtra('<?= $v['id']?>')">
+																					<span class="pull-left"> <?= $name?></span>
+																					<cite class="pull-right"> <?= $type['name']?></cite>
+																				</div>
+																				<div class="item-content" id="extra-<?= $v['id']?>">
+																					<label>
+																						<span>Click</span>
+																						<select class="form-control" name="allow<?= $v['id']?>">
+																							<option value="1" <?= $v['click_allow'] == 1 ? 'selected' : ''?>><?= lang('allow')?></option>
+																							<option value="0" <?= $v['click_allow'] == 0 ? 'selected' : ''?>><?= lang('disallowance')?></option>
+																						</select>
+																					</label>
+																					<label>
+																						<span>Icon</span>
+																						<input class="form-control" name="icon<?= $v['id']?>" type="text" value="<?= $v['icon']?>">
+																					</label>
+																					<label>
+																						<span>Target</span>
+																						<select class="form-control" name="target<?= $v['id']?>">
+																							<option value="_self" <?= $v['target'] == '_self' ? 'selected' : ''?>>_self</option>
+																							<option value="_blank" <?= $v['target'] == '_blank' ? 'selected' : ''?>>_blank</option>
+																							<option value="_parent" <?= $v['target'] == '_parent' ? 'selected' : ''?>>_parent</option>
+																							<option value="_top" <?= $v['target'] == '_top' ? 'selected' : ''?>>_top</option>
+																						</select>
+																					</label>
+																					<button type="button" onclick="removeNes('<?= $v['id']?>')" class="btn btn-danger"><?= lang('remove')?></button>
+																				</div>
+																			</li>
+																		<?php endforeach ?>
+																	</ol>
+																<?php endif ?>
 															</li>
 														<?php endforeach ?>
 													</ol>
