@@ -12,7 +12,6 @@ class mlanguage extends CI_Model
     {
         $sql = 'select lang_name,lang_code,lang_flag from '.$this->table.' where lang_status = 1';
         $query = $this->db->query($sql);
-        $rs = $query->result_array();
-        return $rs;
+        return $query->result_array();
     }
 }

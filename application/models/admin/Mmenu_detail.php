@@ -15,9 +15,9 @@ class mmenu_detail extends MY_Model
     			$listChild = $this->getQuery("id,ingredient,ingredient_id,icon,click_allow,target","parent = ".$value['id']." and menu_id = ".$id,"order_by asc,id asc","");
     			if (!empty($listChild)) {
                     foreach ($listChild as $k => $val) {
-                        $listsubChil = $this->getQuery("id,ingredient,ingredient_id,icon,click_allow,target","parent = ".$val['id']." and menu_id = ".$id,"order_by asc,id asc","");
-                        if (!empty($listsubChil)) {
-                            $listChild[$k]['subchild'] = $listsubChil;
+                        $listsubChild = $this->getQuery("id,ingredient,ingredient_id,icon,click_allow,target","parent = ".$val['id']." and menu_id = ".$id,"order_by asc,id asc","");
+                        if (!empty($listsubChild)) {
+                            $listChild[$k]['subchild'] = $listsubChild;
                         }
                     }
     				$list[$key]['child'] = $listChild;

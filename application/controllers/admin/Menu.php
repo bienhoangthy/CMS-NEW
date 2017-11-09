@@ -131,7 +131,6 @@ class Menu extends MY_Controller {
                 $this->_data['listPage'] = $this->mpage->getPage($this->_data['language'],1);
                 $this->_data['listLink'] = $this->mlink->getLink($this->_data['language'],1);
                 $this->_data['menuDetail'] = $this->mmenu_detail->getMenuDetail($id);
-                // var_dump($this->_data['menuDetail']);die();
                 $this->_data['token_name'] = $this->security->get_csrf_token_name();
                 $this->_data['token_value'] = $this->security->get_csrf_hash();
                 $this->_data['extraCss'] = ['iCheck/skins/flat/green.css','nestable.css'];

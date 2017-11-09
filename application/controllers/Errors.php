@@ -1,12 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Welcome extends MY_Controllerfront {
+include ( APPPATH . 'core/MY_Controllerfront.php' );
+class Errors extends MY_Controllerfront {
 	public function __construct()
     {
         parent::__construct();
     }
 	public function index()
 	{
-		echo phpinfo();
+		$this->output->set_status_header('404');
+		echo "404 Not Found!";
 	}
 }
